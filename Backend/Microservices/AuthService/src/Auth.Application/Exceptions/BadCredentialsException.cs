@@ -1,4 +1,5 @@
-﻿namespace Auth.BLL.Exceptions
+﻿
+namespace Auth.BLL.Exceptions
 {
     public class BadCredentialsException : Exception
     {

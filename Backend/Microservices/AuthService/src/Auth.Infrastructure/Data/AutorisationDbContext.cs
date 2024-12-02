@@ -5,7 +5,7 @@ using Auth.DAL.Entities;
 
 namespace Auth.DAL.Data
 {
-    public class AuthDbContext : IdentityDbContext<User, IdentityRole<long>, long>
+    public class AuthDbContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
     {
         public AuthDbContext(DbContextOptions<AuthDbContext> options)
             : base(options)

@@ -28,7 +28,6 @@ namespace Auth.BLL.UseCases.Queries.Handlers
         public async Task<AuthResponse> Handle(AuthenticateQuery request, CancellationToken cancellationToken)
         {
             var user = await ValidateUserCredentials(request.AuthRequest, cancellationToken);
-            var roleIds = await _unitOfWork.Users.GetRolesId(user, cancellationToken);
             var roles = await _unitOfWork.Users.GetRoles(user, cancellationToken); ;
             var createTokenCommand = new CreateTokenCommand { User = user, Roles = roles };
             var accessToken = await _mediator.Send(createTokenCommand, cancellationToken);

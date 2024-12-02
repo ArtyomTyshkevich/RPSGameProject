@@ -34,27 +34,18 @@ namespace Library.Data.Repositories
                                             .ToListAsync(cancellationToken);
         }
 
-        public async Task<User?> Get(long userId, CancellationToken cancellationToken)
+        public async Task<User?> GetById(Guid userId, CancellationToken cancellationToken)
         {
             return await _authDbContext.Users
                                  .FirstOrDefaultAsync(x => x.Id == userId, cancellationToken);
         }
-        public async Task<List<long>> GetRolesId(User user, CancellationToken cancellationToken)
+        public async Task<List<IdentityRole<Guid>>> GetRoles(User user, CancellationToken cancellationToken)
         {
-            var roleIds = await _authDbContext.UserRoles
-                .Where(ur => ur.UserId == user.Id)
-                .Select(ur => ur.RoleId)
-                .ToListAsync(cancellationToken);
-
-            return roleIds;
-        }
-
-        public async Task<List<IdentityRole<long>>> GetRoles(User entity, CancellationToken cancellationToken)
-        {
-            var roleIds = await GetRolesId(entity, cancellationToken);
-
             var roles = await _authDbContext.Roles
-                .Where(role => roleIds.Contains(role.Id))
+                .Where(role => _authDbContext.UserRoles
+                    .Where(ur => ur.UserId == user.Id)
+                    .Select(ur => ur.RoleId)
+                    .Contains(role.Id))
                 .ToListAsync(cancellationToken);
 
             return roles;

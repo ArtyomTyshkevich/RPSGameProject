@@ -7,6 +7,6 @@ namespace Auth.BLL.UseCases.Commands
     public class CreateTokenCommand : IRequest<string>
     {
         public User User { get; set; }
-        public List<IdentityRole<long>> Roles { get; set; }
+        public List<IdentityRole<Guid>> Roles { get; set; }
     }
 }

@@ -13,7 +13,7 @@ namespace Auth.BLL.Extensions
 {
     public static class JwtBearerExtensions
     {
-        public static List<Claim> CreateClaims(this User user, List<IdentityRole<long>> roles)
+        public static List<Claim> CreateClaims(this User user, List<IdentityRole<Guid>> roles)
         {
             var claims = new List<Claim>
         {
