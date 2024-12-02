@@ -1,6 +1,6 @@
+using Auth.BLL.Commands;
 using Auth.BLL.DTOs.Identity;
-using Auth.BLL.UseCases.Commands;
-using Auth.BLL.UseCases.Queries;
+using Auth.BLL.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

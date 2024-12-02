@@ -2,26 +2,25 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Identity;
 using Auth.DAL.Entities;
-using Auth.BLL.UseCases.Commands;
 using Library.Application.Interfaces;
 using Auth.BLL.Exceptions;
 using Auth.BLL.Extensions;
 using Auth.BLL.DTOs.Identity;
+using Auth.BLL.Queries;
+using Auth.BLL.Commands;
 
-namespace Auth.BLL.UseCases.Queries.Handlers
+namespace Auth.BLL.Handlers.QuerieHandlers
 {
     public class AuthenticateQueryHandler : IRequestHandler<AuthenticateQuery, AuthResponse>
     {
-        private readonly UserManager<User> _userManager;
         private readonly IMediator _mediator;
         private readonly IConfiguration _configuration;
         private readonly IUnitOfWork _unitOfWork;
 
-        public AuthenticateQueryHandler(IMediator mediator, UserManager<User> userManager, IConfiguration configuration, IUnitOfWork unitOfWork)
+        public AuthenticateQueryHandler(IMediator mediator, IConfiguration configuration, IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
             _mediator = mediator;
-            _userManager = userManager;
             _configuration = configuration;
         }
 
@@ -46,8 +45,8 @@ namespace Auth.BLL.UseCases.Queries.Handlers
 
         private async Task<User> ValidateUserCredentials(AuthRequest request, CancellationToken cancellationToken)
         {
-            var managedUser = await _userManager.FindByEmailAsync(request.Email);
-            if (managedUser == null || !await _userManager.CheckPasswordAsync(managedUser, request.Password))
+            var managedUser = await _unitOfWork.UserManagers.FindByEmailAsync(request.Email);
+            if (managedUser == null || !await _unitOfWork.UserManagers.CheckPasswordAsync(managedUser, request.Password))
             {
                 throw new BadCredentialsException();
             }

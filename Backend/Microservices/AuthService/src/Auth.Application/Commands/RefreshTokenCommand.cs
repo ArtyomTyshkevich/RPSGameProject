@@ -2,7 +2,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 
-namespace Auth.BLL.UseCases.Commands
+namespace Auth.BLL.Commands
 {
     public class RefreshTokenCommand : IRequest<TokenModel>
     {

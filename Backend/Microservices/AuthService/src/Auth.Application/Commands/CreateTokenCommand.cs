@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Auth.DAL.Entities;
 
-namespace Auth.BLL.UseCases.Commands
+namespace Auth.BLL.Commands
 {
     public class CreateTokenCommand : IRequest<string>
     {

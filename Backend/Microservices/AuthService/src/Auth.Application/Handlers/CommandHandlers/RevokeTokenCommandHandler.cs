@@ -1,30 +1,30 @@
-﻿using Auth.BLL.UseCases.Commands;
+﻿using Auth.BLL.Commands;
 using Auth.DAL.Entities;
+using Library.Application.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 
-namespace Library.Data.UseCases.Commands.Identity.Handlers
+namespace Auth.BLL.Handlers.CommandHandlers
 {
     public class RevokeTokenCommandHandler : IRequestHandler<RevokeTokenCommand>
     {
-        private readonly UserManager<User> _userManager;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public RevokeTokenCommandHandler(UserManager<User> userManager)
+        public RevokeTokenCommandHandler(UserManager<User> userManager, IUnitOfWork unitOfWork)
         {
-            _userManager = userManager;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<Unit> Handle(RevokeTokenCommand request, CancellationToken cancellationToken)
         {
-            var user = await _userManager.FindByNameAsync(request.Username);
+            var user = await _unitOfWork.UserManagers.FindByNameAsync(request.Username);
             if (user == null)
             {
                 throw new KeyNotFoundException("User not found");
             }
 
             user.RefreshToken = null;
-            var result = await _userManager.UpdateAsync(user);
+            var result = await _unitOfWork.UserManagers.UpdateUserAsync(user);
 
             if (!result.Succeeded)
             {
@@ -37,21 +37,21 @@ namespace Library.Data.UseCases.Commands.Identity.Handlers
 
     public class RevokeAllTokensCommandHandler : IRequestHandler<RevokeAllTokensCommand>
     {
-        private readonly UserManager<User> _userManager;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public RevokeAllTokensCommandHandler(UserManager<User> userManager)
+        public RevokeAllTokensCommandHandler(UserManager<User> userManager, IUnitOfWork unitOfWork)
         {
-            _userManager = userManager;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<Unit> Handle(RevokeAllTokensCommand request, CancellationToken cancellationToken)
         {
-            var users = await _userManager.Users.ToListAsync(cancellationToken);
+            var users = await _unitOfWork.UserManagers.UsersToListAsync(cancellationToken);
 
             var updateTasks = users.Select(user =>
             {
                 user.RefreshToken = null;
-                return _userManager.UpdateAsync(user);
+                return _unitOfWork.UserManagers.UpdateUserAsync(user);
             });
 
             var results = await Task.WhenAll(updateTasks);

@@ -2,7 +2,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 
-namespace Auth.BLL.UseCases.Queries
+namespace Auth.BLL.Queries
 {
     public class AuthenticateQuery : IRequest<AuthResponse>
     {

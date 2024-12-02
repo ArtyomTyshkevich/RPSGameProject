@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace Auth.BLL.UseCases.Commands
+namespace Auth.BLL.Commands
 {
     public class RevokeTokenCommand : IRequest<Unit>
     {

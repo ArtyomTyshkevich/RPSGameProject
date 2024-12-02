@@ -15,18 +15,6 @@ namespace Library.Data.Repositories
             _authDbContext = authDbContext;
         }
 
-        public async Task Create(User user, CancellationToken cancellationToken)
-        {
-            await _authDbContext.Users.AddAsync(user, cancellationToken);
-            await _authDbContext.SaveChangesAsync(cancellationToken);
-        }
-
-        public async Task Delete(User user, CancellationToken cancellationToken)
-        {
-            _authDbContext.Users.Remove(user);
-            await _authDbContext.SaveChangesAsync(cancellationToken);
-        }
-
         public async Task<List<User>> Get(CancellationToken cancellationToken)
         {
             return await _authDbContext.Users
@@ -39,6 +27,7 @@ namespace Library.Data.Repositories
             return await _authDbContext.Users
                                  .FirstOrDefaultAsync(x => x.Id == userId, cancellationToken);
         }
+
         public async Task<List<IdentityRole<Guid>>> GetRoles(User user, CancellationToken cancellationToken)
         {
             var roles = await _authDbContext.Roles
@@ -51,19 +40,6 @@ namespace Library.Data.Repositories
             return roles;
         }
 
-        public async Task<List<User>> GetWithPagination(int pageNum, int pageSize, CancellationToken cancellationToken)
-        {
-            return await _authDbContext.Users
-                                           .Skip((pageNum - 1) * pageSize)
-                                           .Take(pageSize)
-                                           .ToListAsync(cancellationToken);
-        }
-
-        public async Task Update(User user, CancellationToken cancellationToken)
-        {
-            _authDbContext.Users.Update(user);
-            await _authDbContext.SaveChangesAsync(cancellationToken);
-        }
         public async Task<User> GetByMail(string mail, CancellationToken cancellationToken)
         {
             return await _authDbContext.Users

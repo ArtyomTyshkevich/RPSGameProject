@@ -1,7 +1,7 @@
 ﻿using Auth.BLL.DTOs.Identity;
 using MediatR;
 
-namespace Auth.BLL.UseCases.Commands
+namespace Auth.BLL.Commands
 {
     public class RegisterCommand : IRequest<AuthResponse>
     {

@@ -1,21 +1,19 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Configuration;
-
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 using Auth.DAL.Entities;
-using Auth.BLL.UseCases.Commands;
 using Auth.BLL.Extensions;
 using Library.Application.Interfaces;
 using Auth.BLL.Exceptions;
 using Auth.BLL.DTOs.Identity;
+using Auth.BLL.Commands;
 
-namespace Auth.BLL.UseCases.Commands.Handlers
+namespace Auth.BLL.Handlers.CommandHandlers
 {
     public class RefreshTokenComandHandler : IRequestHandler<RefreshTokenCommand, TokenModel>
     {
-        private readonly UserManager<User> _userManager;
         private readonly IMediator _mediator;
         private readonly IConfiguration _configuration;
         private readonly IUnitOfWork _unitOfWork;
@@ -24,7 +22,6 @@ namespace Auth.BLL.UseCases.Commands.Handlers
         {
             _unitOfWork = unitOfWork;
             _mediator = mediator;
-            _userManager = userManager;
             _configuration = configuration;
         }
 
@@ -39,7 +36,7 @@ namespace Auth.BLL.UseCases.Commands.Handlers
             var newRefreshToken = _configuration.GenerateRefreshToken();
 
             user.RefreshToken = newRefreshToken;
-            await _userManager.UpdateAsync(user);
+            await _unitOfWork.UserManagers.UpdateUserAsync(user);
 
             return new TokenModel { AccessToken = new JwtSecurityTokenHandler().WriteToken(newAccessToken), RefreshToken = newRefreshToken };
         }
@@ -47,7 +44,7 @@ namespace Auth.BLL.UseCases.Commands.Handlers
         private async Task<User> GetUserAndValidateRefreshToken(ClaimsPrincipal principal, string refreshToken, CancellationToken cancellationToken)
         {
             var username = principal.Identity!.Name;
-            var user = await _userManager.FindByNameAsync(username!);
+            var user = await _unitOfWork.UserManagers.FindByNameAsync(username!);
 
             if (user == null || user.RefreshToken != refreshToken || user.RefreshTokenExpiryTime <= DateTime.UtcNow)
             {

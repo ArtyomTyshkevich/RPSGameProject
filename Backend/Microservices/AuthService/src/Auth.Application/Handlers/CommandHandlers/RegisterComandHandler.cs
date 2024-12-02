@@ -1,29 +1,30 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Identity;
 using Auth.DAL.Entities;
-using Auth.BLL.UseCases.Queries;
 using Auth.BLL.Exceptions;
 using Auth.BLL.DTOs.Identity;
+using Auth.BLL.Commands;
+using Auth.BLL.Queries;
+using Library.Application.Interfaces;
 
-namespace Auth.BLL.UseCases.Commands.Handlers
+namespace Auth.BLL.Handlers.CommandHandlers
 {
     public class RegisterCommandHandler : IRequestHandler<RegisterCommand, AuthResponse>
     {
-        private readonly UserManager<User> _userManager;
         private readonly IMediator _mediator;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public RegisterCommandHandler(IMediator mediator, UserManager<User> userManager)
+        public RegisterCommandHandler(IMediator mediator, IUnitOfWork unitOfWork)
         {
             _mediator = mediator;
-            _userManager = userManager;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<AuthResponse> Handle(RegisterCommand request, CancellationToken cancellationToken)
         {
             var user = CreateRegisterUser(request.RegisterRequest);
-            var result = await _userManager.CreateAsync(user, request.RegisterRequest.Password);
+            var result = await _unitOfWork.UserManagers.CreateUserAsync(user, request.RegisterRequest.Password);
             if (!result.Succeeded) throw new UserCreationFailedException();
-            await _userManager.AddToRoleAsync(user, RoleConsts.User);
+            await _unitOfWork.UserManagers.AddToRoleAsync(user);
 
             var authQuery = new AuthenticateQuery
             {
