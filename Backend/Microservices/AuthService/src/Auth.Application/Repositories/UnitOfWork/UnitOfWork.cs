@@ -16,10 +16,11 @@ namespace Auth.BLL.Repositories.UnitOfWork
         private readonly IWebHostEnvironment _env;
         private readonly IConfiguration _configuration;
 
-        public UnitOfWork(AuthDbContext libraryDbContext, IWebHostEnvironment env, IConfiguration configuration)
+        public UnitOfWork(AuthDbContext libraryDbContext, IWebHostEnvironment env, IConfiguration configuration, UserManager<User> userManager)
         {
             _env = env;
             _userDbContext = libraryDbContext;
+            _userManager = userManager;
             _configuration = configuration;
             Users = new UserRepository(_userDbContext);
             UserManagers = new UserManagerRepository(_userManager);

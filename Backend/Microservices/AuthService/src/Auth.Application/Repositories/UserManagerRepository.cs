@@ -1,7 +1,6 @@
 ﻿using Auth.BLL.DTOs.Identity;
 using Auth.BLL.Interfaces;
 using Auth.DAL.Entities;
-using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 

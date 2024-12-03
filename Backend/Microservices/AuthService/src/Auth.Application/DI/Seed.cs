@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Auth.DAL.Enums;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Auth.BLL.DI
@@ -9,7 +10,7 @@ namespace Auth.BLL.DI
         {
             using var scope = serviceProvider.CreateScope();
             var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole<Guid>>>();
-            var roles = new[] { "Admin", "User", "Moder" };
+            var roles = Enum.GetNames(typeof(Roles));
 
             foreach (var role in roles)
             {

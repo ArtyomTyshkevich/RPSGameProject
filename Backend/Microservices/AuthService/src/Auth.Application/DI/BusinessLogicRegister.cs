@@ -1,6 +1,7 @@
 ﻿using Auth.BLL.Interfaces;
 using Auth.BLL.Repositories.UnitOfWork;
 using Auth.DAL.DI;
+using FluentValidation.AspNetCore;
 using Library.Application.Interfaces;
 using Library.Data.Repositories;
 using Microsoft.Extensions.Configuration;
@@ -12,6 +13,7 @@ namespace Auth.BLL.DI
     {
         public static void AddBusinessLogic(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddFluentValidationAutoValidation();
             services.ConfigureAuthentication(configuration);
             services.ConfigureDatabase(configuration);
             services.ConfigureIdentity();

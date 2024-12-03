@@ -5,6 +5,7 @@ using Auth.BLL.DTOs.Identity;
 using Auth.BLL.Commands;
 using Auth.BLL.Queries;
 using Library.Application.Interfaces;
+using Microsoft.AspNetCore.Identity;
 
 namespace Auth.BLL.Handlers.CommandHandlers
 {
@@ -12,11 +13,13 @@ namespace Auth.BLL.Handlers.CommandHandlers
     {
         private readonly IMediator _mediator;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly UserManager<User> _userManager;
 
-        public RegisterCommandHandler(IMediator mediator, IUnitOfWork unitOfWork)
+        public RegisterCommandHandler(IMediator mediator, IUnitOfWork unitOfWork, UserManager<User> userManager)
         {
             _mediator = mediator;
             _unitOfWork = unitOfWork;
+            _userManager = userManager;
         }
 
         public async Task<AuthResponse> Handle(RegisterCommand request, CancellationToken cancellationToken)
