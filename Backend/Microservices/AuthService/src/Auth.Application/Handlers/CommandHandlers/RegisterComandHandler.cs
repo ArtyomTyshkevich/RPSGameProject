@@ -28,7 +28,6 @@ namespace Auth.BLL.Handlers.CommandHandlers
             var result = await _unitOfWork.UserManagers.CreateUserAsync(user, request.RegisterRequest.Password);
             if (!result.Succeeded) throw new UserCreationFailedException();
             await _unitOfWork.UserManagers.AddToRoleAsync(user);
-
             var authQuery = new AuthenticateQuery
             {
                 AuthRequest = new AuthRequest

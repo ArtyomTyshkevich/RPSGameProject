@@ -28,10 +28,8 @@ namespace Auth.BLL.Repositories.UnitOfWork
 
         public IUserRepository Users { get; private set; }
         public IUserManagerRepository UserManagers { get; private set; }
-
         public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default) =>
             await _userDbContext.SaveChangesAsync(cancellationToken);
-
         public void Dispose() => _userDbContext.Dispose();
     }
 }

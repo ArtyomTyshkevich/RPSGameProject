@@ -25,6 +25,7 @@ namespace Library.WebAPI.Controllers
             var response = await _mediator.Send(query, cancellationToken);
             return Ok(response);
         }
+
         [HttpPost("register")]
         public async Task<ActionResult<AuthResponse>> Register([FromBody] RegisterRequest request, CancellationToken cancellationToken)
         {

@@ -11,7 +11,6 @@ namespace Auth.BLL.DI
             using var scope = serviceProvider.CreateScope();
             var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole<Guid>>>();
             var roles = Enum.GetNames(typeof(Roles));
-
             foreach (var role in roles)
             {
                 if (!await roleManager.RoleExistsAsync(role))

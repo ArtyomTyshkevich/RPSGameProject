@@ -31,9 +31,7 @@ namespace Auth.BLL.Handlers.QuerieHandlers
             var createTokenCommand = new CreateTokenCommand { User = user, Roles = roles };
             var accessToken = await _mediator.Send(createTokenCommand, cancellationToken);
             UpdateUserTokenAndExpiry(user);
-
             await _unitOfWork.SaveChangesAsync(cancellationToken);
-
             return new AuthResponse
             {
                 Username = user.UserName!,
@@ -50,10 +48,8 @@ namespace Auth.BLL.Handlers.QuerieHandlers
             {
                 throw new BadCredentialsException();
             }
-
             var user = await _unitOfWork.Users.GetByMail(request.Email, cancellationToken);
             if (user is null) throw new UserNotFoundException(request.Email);
-
             return user;
         }
 

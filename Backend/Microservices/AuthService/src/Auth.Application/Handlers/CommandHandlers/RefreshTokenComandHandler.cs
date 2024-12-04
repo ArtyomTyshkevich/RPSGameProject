@@ -29,12 +29,9 @@ namespace Auth.BLL.Handlers.CommandHandlers
         {
             var principal = _configuration.GetPrincipalFromExpiredToken(request.tokenModel.AccessToken);
             if (principal == null) throw new TokenInvalidException();
-
             var user = await GetUserAndValidateRefreshToken(principal, request.tokenModel.RefreshToken!, cancellationToken);
-
             var newAccessToken = _configuration.CreateToken(principal.Claims.ToList());
             var newRefreshToken = _configuration.GenerateRefreshToken();
-
             user.RefreshToken = newRefreshToken;
             await _unitOfWork.UserManagers.UpdateUserAsync(user);
 
@@ -45,12 +42,10 @@ namespace Auth.BLL.Handlers.CommandHandlers
         {
             var username = principal.Identity!.Name;
             var user = await _unitOfWork.UserManagers.FindByNameAsync(username!);
-
             if (user == null || user.RefreshToken != refreshToken || user.RefreshTokenExpiryTime <= DateTime.UtcNow)
             {
                 throw new RefreshTokenInvalidException();
             }
-
             return user;
         }
 

@@ -18,22 +18,22 @@ namespace Library.Data.Repositories
         public async Task<List<User>> Get(CancellationToken cancellationToken)
         {
             return await _authDbContext.Users
-                                            .Include(b => b.UserName)
+                                            .Include(user => user.UserName)
                                             .ToListAsync(cancellationToken);
         }
 
         public async Task<User?> GetById(Guid userId, CancellationToken cancellationToken)
         {
             return await _authDbContext.Users
-                                 .FirstOrDefaultAsync(x => x.Id == userId, cancellationToken);
+                                 .FirstOrDefaultAsync(user => user.Id == userId, cancellationToken);
         }
 
         public async Task<List<IdentityRole<Guid>>> GetRoles(User user, CancellationToken cancellationToken)
         {
             var roles = await _authDbContext.Roles
                 .Where(role => _authDbContext.UserRoles
-                    .Where(ur => ur.UserId == user.Id)
-                    .Select(ur => ur.RoleId)
+                    .Where(contextUser => contextUser.UserId == user.Id)
+                    .Select(contextUser => contextUser.RoleId)
                     .Contains(role.Id))
                 .ToListAsync(cancellationToken);
 
@@ -43,7 +43,7 @@ namespace Library.Data.Repositories
         public async Task<User> GetByMail(string mail, CancellationToken cancellationToken)
         {
             return await _authDbContext.Users
-                .FirstAsync(u => u.Email == mail, cancellationToken);
+                .FirstAsync(user => user.Email == mail, cancellationToken);
         }
     }
 }

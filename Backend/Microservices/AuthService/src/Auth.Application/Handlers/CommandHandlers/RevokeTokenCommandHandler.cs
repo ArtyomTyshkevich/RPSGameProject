@@ -22,10 +22,8 @@ namespace Auth.BLL.Handlers.CommandHandlers
             {
                 throw new KeyNotFoundException("User not found");
             }
-
             user.RefreshToken = null;
             var result = await _unitOfWork.UserManagers.UpdateUserAsync(user);
-
             if (!result.Succeeded)
             {
                 throw new InvalidOperationException("Failed to update user token");
