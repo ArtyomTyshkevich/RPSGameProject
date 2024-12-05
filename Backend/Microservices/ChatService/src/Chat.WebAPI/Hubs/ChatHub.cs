@@ -26,7 +26,6 @@ namespace Chat.WebAPI.Hubs
 
         public async Task SendMessage(string messageContext)
         {
-
             var connection = await _cacheService.GetConnectionFromCache(Context.ConnectionId);
             if (connection != null)
             {
