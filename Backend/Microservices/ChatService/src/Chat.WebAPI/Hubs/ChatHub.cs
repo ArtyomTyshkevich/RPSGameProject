@@ -22,9 +22,9 @@ namespace Chat.WebAPI.Hubs
             _unitOfWork = unitOfWork;
         }
 
-        public async Task JoinChat(User user)
+        public async Task JoinChat(Guid id)
         {
-            var userDTO = _mapper.Map<UserDTO>(user);
+            var userDTO = _mapper.Map<UserDTO>(_unitOfWork.Users.GetByIdAsync(id));
             var connection = new UserConnection {UserDTO = userDTO, ChatRoom ="MainRoom"};
             await Groups.AddToGroupAsync(Context.ConnectionId, connection.ChatRoom);
             await _cacheService.CachingConnection(Context.ConnectionId, connection);
