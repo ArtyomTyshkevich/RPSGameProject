@@ -2,8 +2,8 @@
 using Chat.Data.Repositories.UnitOfWork;
 using Chat.Data.Repositories;
 using FluentValidation.AspNetCore;
-using Chat.WebAPI.Configs;
 using Chat.Data.Services;
+using Chat.Data.Configuration;
 
 namespace Chat.WebAPI.DI
 {

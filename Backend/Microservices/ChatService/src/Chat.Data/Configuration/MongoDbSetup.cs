@@ -1,4 +1,6 @@
 ﻿using Chat.Data.Context;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 public static class MongoDbSetup
 {

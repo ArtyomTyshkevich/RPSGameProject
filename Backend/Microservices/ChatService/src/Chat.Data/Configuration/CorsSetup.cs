@@ -1,4 +1,7 @@
-﻿namespace Chat.Data.Configuration
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+
+namespace Chat.Data.Configuration
 {
     public static class CorsSetup
     {
