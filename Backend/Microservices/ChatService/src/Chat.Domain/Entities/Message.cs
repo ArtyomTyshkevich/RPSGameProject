@@ -8,7 +8,7 @@ namespace Chat.Domain.Entities
     public class Message
     {
         [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)] // Указывает, что Id хранится как ObjectId в MongoDB
+        [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; } = ObjectId.GenerateNewId().ToString();
 
         [BsonElement("userId")]

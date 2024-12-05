@@ -1,7 +1,5 @@
 ﻿using Chat.Application.Interfaces;
 using Chat.Data.Context;
-using Chat.Domain.Entities;
-using MongoDB.Driver;
 
 namespace Chat.Data.Repositories.UnitOfWork
 {
