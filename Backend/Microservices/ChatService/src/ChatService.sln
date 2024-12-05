@@ -9,17 +9,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastru
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{256CDFFF-9B9F-4964-B2D0-4CF5EB78EF50}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chat.Application", "Chat.Application\Chat.Application.csproj", "{4869C518-5F95-44CE-A014-B08BE5A3FF56}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat.Application", "Chat.Application\Chat.Application.csproj", "{4869C518-5F95-44CE-A014-B08BE5A3FF56}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chat.Domain", "Chat.Domain\Chat.Domain.csproj", "{308D807E-873C-4C9E-BA85-1F2C267A49BB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat.Domain", "Chat.Domain\Chat.Domain.csproj", "{308D807E-873C-4C9E-BA85-1F2C267A49BB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chat.Data", "Chat.Data\Chat.Data.csproj", "{59761F55-212D-4020-8F7D-8ED8D25C57ED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat.Data", "Chat.Data\Chat.Data.csproj", "{59761F55-212D-4020-8F7D-8ED8D25C57ED}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{8EEFDF3B-D988-4568-A22A-A790F68D9A9A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chat.Tests", "Chat.Tests\Chat.Tests.csproj", "{FC5234EF-5DED-42B3-A37C-B5D70B65CC43}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat.Tests", "Chat.Tests\Chat.Tests.csproj", "{FC5234EF-5DED-42B3-A37C-B5D70B65CC43}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chat.WebAPI", "Chat.WebAPI\Chat.WebAPI.csproj", "{3B50AFE8-7F92-43C5-A7A4-29F43E7FE136}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat.WebAPI", "Chat.WebAPI\Chat.WebAPI.csproj", "{3B50AFE8-7F92-43C5-A7A4-29F43E7FE136}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
