@@ -6,6 +6,6 @@ namespace Chat.Application.Interfaces
 {
     public interface IChatClient
     {
-        public Task ReceiveMessage(UserDTO userDTO, Message message);
+        public Task ReceiveMessage(Message message);
     }
 }
