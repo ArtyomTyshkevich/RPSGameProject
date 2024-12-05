@@ -3,7 +3,6 @@ using Chat.WebAPI.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Добавляем сервисы SignalR
 builder.Services.AddSignalR();
 
 builder.Services.AddControllers();
@@ -21,13 +20,11 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-// Убедитесь, что CORS разрешает подключение
 app.UseCors("AllowAll");
 app.UseAuthorization();
 
 app.MapControllers();
 
-// Регистрация маршрута для хаба
 app.MapHub<ChatHub>("/ChatHub");
 
 app.Run();

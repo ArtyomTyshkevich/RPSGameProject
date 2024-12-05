@@ -1,5 +1,7 @@
-﻿using Chat.Application.DTOs;
+﻿using AutoMapper;
+using Chat.Application.DTOs;
 using Chat.Application.Interfaces;
+using Chat.Domain.Entities;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Caching.Distributed;
 
@@ -10,16 +12,20 @@ namespace Chat.WebAPI.Hubs
         private readonly IUnitOfWork _unitOfWork;
         private readonly IDistributedCache _cache;
         private readonly ICacheService _cacheService;
+        private readonly IMapper _mapper;
 
-        public ChatHub(IUnitOfWork unitOfWork, IDistributedCache cache, ICacheService cacheService)
+        public ChatHub(IUnitOfWork unitOfWork, IDistributedCache cache, ICacheService cacheService, IMapper mapper)
         {
+            _mapper = mapper;
             _cache = cache;
             _cacheService = cacheService;
             _unitOfWork = unitOfWork;
         }
 
-        public async Task JoinChat(UserConnection connection)
+        public async Task JoinChat(User user)
         {
+            var userDTO = _mapper.Map<UserDTO>(user);
+            var connection = new UserConnection {UserDTO = userDTO, ChatRoom ="MainRoom"};
             await Groups.AddToGroupAsync(Context.ConnectionId, connection.ChatRoom);
             await _cacheService.CachingConnection(Context.ConnectionId, connection);
         }
@@ -33,9 +39,8 @@ namespace Chat.WebAPI.Hubs
                 await Clients
                     .Group(connection.ChatRoom)
                     .ReceiveMessage(message);
-
+                await _unitOfWork.Messages.SaveMessageAsync(message);
             }
-
         }
 
         public override async Task OnDisconnectedAsync(Exception? exception)

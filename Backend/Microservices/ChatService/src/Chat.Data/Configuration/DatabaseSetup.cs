@@ -1,7 +1,7 @@
 ﻿using Chat.Data.Context;
 using Microsoft.EntityFrameworkCore;
 
-namespace Chat.WebAPI.Configs
+namespace Chat.Data.Configuration
 {
     public static class DatabaseSetup
     {

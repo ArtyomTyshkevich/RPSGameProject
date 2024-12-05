@@ -25,6 +25,7 @@ namespace Chat.Data.Repositories
         {
             await _messages.InsertOneAsync(message);
         }
+
         public Message Create(UserDTO userDTO, string messageContent)
         {
             return new Message

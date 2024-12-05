@@ -1,4 +1,4 @@
-﻿namespace Chat.WebAPI.Configs
+﻿namespace Chat.Data.Configuration
 {
     public static class CorsSetup
     {
@@ -10,7 +10,8 @@
                 {
                     policy.AllowAnyOrigin()
                           .AllowAnyMethod()
-                          .AllowAnyHeader();
+                          .AllowAnyHeader()
+                          .AllowCredentials();
                 });
             });
         }
