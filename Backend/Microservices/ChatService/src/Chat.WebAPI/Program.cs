@@ -1,18 +1,18 @@
-using Chat.Application.Interfaces;
+using Chat.WebAPI.DI;
+using Chat.WebAPI.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Добавляем сервисы SignalR
+builder.Services.AddSignalR();
 
 builder.Services.AddControllers();
-
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddScoped<ICacheService, ICacheService>();
+builder.Services.AddBusinessLogic(builder.Configuration);
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -21,8 +21,13 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+// Убедитесь, что CORS разрешает подключение
+app.UseCors("AllowAll");
 app.UseAuthorization();
 
 app.MapControllers();
+
+// Регистрация маршрута для хаба
+app.MapHub<ChatHub>("/ChatHub");
 
 app.Run();

@@ -1,12 +1,25 @@
 ﻿
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
+
 namespace Chat.Domain.Entities
 {
+    [BsonIgnoreExtraElements]
     public class Message
     {
-        public int Id { get; set; }
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)] // Указывает, что Id хранится как ObjectId в MongoDB
+        public string Id { get; set; } = ObjectId.GenerateNewId().ToString();
+
+        [BsonElement("userId")]
         public Guid UserId { get; set; } = Guid.NewGuid();
+
+        [BsonElement("userName")]
         public string UserName { get; set; } = "";
+
+        [BsonElement("content")]
         public string Content { get; set; } = "";
+        [BsonElement("SentAt")]
         public DateTime SentAt { get; set; } = DateTime.UtcNow;
     }
 }

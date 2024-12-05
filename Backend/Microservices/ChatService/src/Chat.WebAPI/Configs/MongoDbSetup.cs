@@ -1,14 +1,14 @@
 ﻿using Chat.Data.Context;
-using Microsoft.EntityFrameworkCore;
 
-namespace Chat.WebAPI.Configs
+public static class MongoDbSetup
 {
-    public static class MongoDbSetup
+    public static void ConfigureMongoDb(this IServiceCollection services, IConfiguration configuration)
     {
-        public static void ConfigureMongoDb(this IServiceCollection services, IConfiguration configuration)
+        services.AddSingleton<MongoDbContext>(sp =>
         {
-            services.AddDbContext<ChatDbContext>(opt =>
-                opt.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
-        }
+            var connectionString = configuration["MessageStoreDatabase:ConnectionString"];
+            var databaseName = configuration["MessageStoreDatabase:DatabaseName"];
+            return new MongoDbContext(connectionString, databaseName);
+        });
     }
 }
