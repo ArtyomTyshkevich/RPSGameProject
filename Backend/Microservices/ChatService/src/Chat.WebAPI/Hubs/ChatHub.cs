@@ -1,10 +1,9 @@
 ﻿using Chat.Application.DTOs;
 using Chat.Application.Interfaces;
-using Chat.Domain.Entities;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Caching.Distributed;
 
-namespace Chat.API.Hubs
+namespace Chat.WebAPI.Hubs
 {
     public class ChatHub : Hub<IChatClient>
     {
@@ -34,7 +33,7 @@ namespace Chat.API.Hubs
                 var message = _unitOfWork.Messages.Create(connection.UserDTO,messageContext);
                 await Clients
                     .Group(connection.ChatRoom)
-                    .ReceiveMessage(connection.UserDTO, message);
+                    .ReceiveMessage(message);
 
             }
 
