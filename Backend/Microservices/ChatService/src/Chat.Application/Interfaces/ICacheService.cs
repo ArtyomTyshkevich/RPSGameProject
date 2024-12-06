@@ -4,8 +4,8 @@ namespace Chat.Application.Interfaces
 {
     public interface ICacheService
     {
-        Task CachingConnection(string connectionId, UserConnection connection);
-        Task DeleteConnectionFromCache(string connectionId);
-        Task<UserConnection?> GetConnectionFromCache(string connectionId);
+        Task CachingConnectionAsync(string connectionId, UserConnection connection);
+        Task DeleteConnectionFromCacheAsync(string connectionId);
+        Task<UserConnection?> GetConnectionFromCacheAsync(string connectionId);
     }
 }

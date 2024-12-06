@@ -19,19 +19,19 @@ public class CacheService : ICacheService
         _cache = cache;
     }
 
-    public async Task CachingConnection(string connectionId, UserConnection connection)
+    public async Task CachingConnectionAsync(string connectionId, UserConnection connection)
     {
         var stringConnection = JsonSerializer.Serialize(connection);
         await _cache.SetStringAsync(connectionId, stringConnection);
     }
 
-    public async Task<UserConnection?> GetConnectionFromCache(string connectionId)
+    public async Task<UserConnection?> GetConnectionFromCacheAsync(string connectionId)
     {
         var stringConnection = await _cache.GetAsync(connectionId);
         return JsonSerializer.Deserialize<UserConnection>(stringConnection);
     }
 
-    public async Task DeleteConnectionFromCache(string connectionId)
+    public async Task DeleteConnectionFromCacheAsync(string connectionId)
     {
         var stringConnection = await _cache.GetAsync(connectionId);
         var connection = JsonSerializer.Deserialize<UserConnection>(stringConnection);
