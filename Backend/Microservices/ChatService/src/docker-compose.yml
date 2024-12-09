@@ -1,8 +1,57 @@
 version: '3.4'
 
+networks:
+  backend:
+
 services:
   chat.webapi:
     image: ${DOCKER_REGISTRY-}chatwebapi
     build:
       context: .
       dockerfile: Chat.WebAPI/Dockerfile
+    networks:
+      - backend
+    environment:
+      - Jwt__Secret=superSecretKey@345432242344324245
+      - Jwt__Issuer=https://localhost:5001
+      - Jwt__Audience=https://localhost:5001
+      - Jwt__TokenValidityInMinutes=30
+      - ConnectionStrings__DefaultConnection=Server=Chatdb;Database=LibraryDb;User Id=sa;Password=password@12345#;TrustServerCertificate=True;
+    depends_on:
+      - chatdb
+    ports:
+      - "8003:80"
+      - "8083:443"
+
+  library-redis:
+    image: "redis:latest"
+    restart: always
+    ports:
+      - "6379:6379"
+    networks:
+      - backend
+
+  chatdb:
+    container_name: Chatdb
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=password@12345#
+    networks:
+      - backend
+    ports:
+      - "8001:1433" 
+
+  mongoDb:
+    image: mongo:latest
+    container_name: mongodb
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  mongo_data:
