@@ -12,10 +12,6 @@ services:
     networks:
       - backend
     environment:
-      - Jwt__Secret=superSecretKey@345432242344324245
-      - Jwt__Issuer=https://localhost:5001
-      - Jwt__Audience=https://localhost:5001
-      - Jwt__TokenValidityInMinutes=30
       - ConnectionStrings__DefaultConnection=Server=Chatdb;Database=LibraryDb;User Id=sa;Password=password@12345#;TrustServerCertificate=True;
     depends_on:
       - chatdb
