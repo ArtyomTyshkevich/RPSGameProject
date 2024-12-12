@@ -4,16 +4,15 @@
     <ProjectVersion>2.1</ProjectVersion>
     <DockerTargetOS>Linux</DockerTargetOS>
     <DockerPublishLocally>False</DockerPublishLocally>
-    <ProjectGuid>3e23110e-57b5-4b6b-bcb7-1dcce9d864a6</ProjectGuid>
+    <ProjectGuid>13d13897-c57d-484e-af9d-f3e40a55f7a4</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
     <DockerServiceUrl>{Scheme}://localhost:{ServicePort}/swagger</DockerServiceUrl>
-    <DockerServiceName>auth.api</DockerServiceName>
+    <DockerServiceName>chat.webapi</DockerServiceName>
   </PropertyGroup>
   <ItemGroup>
     <None Include="docker-compose.override.yml">
       <DependentUpon>docker-compose.yml</DependentUpon>
     </None>
     <None Include="docker-compose.yml" />
-    <None Include=".dockerignore" />
   </ItemGroup>
 </Project>

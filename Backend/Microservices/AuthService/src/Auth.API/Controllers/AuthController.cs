@@ -8,12 +8,12 @@ using Microsoft.AspNetCore.Mvc;
 namespace Library.WebAPI.Controllers
 {
     [ApiController]
-    [Route("accounts")]
-    public class AccountsController : ControllerBase
+    [Route("auth")]
+    public class AuthController : ControllerBase
     {
         private readonly IMediator _mediator;
 
-        public AccountsController(IMediator mediator)
+        public AuthController(IMediator mediator)
         {
             _mediator = mediator;
         }

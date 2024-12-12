@@ -1,7 +1,8 @@
-version: '3.4'
+version: '3.9'
 
 networks:
   backend:
+    driver: bridge
 
 services:
   authdb:
@@ -13,49 +14,26 @@ services:
     networks:
       - backend
     ports:
-      - "8001:1433" 
+      - "8007:1433" 
 
-  auth.api:
-    container_name: auth-api
-    image: ${DOCKER_REGISTRY-}authapi
-    build:
-      context: .
-      dockerfile: Microservices/AuthService/src/Auth.API/Dockerfile
-    networks:
-      - backend
-    environment:
-      - Jwt__Secret=superSecretKey@345432242344324245
-      - Jwt__Issuer=https://localhost:5001
-      - Jwt__Audience=https://localhost:5001
-      - Jwt__TokenValidityInMinutes=30
-      - ConnectionStrings__DefaultConnection=Server=authdb;Database=AuthDb;User Id=sa;Password=password@12345#;TrustServerCertificate=True;
-    depends_on:
-      - authdb
-    ports:
-      - "8002:80"
-      - "8082:443"
-  chat.webapi:
-    image: ${DOCKER_REGISTRY-}chatwebapi
-    build:
-      context: .
-      dockerfile: Microservices/ChatService/Chat.WebAPI/Dockerfile
-    networks:
-      - backend
-    environment:
-      - ConnectionStrings__DefaultConnection=Server=Chatdb;Database=LibraryDb;User Id=sa;Password=password@12345#;TrustServerCertificate=True;
-    depends_on:
-      - chatdb
-    ports:
-      - "8003:80"
-      - "8083:443"
-
-  library-redis:
+  chatredis:
     image: "redis:latest"
     restart: always
     ports:
       - "6379:6379"
     networks:
       - backend
+
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
 
   chatdb:
     container_name: Chatdb
@@ -68,16 +46,57 @@ services:
     ports:
       - "8001:1433" 
 
-  mongoDb:
-    image: mongo:latest
-    container_name: mongodb
+  auth.api:
+    container_name: auth-api
+    build:
+      context: ./Microservices/AuthService
+      dockerfile: src/Auth.API/Dockerfile
+    networks:
+      - backend
     environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: example
+      - Jwt__Secret=superSecretKey@345432242344324245
+      - Jwt__Issuer=https://localhost:5001 
+      - Jwt__Audience=https://localhost:5001
+      - Jwt__TokenValidityInMinutes=30
+      - ConnectionStrings__DefaultConnection=Server=authdb;Database=AuthDb;User Id=sa;Password=password@12345#;TrustServerCertificate=True;
+    depends_on:
+      - authdb
     ports:
-      - "27017:27017"
+      - "8002:80"
+      - "8082:443"
+
+  chat.api:
+    container_name: chat-api
+    build:
+      context: ./Microservices/ChatService/src
+      dockerfile: Chat.WebAPI/Dockerfile
+    networks:
+      - backend
+    environment:
+      - ConnectionStrings__DefaultConnection=Server=Chatdb;Database=LibraryDb;User Id=sa;Password=password@12345#;TrustServerCertificate=True;
+    depends_on:
+      - chatdb
+      - mongodb
+      - chatredis
+    ports:
+      - "8003:80"
+      - "8083:443"
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+      - "443:443"
     volumes:
-      - mongo_data:/data/db
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/certs/localhost.key:/etc/nginx/certs/localhost.key
+      - ./nginx/certs/localhost.crt:/etc/nginx/certs/localhost.crt
+    depends_on:
+      - chat.api
+      - auth.api 
+    networks:
+      - backend
+
 
 volumes:
   mongo_data:

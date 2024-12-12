@@ -5,9 +5,9 @@ VisualStudioVersion = 17.10.34928.147
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Cores", "Cores", "{BA6BA664-9D62-4EA5-969E-48FDF6C3395D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game.Application", "src\Game.Application\Game.Application.csproj", "{3537A537-438B-4DA8-A6A9-699C521F6118}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Game.Application", "src\Game.Application\Game.Application.csproj", "{3537A537-438B-4DA8-A6A9-699C521F6118}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game.Domain", "src\Game.Domain\Game.Domain.csproj", "{1A31F686-7909-47C7-A24C-A7A23CB1D1F5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Game.Domain", "src\Game.Domain\Game.Domain.csproj", "{1A31F686-7909-47C7-A24C-A7A23CB1D1F5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{4036122F-19CF-42F5-B2AC-A9B6042B3FD4}"
 EndProject
@@ -19,7 +19,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Game.WebAPI", "src\Game.Web
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{2BE58ED9-29FF-40E2-AB6B-21D10D78007D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game.Tests", "src\Game.Tests\Game.Tests.csproj", "{2715DFB2-CCA3-4DFB-AC80-D92B4E9500FB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Game.Tests", "src\Game.Tests\Game.Tests.csproj", "{2715DFB2-CCA3-4DFB-AC80-D92B4E9500FB}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{33F1FA3C-F5FD-4B8E-A3C0-B557DDF859AF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,6 +49,10 @@ Global
 		{2715DFB2-CCA3-4DFB-AC80-D92B4E9500FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2715DFB2-CCA3-4DFB-AC80-D92B4E9500FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2715DFB2-CCA3-4DFB-AC80-D92B4E9500FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{33F1FA3C-F5FD-4B8E-A3C0-B557DDF859AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33F1FA3C-F5FD-4B8E-A3C0-B557DDF859AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33F1FA3C-F5FD-4B8E-A3C0-B557DDF859AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33F1FA3C-F5FD-4B8E-A3C0-B557DDF859AF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
