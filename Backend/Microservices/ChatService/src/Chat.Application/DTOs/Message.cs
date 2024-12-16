@@ -2,7 +2,7 @@
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace Chat.Domain.Entities
+namespace Chat.Application.DTOs
 {
     [BsonIgnoreExtraElements]
     public class Message
@@ -25,5 +25,17 @@ namespace Chat.Domain.Entities
 
         [BsonElement("SentAt")]
         public DateTime SentAt { get; set; } = DateTime.UtcNow;
+
+        public static Message Create(UserDTO userDTO, string messageContent)
+        {
+            return new Message
+            {
+                UserId = userDTO.Id,
+                UserName = userDTO.NickName,
+                Content = messageContent,
+                SentAt = DateTime.UtcNow
+            };
+
+        }
     }
 }

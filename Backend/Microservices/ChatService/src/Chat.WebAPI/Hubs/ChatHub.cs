@@ -27,15 +27,15 @@ namespace Chat.WebAPI.Hubs
             var userDTO = _mapper.Map<UserDTO>(_unitOfWork.Users.GetByIdAsync(id));
             var connection = new UserConnection {UserDTO = userDTO, ChatRoom ="MainRoom"};
             await Groups.AddToGroupAsync(Context.ConnectionId, connection.ChatRoom);
-            await _cacheService.CachingConnectionAsync(Context.ConnectionId, connection);
+            await _cacheService.ConnectionAsync(Context.ConnectionId, connection);
         }
 
         public async Task SendMessageAsync(string messageContext)
         {
-            var connection = await _cacheService.GetConnectionFromCacheAsync(Context.ConnectionId);
+            var connection = await _cacheService.GetConnectionAsync(Context.ConnectionId);
             if (connection != null)
             {
-                var message = _unitOfWork.Messages.Create(connection.UserDTO,messageContext);
+                var message = Message.Create(connection.UserDTO,messageContext);
                 await Clients
                     .Group(connection.ChatRoom)
                     .ReceiveMessage(message);
@@ -45,7 +45,7 @@ namespace Chat.WebAPI.Hubs
 
         public override async Task OnDisconnectedAsync(Exception? exception)
         {
-            var connection = await _cacheService.GetConnectionFromCacheAsync(Context.ConnectionId);
+            var connection = await _cacheService.GetConnectionAsync(Context.ConnectionId);
             if (connection != null)
             {
                 await _cache.RemoveAsync(Context.ConnectionId);
