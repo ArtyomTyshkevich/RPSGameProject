@@ -1,11 +1,8 @@
 ﻿using Chat.Data.Context;
-using Game.Application.Interfaces;
+using Game.Application.Interfaces.Repositories;
 using Game.Domain.Entities;
 using Game.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Game.Data.Repositories
 {
@@ -21,6 +18,12 @@ namespace Game.Data.Repositories
         public async Task<User> GetByIdAsync(Guid userId, CancellationToken cancellationToken = default)
         {
             return await _gameDbContext.Users
+                                 .FirstAsync(user => user.Id == userId, cancellationToken);
+        }
+        public async Task<User> GetByIdNoTrackingAsync(Guid userId, CancellationToken cancellationToken = default)
+        {
+            return await _gameDbContext.Users
+                                  .AsNoTracking()
                                  .FirstAsync(user => user.Id == userId, cancellationToken);
         }
 
@@ -46,6 +49,29 @@ namespace Game.Data.Repositories
             if (user != null)
             {
                 _gameDbContext.Users.Remove(user);
+            }
+        }
+        public async Task UpdateUserStatusAsync(Guid userId, UserStatuses newStatus, CancellationToken cancellationToken = default)
+        {
+            var user = await _gameDbContext.Users
+                                 .FirstAsync(user => user.Id == userId, cancellationToken);
+            if (user != null)
+            {
+                user.Status = newStatus;
+                await _gameDbContext.SaveChangesAsync(cancellationToken);
+            }
+        }
+        public async Task ChangeReting(Guid userId,int points, CancellationToken cancellationToken)
+        {
+            var user = await _gameDbContext.Users.FindAsync(userId, cancellationToken);
+            if (user != null)
+            {
+                user.Rating += points;
+                if(user.Rating< 0)
+                {
+                    user.Rating = 0;
+                }    
+                await _gameDbContext.SaveChangesAsync(cancellationToken);
             }
         }
     }

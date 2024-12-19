@@ -1,18 +1,19 @@
 ﻿
 using Game.Domain.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace Game.Domain.Entities
 {
     public class Room
     {
+        [Key]
         public Guid Id { get; set; }
-        public int RoomNum { get; set; }
-        public User? FirstPlayer { get; set; }
-        public User? SecondPlayer { get; set; }
-        public RoomTypes RoomTipe { get; set; }
-        public RoomStatuses RoomStatus { get; set; }
-        public int numRounds {  get; set; } 
-        public List<Round> Rounds { get; set; }
-        public List<GameResults> GameResult { get; set; }
+        public User? FirstPlayer { get; set; } = null;
+        public User? SecondPlayer { get; set; } = null;
+        public RoomTypes Tipe { get; set; }
+        public RoomStatuses Status { get; set; }
+        public int RoundNum {  get; set; }
+        public List<Round> Rounds { get; set; } = new List<Round>();
+        public GameResults? GameResult { get; set; } = null;
     }
 }

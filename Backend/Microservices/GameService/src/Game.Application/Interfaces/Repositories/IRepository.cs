@@ -1,7 +1,7 @@
 ﻿using Game.Domain.Entities;
 using Game.Domain.Enums;
 
-namespace Game.Application.Interfaces
+namespace Game.Application.Interfaces.Repositories
 {
     public interface IRepository<T>
     {

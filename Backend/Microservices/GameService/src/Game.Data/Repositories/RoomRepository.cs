@@ -1,7 +1,8 @@
 ﻿using Chat.Data.Context;
-using Game.Application.Interfaces;
+using Game.Application.Interfaces.Repositories;
 using Game.Domain.Entities;
 using Game.Domain.Enums;
+using MassTransit;
 using Microsoft.EntityFrameworkCore;
 
 namespace Game.Data.Repositories
@@ -31,7 +32,7 @@ namespace Game.Data.Repositories
         public async Task<int> GetTotalActiveRoomsCountAsync(CancellationToken cancellationToken = default)
         {
             return await _gameDbContext.Rooms
-                .Where(room => room.RoomStatus != RoomStatuses.Inactive)
+                .Where(room => room.Status != RoomStatuses.Inactive)
                 .CountAsync(cancellationToken);
         }
 
@@ -39,8 +40,9 @@ namespace Game.Data.Repositories
         public async Task<Room?> GetAvailableRoomAsync(RoomTypes roomType, CancellationToken cancellationToken = default)
         {
             return await _gameDbContext.Rooms
+                .AsNoTracking()
                 .Include(room => room.Rounds)
-                .FirstOrDefaultAsync(room => room.RoomTipe == roomType && room.RoomStatus == RoomStatuses.WaitingPlayers, cancellationToken);
+                .FirstOrDefaultAsync(room => room.Tipe == roomType && room.Status == RoomStatuses.WaitingPlayers, cancellationToken);
         }
 
 
@@ -54,6 +56,16 @@ namespace Game.Data.Repositories
             _gameDbContext.Rooms.Update(room);
         }
 
+        public async Task UpdateRoomStatusAsync(Guid roomId, RoomStatuses newStatus, CancellationToken cancellationToken = default)
+        {
+            var room = await _gameDbContext.Rooms.FindAsync(roomId, cancellationToken);
+            if (room != null)
+            {
+                room.Status = newStatus;
+                await _gameDbContext.SaveChangesAsync(cancellationToken);
+            }
+        }
+
         public async Task DeleteAsync(Guid id, CancellationToken cancellationToken = default)
         {
             var room = await GetByIdAsync(id, cancellationToken);
@@ -62,13 +74,18 @@ namespace Game.Data.Repositories
                 _gameDbContext.Rooms.Remove(room);
             }
         }
+
         public async Task DeleteInactiveRoomsAsync(CancellationToken cancellationToken = default)
         {
             var inactiveRooms = await _gameDbContext.Rooms
-                .Where(room => room.RoomStatus == RoomStatuses.Inactive)
+                .Where(room => room.Status == RoomStatuses.Inactive)
                 .ToListAsync(cancellationToken);
 
             _gameDbContext.Rooms.RemoveRange(inactiveRooms);
+        }
+        public void Attach(Room room)
+        {
+            _gameDbContext.Attach(room);
         }
     }
 }

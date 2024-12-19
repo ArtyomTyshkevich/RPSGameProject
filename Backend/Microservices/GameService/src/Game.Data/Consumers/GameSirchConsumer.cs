@@ -1,51 +1,50 @@
-﻿using Chat.Data.Context;
-using Game.Domain.Entities;
+﻿using Game.Application.DTOs;
+using Game.Application.Interfaces.Repositories.UnitOfWork;
 using Game.Domain.Enums;
 using MassTransit;
-using Microsoft.EntityFrameworkCore;
-
 
 namespace Chat.Data.Consumers
 {
-    public class GameSirchConsumer : IConsumer<User>
+    public class GameSirchConsumer : IConsumer<UserDTO>
     {
-        private readonly GameDbContext gameDbContext;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public GameSirchConsumer(GameDbContext gameDbContext)
+        public GameSirchConsumer(IUnitOfWork unitOfWork)
         {
-            this.gameDbContext = gameDbContext;
+            _unitOfWork = unitOfWork;
         }
 
-        public async Task Consume(ConsumeContext<User> context)
+        public async Task Consume(ConsumeContext<UserDTO> context)
         {
             while (true)
             {
-                if (context.Message.Status != UserStatuses.InSearch)
+                var user = await _unitOfWork.Users.GetByIdNoTrackingAsync(context.Message.Id);
+                if (user.Status != UserStatuses.InSearch)
                     break;
-                var room = await gameDbContext.Rooms
-                .Include(r => r.FirstPlayer)
-                    .Include(r => r.SecondPlayer)
-                    .FirstOrDefaultAsync(r => r.RoomStatus == RoomStatuses.WaitingPlayers
-                                              && (r.FirstPlayer == null || r.SecondPlayer == null));
+
+                var room = await _unitOfWork.Rooms
+                    .GetAvailableRoomAsync(RoomTypes.Defoult);
 
                 if (room != null)
                 {
+                    _unitOfWork.Rooms.Attach(room);
+
                     if (room.FirstPlayer == null)
                     {
-                        room.FirstPlayer = context.Message;
+                        room.FirstPlayer = user;
                     }
                     else if (room.SecondPlayer == null)
                     {
-                        room.SecondPlayer = context.Message;
-                        room.RoomStatus = RoomStatuses.InGame;
+                        room.SecondPlayer = user;
+                        room.Status = RoomStatuses.InGame;
                     }
 
-                    await gameDbContext.SaveChangesAsync();
+                    await _unitOfWork.SaveChangesAsync();
                     break;
                 }
                 else
                 {
-                    await Task.Delay(1000);
+                    await Task.Delay(10000);
                 }
             }
         }

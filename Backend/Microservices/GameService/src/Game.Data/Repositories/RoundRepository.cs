@@ -1,5 +1,5 @@
 ﻿using Chat.Data.Context;
-using Game.Application.Interfaces;
+using Game.Application.Interfaces.Repositories;
 using Game.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,7 +17,7 @@ namespace Game.Data.Repositories
         public async Task<Round> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
         {
             return await _context.Rounds
-                .FirstOrDefaultAsync(r => r.Id == id, cancellationToken);
+                .FirstAsync(r => r.Id == id, cancellationToken);
         }
 
         public async Task<List<Round>> GetAllAsync(CancellationToken cancellationToken = default)

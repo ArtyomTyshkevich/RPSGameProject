@@ -5,6 +5,7 @@ namespace Game.Domain.Enums
     {
         InGame = 0,
         InSearch = 1,
-        Inactive = 2
+        Inactive = 2,
+        Active = 0
     }
 }
