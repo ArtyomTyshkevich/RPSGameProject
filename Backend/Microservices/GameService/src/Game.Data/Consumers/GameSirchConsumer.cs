@@ -1,5 +1,6 @@
 ﻿using Game.Application.DTOs;
 using Game.Application.Interfaces.Repositories.UnitOfWork;
+using Game.Application.Interfaces.Services;
 using Game.Domain.Enums;
 using MassTransit;
 
@@ -8,43 +9,30 @@ namespace Chat.Data.Consumers
     public class GameSirchConsumer : IConsumer<UserDTO>
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IRoomService _roomService;
 
-        public GameSirchConsumer(IUnitOfWork unitOfWork)
+        public GameSirchConsumer(IUnitOfWork unitOfWork, IRoomService roomService)
         {
             _unitOfWork = unitOfWork;
+            _roomService = roomService;
         }
 
         public async Task Consume(ConsumeContext<UserDTO> context)
         {
+            var cancellationToken = context.CancellationToken;
+
             while (true)
             {
-                var user = await _unitOfWork.Users.GetByIdNoTrackingAsync(context.Message.Id);
+                var user = await _unitOfWork.Users.GetByIdNoTrackingAsync(context.Message.Id, cancellationToken);
                 if (user.Status != UserStatuses.InSearch)
                     break;
-
-                var room = await _unitOfWork.Rooms
-                    .GetAvailableRoomAsync(RoomTypes.Defoult);
-
-                if (room != null)
+                if (await _roomService.AddUserToRoom(user, cancellationToken))
                 {
-                    _unitOfWork.Rooms.Attach(room);
-
-                    if (room.FirstPlayer == null)
-                    {
-                        room.FirstPlayer = user;
-                    }
-                    else if (room.SecondPlayer == null)
-                    {
-                        room.SecondPlayer = user;
-                        room.Status = RoomStatuses.InGame;
-                    }
-
-                    await _unitOfWork.SaveChangesAsync();
                     break;
                 }
                 else
                 {
-                    await Task.Delay(10000);
+                    await Task.Delay(10000, cancellationToken);
                 }
             }
         }

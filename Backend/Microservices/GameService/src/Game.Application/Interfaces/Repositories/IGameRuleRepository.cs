@@ -3,10 +3,10 @@ using Game.Domain.Enums;
 
 namespace Game.Application.Interfaces.Repositories
 {
-    public interface IGameRoolRepository
+    public interface IGameRuleRepository
     {
-        Task<List<GameRool>> GetAllAsync(CancellationToken cancellationToken = default);
-        Task<GameRool> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
+        Task<List<GameRule>> GetAllAsync(CancellationToken cancellationToken = default);
+        Task<GameRule> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
         Task<GameResults> GetResultAsync(PlayerMoves firstPlayerMove, PlayerMoves secondPlayerMove, CancellationToken cancellationToken = default);
     }
 }

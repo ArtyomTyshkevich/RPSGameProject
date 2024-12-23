@@ -5,6 +5,6 @@ namespace Game.Application.Interfaces.Services
 {
     public interface IRoundService
     {
-        Task ProcessRound(Room room, PlayerMoves firstPlayerMove, PlayerMoves secondPlayerMove, CancellationToken cancellationToken);
+        Task ProcessRound(Room room, Guid playerId, PlayerMoves move, CancellationToken cancellationToken);
     }
 }

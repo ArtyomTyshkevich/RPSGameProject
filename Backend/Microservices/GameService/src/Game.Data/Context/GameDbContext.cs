@@ -15,7 +15,7 @@ namespace Chat.Data.Context
         public DbSet<User> Users { get; set; }
         public DbSet<Round> Rounds { get; set; }
         public DbSet<Room> Rooms { get; set; }
-        public DbSet<GameRool> GameRools { get; set; }
+        public DbSet<GameRule> GameRools { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

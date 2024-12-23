@@ -1,5 +1,4 @@
 ﻿
-
 using Game.Domain.Enums;
 
 namespace Game.Application.DTOs
@@ -9,6 +8,5 @@ namespace Game.Application.DTOs
         public Guid Id { get; set; }
         public RoomTypes RoomTipe { get; set; }
         public RoomStatuses RoomStatus { get; set; }
-        public int RoundNum { get; set; }
     }
 }

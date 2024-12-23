@@ -1,84 +1,64 @@
-﻿using Game.Application.Interfaces.Repositories;
+﻿using AutoMapper;
+using Game.Application.DTOs;
 using Game.Application.Interfaces.Repositories.UnitOfWork;
 using Game.Application.Interfaces.Services;
-using Game.Domain.Entities;
 using Game.Domain.Enums;
 using Microsoft.AspNetCore.SignalR;
-public class GameHub : Hub
+using Microsoft.Extensions.Caching.Distributed;
+
+namespace Game.WebAPI.Hubs
 {
-    private readonly IUnitOfWork _unitOfWork;
-    private readonly IRoundService _roundService;
-    public GameHub(IRoomRepository roomRepository, IUnitOfWork unitOfWork, IRoundService roundService)
+    public class GameHub : Hub
     {
-        _unitOfWork = unitOfWork;
-        _roundService = roundService;
-    }
-
-    public async Task SendMove(Guid roomId, Guid playerId, PlayerMoves move, CancellationToken cancellationToken)
-    {
-        var room = await _unitOfWork.Rooms.GetByIdAsync(roomId);
-
-        if (room == null || (room.FirstPlayer?.Id != playerId && room.SecondPlayer?.Id != playerId))
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IRoundService _roundService;
+        private readonly IMapper _mapper;
+        private readonly IDistributedCache _cache;
+        private readonly ICacheService _cacheService;
+        public GameHub( IUnitOfWork unitOfWork, IRoundService roundService, IMapper mapper, IDistributedCache cache, ICacheService cacheService)
         {
-            throw new Exception("Invalid room or player.");
+            _unitOfWork = unitOfWork;
+            _roundService = roundService;
+            _mapper = mapper;
+            _cache = cache;
+            _cacheService = cacheService;
         }
 
-        var currentRound = room.Rounds[room.RoundNum - 1];
-
-        if (room.FirstPlayer?.Id == playerId)
+        public async Task SendMove(PlayerMoves move)
         {
-            currentRound.FirstPlayerMove = move;
-        }
-        else if (room.SecondPlayer?.Id == playerId)
-        {
-            currentRound.SecondPlayerMove = move;
-        }
+            var connection = await _cacheService.GetConnectionFromCache(Context.ConnectionId);
 
-        if (currentRound.FirstPlayerMove.HasValue && currentRound.SecondPlayerMove.HasValue)
-        {
-            currentRound.RoundResult = await _unitOfWork.Rools
-                                                    .GetResultAsync
-                                                        (
-                                                            currentRound.FirstPlayerMove.GetValueOrDefault(),
-                                                            currentRound.SecondPlayerMove.GetValueOrDefault(),
-                                                            cancellationToken
-                                                        );
-
-            await _unitOfWork.SaveChangesAsync();
-
-            if (room.Rounds.Count >= room.RoundNum)
+            if (connection != null)
             {
-                if (currentRound.RoundResult == GameResults.FirstPlayerWon)
+                var roomId = Guid.Parse(connection.GameRoomId);
+                var room = await _unitOfWork.Rooms.GetByIdAsync(roomId);
+                using (var cts = new CancellationTokenSource())
                 {
-                    await _unitOfWork.Users.ChangeReting(room.FirstPlayer.Id, 25, cancellationToken);
-                    await _unitOfWork.Users.ChangeReting(room.SecondPlayer.Id, -25, cancellationToken);
-                }
-                else if (currentRound.RoundResult == GameResults.SecondPlayerWon)
-                {
-                    await _unitOfWork.Users.ChangeReting(room.FirstPlayer.Id, -25, cancellationToken);
-                    await _unitOfWork.Users.ChangeReting(room.SecondPlayer.Id, 25, cancellationToken);
-                }
+                    var cancellationToken = cts.Token;
+                    await _roundService.ProcessRound(room, connection.UserId, move, cancellationToken);
 
-                room.FirstPlayer = null;
-                room.SecondPlayer = null;
-                room.Status = RoomStatuses.WaitingPlayers;
-                room.Rounds.Clear();
+                    await Clients.Group(roomId.ToString()).SendAsync("ReceiveMove", room);
+                }
             }
-
-            await _unitOfWork.Rooms.UpdateAsync(room);
-            await _unitOfWork.SaveChangesAsync();
         }
 
-        await Clients.Group(roomId.ToString()).SendAsync("ReceiveMove", room);
-    }
+        public async Task JoinChat(Guid userId, Guid roomId)
+        {
+            var connection = new UserConnection { UserId = userId, GameRoomId = roomId.ToString()};
+            await Groups.AddToGroupAsync(Context.ConnectionId, connection.GameRoomId);
+            await _cacheService.CachingConnection(Context.ConnectionId, connection);
+        }
 
-    public async Task JoinRoom(Guid roomId)
-    {
-        await Groups.AddToGroupAsync(Context.ConnectionId, roomId.ToString());
-    }
+        public override async Task OnDisconnectedAsync(Exception? exception)
+        {
+            var connection = await _cacheService.GetConnectionFromCache(Context.ConnectionId);
+            if (connection != null)
+            {
+                await _cache.RemoveAsync(Context.ConnectionId);
+                await Groups.RemoveFromGroupAsync(Context.ConnectionId, connection.GameRoomId);
 
-    public async Task LeaveRoom(Guid roomId)
-    {
-        await Groups.RemoveFromGroupAsync(Context.ConnectionId, roomId.ToString());
+            }
+            await base.OnDisconnectedAsync(exception);
+        }
     }
 }

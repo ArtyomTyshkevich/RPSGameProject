@@ -1,4 +1,5 @@
-﻿namespace Game.Application.Interfaces.Services
+﻿
+namespace Game.Application.Interfaces.Services
 {
     public interface ISearchService
     {

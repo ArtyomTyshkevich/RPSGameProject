@@ -3,18 +3,18 @@ using Game.Application.DTOs;
 
 namespace Game.Application.Validators
 {
-    public class UserDTOValidator : AbstractValidator<UserDTO>
+    public class RoomDTOValidator : AbstractValidator<RoomDTO>
     {
-        public UserDTOValidator()
+        public RoomDTOValidator()
         {
-            RuleFor(u => u.Id)
+            RuleFor(r => r.Id)
                 .NotEmpty().WithMessage("Id cannot be empty.");
-            RuleFor(u => u.Name)
-                .NotEmpty().WithMessage("Name cannot be empty.");
-            RuleFor(u => u.Status)
-                .IsInEnum().WithMessage("Invalid user status.");
-            RuleFor(u => u.Rating)
-                .GreaterThanOrEqualTo(0).WithMessage("Rating must be a non-negative integer.");
+
+            RuleFor(r => r.RoomTipe) 
+                .IsInEnum().WithMessage("Invalid room type.");
+
+            RuleFor(r => r.RoomStatus) 
+                .IsInEnum().WithMessage("Invalid room status.");
         }
     }
 }

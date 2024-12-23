@@ -1,8 +1,8 @@
-﻿
-using AutoMapper;
+﻿using AutoMapper;
 using Game.Application.Interfaces.Repositories.UnitOfWork;
 using Game.Application.Interfaces.Services;
 using Game.Domain.Entities;
+using Game.Domain.Enums;
 
 namespace Game.Data.Services
 {
@@ -25,6 +25,31 @@ namespace Game.Data.Services
                 room.Rounds.Add(new Round { });
             }
             await _unitOfWork.SaveChangesAsync();
+        }
+
+        public async Task<bool> AddUserToRoom(User user, CancellationToken cancellationToken)
+        {
+            var room = await _unitOfWork.Rooms.GetAvailableRoomAsync(RoomTypes.Defoult);
+
+            if (room != null)
+            {
+                _unitOfWork.Rooms.Attach(room);
+
+                if (room.FirstPlayer == null)
+                {
+                    room.FirstPlayer = user;
+                }
+                else if (room.SecondPlayer == null)
+                {
+                    room.SecondPlayer = user;
+                    room.Status = RoomStatuses.InGame;
+                }
+
+                await _unitOfWork.SaveChangesAsync(cancellationToken);
+                return true;
+            }
+
+            return false;
         }
     }
 }

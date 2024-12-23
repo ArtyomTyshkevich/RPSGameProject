@@ -22,7 +22,7 @@ namespace Game.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("Game.Domain.Entities.GameRool", b =>
+            modelBuilder.Entity("Game.Domain.Entities.GameRule", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()

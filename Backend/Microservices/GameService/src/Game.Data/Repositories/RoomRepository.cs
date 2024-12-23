@@ -2,7 +2,6 @@
 using Game.Application.Interfaces.Repositories;
 using Game.Domain.Entities;
 using Game.Domain.Enums;
-using MassTransit;
 using Microsoft.EntityFrameworkCore;
 
 namespace Game.Data.Repositories
@@ -18,6 +17,8 @@ namespace Game.Data.Repositories
         public async Task<Room> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
         {
             return await _gameDbContext.Rooms
+                .Include(room => room.FirstPlayer)
+                .Include(room => room.SecondPlayer)
                 .Include(room => room.Rounds)
                 .FirstAsync(room => room.Id == id, cancellationToken);
         }
@@ -25,6 +26,8 @@ namespace Game.Data.Repositories
         public async Task<List<Room>> GetAllAsync(CancellationToken cancellationToken = default)
         {
             return await _gameDbContext.Set<Room>()
+                .Include(room => room.FirstPlayer)
+                .Include(room => room.SecondPlayer)
                 .Include(room => room.Rounds)
                 .ToListAsync(cancellationToken);
         }
@@ -41,6 +44,8 @@ namespace Game.Data.Repositories
         {
             return await _gameDbContext.Rooms
                 .AsNoTracking()
+                .Include(room => room.FirstPlayer)
+                .Include(room => room.SecondPlayer)
                 .Include(room => room.Rounds)
                 .FirstOrDefaultAsync(room => room.Tipe == roomType && room.Status == RoomStatuses.WaitingPlayers, cancellationToken);
         }

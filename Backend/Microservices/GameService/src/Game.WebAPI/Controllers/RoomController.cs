@@ -4,7 +4,6 @@ using Game.Application.Interfaces.Repositories.UnitOfWork;
 using Game.Application.Interfaces.Services;
 using Game.Domain.Entities;
 using Game.Domain.Enums;
-using MassTransit.Mediator;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Game.WebAPI.Controllers
@@ -33,13 +32,20 @@ namespace Game.WebAPI.Controllers
             return Ok(roomsDTO.ToList());
         }
 
-        [HttpPost("GetById")]
+        [HttpGet("GetById")]
         public async Task<ActionResult<RoomDTO>> GetById(Guid id, CancellationToken cancellationToken)
         {
             var room = _mapper.Map<RoomDTO>(await _unitOfWork.Rooms.GetByIdAsync(id, cancellationToken));
             if (room == null) return NotFound();
 
             return Ok(room);
+        }
+
+        [HttpGet("GetTotalActiveRoomsCount")]
+        public async Task<IActionResult> GetTotalActiveRoomsCount(CancellationToken cancellationToken)
+        {
+            var count = await _unitOfWork.Rooms.GetTotalActiveRoomsCountAsync(cancellationToken);
+            return Ok(count);
         }
 
         [HttpPost("CreateWithRounds")]
@@ -51,7 +57,7 @@ namespace Game.WebAPI.Controllers
             return Ok();
         }
 
-        [HttpDelete("Delete/{id}")]
+        [HttpDelete("DeleteById")]
         public async Task<IActionResult> Delete(Guid id, CancellationToken cancellationToken)
         {
             await _unitOfWork.Rooms.DeleteAsync(id, cancellationToken);
@@ -59,7 +65,7 @@ namespace Game.WebAPI.Controllers
 
             return NoContent();
         }
-        [HttpDelete("deleteInactive")]
+        [HttpDelete("DeleteInactive")]
         public async Task<IActionResult> DeleteInactiveRooms(CancellationToken cancellationToken)
         {
             await _unitOfWork.Rooms.DeleteInactiveRoomsAsync(cancellationToken);
@@ -67,19 +73,13 @@ namespace Game.WebAPI.Controllers
 
             return NoContent();
         }
-        [HttpPatch("{roomId}/status")]
+        [HttpPatch("PatchStatus")]
         public async Task<IActionResult> UpdateRoomStatus(Guid roomId, RoomStatuses newStatus, CancellationToken cancellationToken)
         {
             await _unitOfWork.Rooms.UpdateRoomStatusAsync(roomId, newStatus, cancellationToken);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             return Ok();
-        }
-        [HttpGet("active/count")]
-        public async Task<IActionResult> GetTotalActiveRoomsCount(CancellationToken cancellationToken)
-        {
-            var count = await _unitOfWork.Rooms.GetTotalActiveRoomsCountAsync(cancellationToken);
-            return Ok(count);
         }
     }
 }

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Game.Domain.Entities
 {
-    public class GameRool
+    public class GameRule
     {
         [Key]
         public Guid Id { get; set; }

@@ -1,7 +1,7 @@
-﻿using Chat.Application.DTOs;
-using Chat.Application.Interfaces;
-using Chat.Domain.Entities;
+﻿using Game.Application.DTOs;
+using Game.Application.Interfaces.Services;
 using Microsoft.Extensions.Caching.Distributed;
+using System.Text;
 using System.Text.Json;
 
 namespace Chat.Data.Services;
@@ -10,7 +10,7 @@ public class CacheService : ICacheService
 {
     private readonly IDistributedCache _cache;
 
-    public CacheService(IUserRepository userRepository, IMessageRepository messageRepository, IDistributedCache cache)
+    public CacheService(IDistributedCache cache)
     {
         _cache = cache;
     }
