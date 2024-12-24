@@ -41,7 +41,7 @@ namespace Game.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("GameRools");
+                    b.ToTable("GameRules");
 
                     b.HasData(
                         new

@@ -16,19 +16,21 @@ namespace Game.Data.Repositories
         }
         public async Task<GameRule> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            return await _gameDbContext.GameRools
+            return await _gameDbContext.GameRules
+                .AsNoTracking()
                 .FirstAsync(rool => rool.Id == id, cancellationToken);
         }
 
         public async Task<List<GameRule>> GetAllAsync(CancellationToken cancellationToken = default)
         {
             return await _gameDbContext.Set<GameRule>()
+
                 .ToListAsync(cancellationToken);
         }
         public async Task<GameResults> GetResultAsync(PlayerMoves firstPlayerMove, PlayerMoves secondPlayerMove, CancellationToken cancellationToken = default)
         {
-            var rool = await _gameDbContext.GameRools
-              .FirstAsync(rool => rool.FirstPlayerMove == firstPlayerMove && rool.SecondPlayerMove == secondPlayerMove, cancellationToken);
+            var rool = await _gameDbContext.GameRules
+              .FirstOrDefaultAsync(rool => rool.FirstPlayerMove == firstPlayerMove && rool.SecondPlayerMove == secondPlayerMove, cancellationToken);
 
             return rool.GameResults;
         }

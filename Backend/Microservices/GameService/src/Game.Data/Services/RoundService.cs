@@ -75,13 +75,13 @@ namespace Game.Data.Services
         {
             if (room.GameResult == GameResults.FirstPlayerWon)
             {
-                await _unitOfWork.Users.ChangeReting(room.FirstPlayer!.Id, 25, cancellationToken);
-                await _unitOfWork.Users.ChangeReting(room.SecondPlayer!.Id, -25, cancellationToken);
+                await _unitOfWork.Users.ChangeRating(room.FirstPlayer!.Id, 25, cancellationToken);
+                await _unitOfWork.Users.ChangeRating(room.SecondPlayer!.Id, -25, cancellationToken);
             }
             else if (room.GameResult == GameResults.SecondPlayerWon)
             {
-                await _unitOfWork.Users.ChangeReting(room.FirstPlayer!.Id, -25, cancellationToken);
-                await _unitOfWork.Users.ChangeReting(room.SecondPlayer!.Id, 25, cancellationToken);
+                await _unitOfWork.Users.ChangeRating(room.FirstPlayer!.Id, -25, cancellationToken);
+                await _unitOfWork.Users.ChangeRating(room.SecondPlayer!.Id, 25, cancellationToken);
             }
             await _unitOfWork.SaveChangesAsync(cancellationToken);
         }

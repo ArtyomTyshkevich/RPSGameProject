@@ -17,6 +17,7 @@ namespace Game.Data.Repositories
         public async Task<Round> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
         {
             return await _context.Rounds
+                .AsNoTracking()
                 .FirstAsync(r => r.Id == id, cancellationToken);
         }
 

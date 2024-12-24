@@ -10,7 +10,7 @@ namespace Game.Data.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "GameRools",
+                name: "GameRules",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -85,7 +85,7 @@ namespace Game.Data.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "GameRools",
+                table: "GameRules",
                 columns: new[] { "Id", "FirstPlayerMove", "GameResults", "SecondPlayerMove" },
                 values: new object[,]
                 {
@@ -119,7 +119,7 @@ namespace Game.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "GameRools");
+                name: "GameRules");
 
             migrationBuilder.DropTable(
                 name: "Rounds");

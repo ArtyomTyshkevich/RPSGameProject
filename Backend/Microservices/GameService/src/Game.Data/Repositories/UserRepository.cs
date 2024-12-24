@@ -58,10 +58,9 @@ namespace Game.Data.Repositories
             if (user != null)
             {
                 user.Status = newStatus;
-                await _gameDbContext.SaveChangesAsync(cancellationToken);
             }
         }
-        public async Task ChangeReting(Guid userId,int points, CancellationToken cancellationToken)
+        public async Task ChangeRating(Guid userId,int points, CancellationToken cancellationToken)
         {
             var user = await _gameDbContext.Users
                       .FirstAsync(user => user.Id == userId, cancellationToken);
@@ -72,7 +71,6 @@ namespace Game.Data.Repositories
                 {
                     user.Rating = 0;
                 }    
-                await _gameDbContext.SaveChangesAsync(cancellationToken);
             }
         }
     }

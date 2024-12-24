@@ -27,7 +27,7 @@ namespace Game.WebAPI.DI
             services.ConfigureMassTransit(configuration);
             services.ConfigureDatabase(configuration);
             services.ConfigureCache(configuration);
-            services.AddAutoMapper(typeof(MappingProfile));
+            services.AddAutoMapper(typeof(RoomMappingProfile).Assembly);
             services.AddFluentValidationAutoValidation();
         }
     }

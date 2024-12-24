@@ -29,7 +29,7 @@ namespace Game.Data.Services
 
         public async Task<bool> AddUserToRoom(User user, CancellationToken cancellationToken)
         {
-            var room = await _unitOfWork.Rooms.GetAvailableRoomAsync(RoomTypes.Defoult);
+            var room = await _unitOfWork.Rooms.GetAvailableRoomAsync(RoomTypes.Default);
 
             if (room != null)
             {

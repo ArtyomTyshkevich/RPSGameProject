@@ -26,7 +26,8 @@ namespace Chat.Data.Consumers
                 var user = await _unitOfWork.Users.GetByIdNoTrackingAsync(context.Message.Id, cancellationToken);
                 if (user.Status != UserStatuses.InSearch)
                     break;
-                if (await _roomService.AddUserToRoom(user, cancellationToken))
+                var isUserAdded = await _roomService.AddUserToRoom(user, cancellationToken);
+                if (isUserAdded)
                 {
                     break;
                 }

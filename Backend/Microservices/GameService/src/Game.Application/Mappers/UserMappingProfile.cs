@@ -4,16 +4,10 @@ using Game.Domain.Entities;
 
 namespace Game.Application.Mappers
 {
-    public class MappingProfile : Profile
+    public class UserMappingProfile : Profile
     {
-        public MappingProfile()
+        public UserMappingProfile()
         {
-            CreateMap<RoomDTO, Room>()
-                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
-                .ForMember(dest => dest.Tipe, opt => opt.MapFrom(src => src.RoomTipe))
-                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.RoomStatus))
-                .ForMember(dest => dest.RoundNum, opt => opt.MapFrom(src => src.RoomStatus))
-                .ReverseMap();
             
             CreateMap<UserDTO, User>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
