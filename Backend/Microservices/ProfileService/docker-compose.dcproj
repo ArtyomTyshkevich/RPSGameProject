@@ -4,7 +4,7 @@
     <ProjectVersion>2.1</ProjectVersion>
     <DockerTargetOS>Linux</DockerTargetOS>
     <DockerPublishLocally>False</DockerPublishLocally>
-    <ProjectGuid>bd7fe344-211e-49b3-8199-f61b267d3271</ProjectGuid>
+    <ProjectGuid>8d1aa3d3-01fe-4da0-9db4-7fa7ca6e8aca</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
     <DockerServiceUrl>{Scheme}://localhost:{ServicePort}/swagger</DockerServiceUrl>
     <DockerServiceName>profile.api</DockerServiceName>

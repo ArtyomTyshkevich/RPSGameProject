@@ -20,6 +20,7 @@ namespace Profile.BLL.DI
             //services.AddScoped<ISearchService, SearchService>();
             //services.AddScoped<ICacheService, CacheService>();
             //services.ConfigureMassTransit(configuration);
+            services.ConfigureMongoDb(configuration);
             services.AddAutoMapper(typeof(UserMappingProfile));
             services.AddFluentValidationAutoValidation();
         }

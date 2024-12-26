@@ -9,6 +9,8 @@ FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["src/Profile.API/Profile.API.csproj", "src/Profile.API/"]
+COPY ["src/Profile.Domain/Profile.BLL.csproj", "src/Profile.Domain/"]
+COPY ["src/Profile.Infrastructure/Profile.DAL.csproj", "src/Profile.Infrastructure/"]
 RUN dotnet restore "./src/Profile.API/Profile.API.csproj"
 COPY . .
 WORKDIR "/src/src/Profile.API"

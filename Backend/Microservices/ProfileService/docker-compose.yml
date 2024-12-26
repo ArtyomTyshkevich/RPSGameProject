@@ -35,3 +35,19 @@ services:
       - "6379:6379"
     networks:
       - backend
+ 
+  mongodb:
+    image: mongo:latest
+    container_name: mongo-container
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=rootpassword
+    networks:
+      - backend
+    volumes:
+      - mongo-data:/data/db
+volumes:
+  mongo-data:

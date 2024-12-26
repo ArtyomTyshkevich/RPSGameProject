@@ -1,7 +1,7 @@
-﻿using Chat.Application.DTOs;
-using MongoDB.Driver;
+﻿using MongoDB.Driver;
+using Profile.DAL.Entities.Mongo;
 
-namespace Chat.Data.Context
+namespace Profile.DAL.Data
 {
     public class MongoDbContext
     {
@@ -13,7 +13,7 @@ namespace Chat.Data.Context
             _database = client.GetDatabase(databaseName);
         }
 
-        public IMongoCollection<Message> Messages => 
-            _database.GetCollection<Message>("Messages");
+        public IMongoCollection<Game> Games =>
+            _database.GetCollection<Game>("Games");
     }
 }
