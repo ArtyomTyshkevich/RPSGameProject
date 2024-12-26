@@ -1,6 +1,6 @@
 ﻿using Profile.DAL.Entities;
 
-namespace Profile.BLL.Interfaces
+namespace Profile.BLL.Interfaces.Repositories
 {
     public interface IUserRepository
     {
