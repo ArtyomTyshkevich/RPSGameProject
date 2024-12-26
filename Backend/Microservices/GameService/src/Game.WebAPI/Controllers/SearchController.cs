@@ -11,26 +11,25 @@ namespace Game.WebAPI.Controllers
     public class SearchController : ControllerBase
     {
         private readonly IMapper _mapper;
-        private readonly IUnitOfWork _unitOfWork;
         private readonly IPublishEndpoint _publishEndpoint;
         private readonly ISearchService _searchService;
 
-        public SearchController(IUnitOfWork unitOfWork, IPublishEndpoint publishEndpoint, IMapper mapper, ISearchService searchService)
+        public SearchController(IPublishEndpoint publishEndpoint, IMapper mapper, ISearchService searchService)
         {
             _searchService = searchService;
-            _unitOfWork = unitOfWork;
             _publishEndpoint = publishEndpoint;
             _mapper = mapper;
         }
 
-        [HttpPost("StartSearchGame")]
-        public async Task<IActionResult> StartSearchGame(Guid id, CancellationToken cancellationToken)
+        [HttpPost("Start")]
+        public async Task<IActionResult> StartSearchGame([FromBody] Guid id, CancellationToken cancellationToken)
         {
             await _searchService.StartSearchGame(id, cancellationToken);
             return Ok();
         }
-        [HttpPost("StopSearchGame")]
-        public async Task<IActionResult> StopSearchGame(Guid Id, CancellationToken cancellationToken)
+
+        [HttpPost("Stop")]
+        public async Task<IActionResult> StopSearchGame([FromBody] Guid Id, CancellationToken cancellationToken)
         {
             await _searchService.StopSearchGame(Id, cancellationToken);
             return Ok();

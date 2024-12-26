@@ -14,6 +14,7 @@ namespace Game.Data.Repositories
         {
             _gameDbContext = context;
         }
+
         public async Task<Room> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
         {
             return await _gameDbContext.Rooms
@@ -39,7 +40,6 @@ namespace Game.Data.Repositories
                 .CountAsync(cancellationToken);
         }
 
-
         public async Task<Room?> GetAvailableRoomAsync(RoomTypes roomType, CancellationToken cancellationToken = default)
         {
             return await _gameDbContext.Rooms
@@ -49,7 +49,6 @@ namespace Game.Data.Repositories
                 .Include(room => room.Rounds)
                 .FirstOrDefaultAsync(room => room.Tipe == roomType && room.Status == RoomStatuses.WaitingPlayers, cancellationToken);
         }
-
 
         public async Task CreateAsync(Room room, CancellationToken cancellationToken = default)
         {
@@ -88,6 +87,7 @@ namespace Game.Data.Repositories
 
             _gameDbContext.Rooms.RemoveRange(inactiveRooms);
         }
+
         public void Attach(Room room)
         {
             _gameDbContext.Attach(room);

@@ -1,4 +1,4 @@
-﻿using Chat.Data.Consumers;
+﻿using Game.Data.Consumers;
 using MassTransit;
 
  namespace Game.WebAPI.Setups
@@ -9,7 +9,7 @@ using MassTransit;
         {
             services.AddMassTransit(x =>
             {
-                x.AddConsumer<GameSirchConsumer>();
+                x.AddConsumer<GameSearchConsumer>();
 
                 x.UsingRabbitMq((context, cfg) =>
                 {
@@ -21,7 +21,7 @@ using MassTransit;
 
                     cfg.ReceiveEndpoint(configuration["RabbitMqSettings:QueueName"]!, e =>
                     {
-                        e.ConfigureConsumer<GameSirchConsumer>(context);
+                        e.ConfigureConsumer<GameSearchConsumer>(context);
                     });
 
                     cfg.ClearSerialization();

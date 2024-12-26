@@ -10,6 +10,7 @@ namespace Chat.Data.Context
         {
             Database.Migrate();
         }
+
         public DbSet<User> Users { get; set; }
         public DbSet<Round> Rounds { get; set; }
         public DbSet<Room> Rooms { get; set; }

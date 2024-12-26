@@ -4,8 +4,8 @@ namespace Game.Application.Interfaces.Services
 {
     public interface ICacheService
     {
-        Task CachingConnection(string connectionId, UserConnection connection);
-        Task DeleteConnectionFromCache(string connectionId);
-        Task<UserConnection?> GetConnectionFromCache(string connectionId);
+        Task SetConnection(string connectionId, UserConnection connection);
+        Task DeleteConnection(string connectionId);
+        Task<UserConnection?> GetConnection(string connectionId);
     }
 }

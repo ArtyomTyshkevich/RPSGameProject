@@ -28,6 +28,7 @@ namespace Game.Data.Services
             var userDTO = _mapper.Map<UserDTO>(user);
             await _publishEndpoint.Publish(userDTO, cancellationToken);
         }
+
         public async Task StopSearchGame(Guid userID, CancellationToken cancellationToken)
         {
             var user = await _unitOfWork.Users.GetByIdAsync(userID);

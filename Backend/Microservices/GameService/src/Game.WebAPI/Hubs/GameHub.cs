@@ -26,7 +26,7 @@ namespace Game.WebAPI.Hubs
 
         public async Task SendMove(PlayerMoves move)
         {
-            var connection = await _cacheService.GetConnectionFromCache(Context.ConnectionId);
+            var connection = await _cacheService.GetConnection(Context.ConnectionId);
 
             if (connection != null)
             {
@@ -46,12 +46,12 @@ namespace Game.WebAPI.Hubs
         {
             var connection = new UserConnection { UserId = userId, GameRoomId = roomId.ToString()};
             await Groups.AddToGroupAsync(Context.ConnectionId, connection.GameRoomId);
-            await _cacheService.CachingConnection(Context.ConnectionId, connection);
+            await _cacheService.SetConnection(Context.ConnectionId, connection);
         }
 
         public override async Task OnDisconnectedAsync(Exception? exception)
         {
-            var connection = await _cacheService.GetConnectionFromCache(Context.ConnectionId);
+            var connection = await _cacheService.GetConnection(Context.ConnectionId);
             if (connection != null)
             {
                 await _cache.RemoveAsync(Context.ConnectionId);

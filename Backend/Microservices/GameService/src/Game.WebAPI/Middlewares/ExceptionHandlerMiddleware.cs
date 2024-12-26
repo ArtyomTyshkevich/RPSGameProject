@@ -4,8 +4,7 @@ using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using OpenQA.Selenium;
 
-
-namespace Game.WebAPI.NewFolder
+namespace Game.WebAPI.Middlewares
 {
     public class ExceptionHandlerMiddleware
     {
@@ -52,6 +51,10 @@ namespace Game.WebAPI.NewFolder
                 case DbUpdateException dbUpdateException:
                     code = HttpStatusCode.Conflict;
                     result = JsonSerializer.Serialize(new { error = "Database update error" });
+                    break;
+                case InvalidOperationException invalidOperationException:
+                    code = HttpStatusCode.BadRequest;
+                    result = JsonSerializer.Serialize(new { error = invalidOperationException.Message });
                     break;
                 default:
                     result = JsonSerializer.Serialize(new { error = "An unexpected error occurred" });

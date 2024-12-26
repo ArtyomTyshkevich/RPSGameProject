@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Game.Application.DTOs;
 using Game.Application.Interfaces.Repositories.UnitOfWork;
 using Game.Application.Interfaces.Services;
 using Game.Domain.Entities;
@@ -17,8 +18,9 @@ namespace Game.Data.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task CreateRoomWithRounds(Room room, int numRounds, CancellationToken cancellationToken)
+        public async Task CreateRoomWithRoundsAsync(RoomDTO roomDTO, int numRounds, CancellationToken cancellationToken)
         {
+            var room = _mapper.Map<Room>(roomDTO);
             await _unitOfWork.Rooms.CreateAsync(room);
             for (int i = 0; i < numRounds; i++)
             {
@@ -27,7 +29,7 @@ namespace Game.Data.Services
             await _unitOfWork.SaveChangesAsync();
         }
 
-        public async Task<bool> AddUserToRoom(User user, CancellationToken cancellationToken)
+        public async Task<bool> AddUserToRoomAsync(User user, CancellationToken cancellationToken)
         {
             var room = await _unitOfWork.Rooms.GetAvailableRoomAsync(RoomTypes.Default);
 
@@ -50,6 +52,36 @@ namespace Game.Data.Services
             }
 
             return false;
+        }
+
+        public async Task<List<RoomDTO>> GetAllRoomsAsync(CancellationToken cancellationToken)
+        {
+            var rooms = await _unitOfWork.Rooms.GetAllAsync(cancellationToken);
+            return _mapper.ProjectTo<RoomDTO>(rooms.AsQueryable()).ToList();
+        }
+
+        public async Task<RoomDTO?> GetRoomByIdAsync(Guid id, CancellationToken cancellationToken)
+        {
+            var room = await _unitOfWork.Rooms.GetByIdAsync(id, cancellationToken);
+            return room != null ? _mapper.Map<RoomDTO>(room) : null;
+        }
+
+        public async Task DeleteRoomByIdAsync(Guid id, CancellationToken cancellationToken)
+        {
+            await _unitOfWork.Rooms.DeleteAsync(id, cancellationToken);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
+        }
+
+        public async Task DeleteInactiveRoomsAsync(CancellationToken cancellationToken)
+        {
+            await _unitOfWork.Rooms.DeleteInactiveRoomsAsync(cancellationToken);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
+        }
+
+        public async Task UpdateRoomStatusAsync(Guid roomId, RoomStatuses newStatus, CancellationToken cancellationToken)
+        {
+            await _unitOfWork.Rooms.UpdateRoomStatusAsync(roomId, newStatus, cancellationToken);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
         }
     }
 }

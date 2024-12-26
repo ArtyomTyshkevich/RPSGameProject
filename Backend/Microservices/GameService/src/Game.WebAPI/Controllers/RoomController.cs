@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
 using Game.Application.DTOs;
-using Game.Application.Interfaces.Repositories.UnitOfWork;
 using Game.Application.Interfaces.Services;
-using Game.Domain.Entities;
 using Game.Domain.Enums;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,73 +10,54 @@ namespace Game.WebAPI.Controllers
     [Route("rooms")]
     public class RoomController : ControllerBase
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
         private readonly IRoomService _roomService;
 
-        public RoomController(IUnitOfWork unitOfWork, IMapper mapper, IRoomService roomService)
+        public RoomController(IRoomService roomService)
         {
-            _mapper = mapper;
-            _unitOfWork = unitOfWork;
             _roomService = roomService;
         }
 
-        [HttpGet("GetAll")]
+        [HttpGet]
         public async Task<ActionResult<List<RoomDTO>>> GetAll(CancellationToken cancellationToken)
         {
-            var rooms = await _unitOfWork.Rooms.GetAllAsync(cancellationToken);
-            var roomsDTO = _mapper.ProjectTo<RoomDTO>(rooms.AsQueryable());
-
-            return Ok(roomsDTO.ToList());
+            var roomsDTO = await _roomService.GetAllRoomsAsync(cancellationToken);
+            return Ok(roomsDTO);
         }
 
-        [HttpGet("GetById")]
+        [HttpGet("{id:guid}")]
         public async Task<ActionResult<RoomDTO>> GetById(Guid id, CancellationToken cancellationToken)
         {
-            var room = _mapper.Map<RoomDTO>(await _unitOfWork.Rooms.GetByIdAsync(id, cancellationToken));
+            var room = await _roomService.GetRoomByIdAsync(id, cancellationToken);
             if (room == null) return NotFound();
 
             return Ok(room);
         }
 
-        [HttpGet("GetTotalActiveRoomsCount")]
-        public async Task<IActionResult> GetTotalActiveRoomsCount(CancellationToken cancellationToken)
+        [HttpPost]
+        public async Task<IActionResult> CreateWithRounds([FromBody] RoomDTO roomDTO, CancellationToken cancellationToken)
         {
-            var count = await _unitOfWork.Rooms.GetTotalActiveRoomsCountAsync(cancellationToken);
-            return Ok(count);
-        }
-
-        [HttpPost("CreateWithRounds")]
-        public async Task<IActionResult> CreateWithRounds(RoomDTO roomDTO, CancellationToken cancellationToken)
-        {
-            await _roomService.CreateRoomWithRounds(_mapper.Map<Room>(roomDTO), 3, cancellationToken);
-            await _unitOfWork.SaveChangesAsync(cancellationToken);
-
+            await _roomService.CreateRoomWithRoundsAsync(roomDTO, 3, cancellationToken);
             return Ok();
         }
 
-        [HttpDelete("DeleteById")]
+        [HttpDelete("{id:guid}")]
         public async Task<IActionResult> Delete(Guid id, CancellationToken cancellationToken)
         {
-            await _unitOfWork.Rooms.DeleteAsync(id, cancellationToken);
-            await _unitOfWork.SaveChangesAsync(cancellationToken);
-
+            await _roomService.DeleteRoomByIdAsync(id, cancellationToken);
             return NoContent();
         }
-        [HttpDelete("DeleteInactive")]
+
+        [HttpDelete("inactive")]
         public async Task<IActionResult> DeleteInactiveRooms(CancellationToken cancellationToken)
         {
-            await _unitOfWork.Rooms.DeleteInactiveRoomsAsync(cancellationToken);
-            await _unitOfWork.SaveChangesAsync(cancellationToken);
-
+            await _roomService.DeleteInactiveRoomsAsync(cancellationToken);
             return NoContent();
         }
-        [HttpPatch("PatchStatus")]
-        public async Task<IActionResult> UpdateRoomStatus(Guid roomId, RoomStatuses newStatus, CancellationToken cancellationToken)
-        {
-            await _unitOfWork.Rooms.UpdateRoomStatusAsync(roomId, newStatus, cancellationToken);
-            await _unitOfWork.SaveChangesAsync(cancellationToken);
 
+        [HttpPatch("{roomId:guid}/status")]
+        public async Task<IActionResult> UpdateRoomStatus(Guid roomId, [FromQuery] RoomStatuses newStatus, CancellationToken cancellationToken)
+        {
+            await _roomService.UpdateRoomStatusAsync(roomId, newStatus, cancellationToken);
             return Ok();
         }
     }

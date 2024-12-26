@@ -1,4 +1,6 @@
-﻿namespace Game.WebAPI.NewFolder
+﻿using Game.WebAPI.Middlewares;
+
+namespace Game.WebAPI.NewFolder
 {
     public static class ExceptionHandlerMiddlewareExtensions
     {

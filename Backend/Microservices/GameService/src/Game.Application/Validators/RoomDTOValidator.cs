@@ -10,7 +10,7 @@ namespace Game.Application.Validators
             RuleFor(r => r.Id)
                 .NotEmpty().WithMessage("Id cannot be empty.");
 
-            RuleFor(r => r.RoomTipe) 
+            RuleFor(r => r.RoomType) 
                 .IsInEnum().WithMessage("Invalid room type.");
 
             RuleFor(r => r.RoomStatus) 

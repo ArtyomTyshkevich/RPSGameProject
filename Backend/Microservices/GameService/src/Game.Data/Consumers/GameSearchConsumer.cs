@@ -4,14 +4,14 @@ using Game.Application.Interfaces.Services;
 using Game.Domain.Enums;
 using MassTransit;
 
-namespace Chat.Data.Consumers
+namespace Game.Data.Consumers
 {
-    public class GameSirchConsumer : IConsumer<UserDTO>
+    public class GameSearchConsumer : IConsumer<UserDTO>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IRoomService _roomService;
 
-        public GameSirchConsumer(IUnitOfWork unitOfWork, IRoomService roomService)
+        public GameSearchConsumer(IUnitOfWork unitOfWork, IRoomService roomService)
         {
             _unitOfWork = unitOfWork;
             _roomService = roomService;
@@ -25,8 +25,10 @@ namespace Chat.Data.Consumers
             {
                 var user = await _unitOfWork.Users.GetByIdNoTrackingAsync(context.Message.Id, cancellationToken);
                 if (user.Status != UserStatuses.InSearch)
+                {
                     break;
-                var isUserAdded = await _roomService.AddUserToRoom(user, cancellationToken);
+                }
+                var isUserAdded = await _roomService.AddUserToRoomAsync(user, cancellationToken);
                 if (isUserAdded)
                 {
                     break;

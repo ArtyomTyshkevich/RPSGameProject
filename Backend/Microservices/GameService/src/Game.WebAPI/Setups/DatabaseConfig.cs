@@ -8,7 +8,7 @@ namespace Game.WebAPI.Setups
         public static void ConfigureDatabase(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<GameDbContext>(opt =>
-                opt.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+                opt.UseSqlServer(configuration.GetConnectionString("DefaultConnection")!));
         }
     }
 }

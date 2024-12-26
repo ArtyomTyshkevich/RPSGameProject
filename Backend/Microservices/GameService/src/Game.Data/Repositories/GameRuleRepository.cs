@@ -14,6 +14,7 @@ namespace Game.Data.Repositories
         {
             _gameDbContext = context;
         }
+
         public async Task<GameRule> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
         {
             return await _gameDbContext.GameRules
@@ -27,12 +28,13 @@ namespace Game.Data.Repositories
 
                 .ToListAsync(cancellationToken);
         }
+
         public async Task<GameResults> GetResultAsync(PlayerMoves firstPlayerMove, PlayerMoves secondPlayerMove, CancellationToken cancellationToken = default)
         {
             var rool = await _gameDbContext.GameRules
               .FirstOrDefaultAsync(rool => rool.FirstPlayerMove == firstPlayerMove && rool.SecondPlayerMove == secondPlayerMove, cancellationToken);
 
-            return rool.GameResults;
+            return rool!.GameResults;
         }
     }
 }

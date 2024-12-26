@@ -10,7 +10,7 @@ namespace Game.Application.Mappers
         {
             CreateMap<RoomDTO, Room>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
-                .ForMember(dest => dest.Tipe, opt => opt.MapFrom(src => src.RoomTipe))
+                .ForMember(dest => dest.Tipe, opt => opt.MapFrom(src => src.RoomType))
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.RoomStatus))
                 .ForMember(dest => dest.RoundNum, opt => opt.MapFrom(src => src.RoomStatus))
                 .ReverseMap();

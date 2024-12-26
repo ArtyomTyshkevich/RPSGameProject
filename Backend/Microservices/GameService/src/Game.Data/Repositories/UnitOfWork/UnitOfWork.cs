@@ -22,8 +22,10 @@ namespace Auth.BLL.Repositories.UnitOfWork
         public IRoundRepository Rounds { get; private set; }
         public IRoomRepository Rooms { get; private set; }
         public IGameRuleRepository Rools { get; private set; }
+
         public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default) =>
             await _gameDbContext.SaveChangesAsync(cancellationToken);
+
         public void Dispose() => _gameDbContext.Dispose();
     }
 }
