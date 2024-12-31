@@ -8,12 +8,10 @@ namespace Chat.Data.Services;
 
 public class CacheService : ICacheService
 {
-    private readonly IMessageRepository _messageRepository;
     private readonly IDistributedCache _cache;
 
-    public CacheService(IUserRepository userRepository, IMessageRepository messageRepository, IDistributedCache cache)
+    public CacheService( IDistributedCache cache)
     {
-        _messageRepository = messageRepository;
         _cache = cache;
     }
 

@@ -1,0 +1,152 @@
+version: '3.9'
+
+networks:
+  backend:
+    driver: bridge
+
+services:
+  authdb:
+    container_name: auth-db
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=password@12345#
+    networks:
+      - backend
+    ports:
+      - "8007:1433" 
+
+  chatredis:
+    image: "redis:latest"
+    restart: always
+    ports:
+      - "6379:6379"
+    networks:
+      - backend
+
+  gamedb:
+    container_name: game-db
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=password@12345
+    networks:
+      - backend
+    ports:
+      - "8011:1433" 
+
+  chatdb:
+    container_name: Chat-db
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=password@12345#
+    networks:
+      - backend
+    ports:
+      - "8001:1433" 
+
+  mongodb:
+    container_name: Chat-mongodb
+    image: mongo:latest
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  rabbitmq:
+    container_name: game-rabbitmq
+    image: rabbitmq:management
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    networks:
+      - backend
+  
+  gameredis:
+    container_name: game-redis
+    image: "redis:latest"
+    restart: always
+    ports:
+      - "6380:6379"
+    networks:
+      - backend
+
+  auth.api:
+    container_name: auth-api
+    build:
+      context: ./Microservices/AuthService
+      dockerfile: src/Auth.API/Dockerfile
+    networks:
+      - backend
+    environment:
+      - Jwt__Secret=superSecretKey@345432242344324245
+      - Jwt__Issuer=https://localhost:5001 
+      - Jwt__Audience=https://localhost:5001
+      - Jwt__TokenValidityInMinutes=30
+      - ConnectionStrings__DefaultConnection=Server=authdb;Database=AuthDb;User Id=sa;Password=password@12345#;TrustServerCertificate=True;
+    depends_on:
+      - authdb
+    ports:
+      - "8002:80"
+      - "8082:443"
+
+  chat.api:
+    container_name: chat-api
+    build:
+      context: ./Microservices/ChatService/src
+      dockerfile: Chat.WebAPI/Dockerfile
+    networks:
+      - backend
+    environment:
+      - ConnectionStrings__DefaultConnection=Server=Chatdb;Database=LibraryDb;User Id=sa;Password=password@12345#;TrustServerCertificate=True;
+    depends_on:
+      - chatdb
+      - mongodb
+      - chatredis
+    ports:
+      - "8003:80"
+      - "8083:443"
+
+  game.webapi:
+    container_name: game-api
+    build:
+      context: ./Microservices/GameService
+      dockerfile: src/Game.WebAPI/Dockerfile
+    networks:
+      - backend
+    environment:
+      - ConnectionStrings__DefaultConnection=Server=Gamedb;Database=GameDb;User Id=sa;Password=password@12345;TrustServerCertificate=True;
+    depends_on:
+      - gamedb
+    ports:
+      - "8012:80"
+      - "8092:443"
+
+  nginx:
+    container_name: nginx
+    image: nginx:latest
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/certs/localhost.key:/etc/nginx/certs/localhost.key
+      - ./nginx/certs/localhost.crt:/etc/nginx/certs/localhost.crt
+    depends_on:
+      - chat.api
+      - auth.api 
+    networks:
+      - backend
+
+  
+
+
+volumes:
+  mongo_data:

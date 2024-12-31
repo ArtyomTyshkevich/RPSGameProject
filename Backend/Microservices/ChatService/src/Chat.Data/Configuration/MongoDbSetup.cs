@@ -8,8 +8,8 @@ public static class MongoDbSetup
     {
         services.AddSingleton<MongoDbContext>(sp =>
         {
-            var connectionString = configuration["MessageStoreDatabase:ConnectionString"];
-            var databaseName = configuration["MessageStoreDatabase:DatabaseName"];
+            var connectionString = configuration["MongoDB:ConnectionString"];
+            var databaseName = configuration["MongoDB:DatabaseName"];
             return new MongoDbContext(connectionString, databaseName);
         });
     }

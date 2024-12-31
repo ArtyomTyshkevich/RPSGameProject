@@ -19,6 +19,7 @@ namespace Chat.WebAPI.DI
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ICacheService, CacheService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddAutoMapper(typeof(Program));
         }
     }
 }
