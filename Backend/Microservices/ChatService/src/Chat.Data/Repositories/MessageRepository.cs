@@ -25,18 +25,5 @@ namespace Chat.Data.Repositories
         {
             await _messages.InsertOneAsync(message);
         }
-
-        public Message Create(UserDTO userDTO, string messageContent)
-        {
-            return new Message
-            {
-                UserId = userDTO.Id,
-                UserName = userDTO.NickName,
-                Content = messageContent,
-                SentAt = DateTime.UtcNow
-            };
-
-        }
-
     }
 }

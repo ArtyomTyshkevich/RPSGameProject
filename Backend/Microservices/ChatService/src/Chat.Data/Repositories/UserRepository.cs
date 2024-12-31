@@ -12,16 +12,31 @@ namespace Chat.Data.Repositories
         {
             _context = context;
         }
-
-        public async Task<User?> GetByIdAsync(Guid userId)
+        public async Task<User> GetByIdAsync(Guid userId)
         {
             return await _context.Users.FindAsync(userId);
         }
 
-        public async Task AddAsync(User user)
+        public async Task<User> AddAsync(User user)
         {
             await _context.Users.AddAsync(user);
-            await _context.SaveChangesAsync();
+            return user;
+        }
+
+        public async Task<User> UpdateAsync(User user)
+        {
+            _context.Users.Update(user);
+            return user;
+        }
+
+        public async Task<bool> DeleteAsync(Guid userId)
+        {
+            var user = await _context.Users.FindAsync(userId);
+            if (user == null)
+                return false;
+
+            _context.Users.Remove(user);
+            return true;
         }
     }
 }
