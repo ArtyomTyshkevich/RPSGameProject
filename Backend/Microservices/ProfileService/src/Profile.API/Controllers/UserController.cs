@@ -1,55 +1,45 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Profile.BLL.DTOs;
-using Profile.BLL.Interfaces.Repositories;
-using Profile.DAL.Entities;
+using Profile.BLL.Interfaces.Services;
 
-namespace Game.WebAPI.Controllers
+namespace Profile.API.Controllers
 {
     [ApiController]
     [Route("user")]
     public class UserController : ControllerBase
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
+        private readonly IUserService _userService;
 
-        public UserController(IUnitOfWork unitOfWork, IMapper mapper)
+        public UserController(IUserService userService)
         {
-            _mapper = mapper;
-            _unitOfWork = unitOfWork;
+            _userService = userService;
         }
 
         [HttpGet("GetAll")]
         public async Task<ActionResult<List<UserDTO>>> GetAll(CancellationToken cancellationToken)
         {
-            var users = await _unitOfWork.Users.GetAllAsync(cancellationToken);
-            var userDTO = _mapper.ProjectTo<UserDTO>(users.AsQueryable());
-            return Ok(userDTO.ToList());
+            var usersDTO = await _userService.GetAllAsync(cancellationToken);
+            return Ok(usersDTO);
         }
 
         [HttpGet("GetById")]
         public async Task<ActionResult<UserDTO>> GetById(Guid id, CancellationToken cancellationToken)
         {
-            var user = await _unitOfWork.Users.GetByIdAsync(id, cancellationToken);
-            var userDTO = _mapper.Map<UserDTO>(user);
+            var userDTO = await _userService.GetByIdAsync(id, cancellationToken);
             return Ok(userDTO);
         }
 
         [HttpPut("UpdateById")]
         public async Task<ActionResult> Update(UserDTO userDTO, CancellationToken cancellationToken)
         {
-            await _unitOfWork.Users.UpdateAsync(_mapper.Map<User>(userDTO));
-            await _unitOfWork.SaveChangesAsync(cancellationToken);
-
+            await _userService.UpdateAsync(userDTO, cancellationToken);
             return NoContent();
         }
 
-        [HttpDelete("Delete/{id}")]
+        [HttpDelete("DeleteById")]
         public async Task<ActionResult> Delete(Guid id, CancellationToken cancellationToken)
         {
-            await _unitOfWork.Users.DeleteAsync(id);
-            await _unitOfWork.SaveChangesAsync(cancellationToken);
-
+            await _userService.DeleteAsync(id, cancellationToken);
             return NoContent();
         }
     }

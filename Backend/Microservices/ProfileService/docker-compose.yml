@@ -17,7 +17,7 @@ services:
     container_name: profile-api
     build:
       context: .
-      dockerfile: Presentation/Library.WebAPI/Dockerfile
+      dockerfile: src/Profile.API/Dockerfile
     networks:
       - backend
     environment:

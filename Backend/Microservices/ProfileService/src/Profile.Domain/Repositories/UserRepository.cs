@@ -3,7 +3,7 @@ using Profile.BLL.Interfaces.Repositories;
 using Profile.DAL.Data;
 using Profile.DAL.Entities;
 
-namespace Game.Data.Repositories
+namespace Profile.BLL.Repositories
 {
     public class UserRepository : IUserRepository
     {

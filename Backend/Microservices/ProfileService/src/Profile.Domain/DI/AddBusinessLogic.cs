@@ -1,10 +1,12 @@
 ﻿using FluentValidation.AspNetCore;
-using Game.Data.Repositories;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Profile.BLL.Interfaces.Repositories;
+using Profile.BLL.Interfaces.Services;
 using Profile.BLL.Mappings;
+using Profile.BLL.Repositories;
 using Profile.BLL.Repositories.UnitOfWork;
+using Profile.BLL.Services;
 using Profile.DAL.DI;
 
 namespace Profile.BLL.DI
@@ -16,11 +18,11 @@ namespace Profile.BLL.DI
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IUserRepository, UserRepository>();
-            //services.AddScoped<IRoundService, RoundService>();
-            //services.AddScoped<ISearchService, SearchService>();
-            //services.AddScoped<ICacheService, CacheService>();
-            //services.ConfigureMassTransit(configuration);
+            services.AddScoped<IGameRepository, GameRepository>();
+            services.AddScoped<IGameService, GameService>();
+            services.AddScoped<IUserService, UserService>();
             services.ConfigureMongoDb(configuration);
+            services.ConfigureDatabase(configuration);
             services.AddAutoMapper(typeof(UserMappingProfile));
             services.AddFluentValidationAutoValidation();
         }

@@ -1,6 +1,4 @@
-﻿
-using Game.Data.Repositories;
-using Profile.BLL.Interfaces.Repositories;
+﻿using Profile.BLL.Interfaces.Repositories;
 using Profile.DAL.Data;
 
 namespace Profile.BLL.Repositories.UnitOfWork
