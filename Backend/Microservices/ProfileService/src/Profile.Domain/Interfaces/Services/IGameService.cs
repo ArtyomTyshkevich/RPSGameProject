@@ -1,5 +1,4 @@
 ﻿using Profile.BLL.DTOs;
-using Profile.DAL.Entities.Mongo;
 
 namespace Profile.BLL.Interfaces.Services
 {
