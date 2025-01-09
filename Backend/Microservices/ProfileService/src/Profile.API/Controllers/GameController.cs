@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Profile.BLL.DTOs;
 using Profile.BLL.Interfaces.Services;
 using Profile.DAL.Entities.Mongo;
 
@@ -16,18 +17,17 @@ namespace Profile.API.Controllers
             _gameService = gameService;
         }
 
-        [HttpPost("Create")]
-        public async Task<ActionResult> CreateGame([FromBody] Game game, CancellationToken cancellationToken)
-        {
-            await _gameService.AddGameAsync(game, cancellationToken);
-            return Ok(game);
-        }
-
         [HttpGet("GetAll")]
         public async Task<ActionResult<List<Game>>> GetAllGames(CancellationToken cancellationToken)
         {
             var games = await _gameService.GetAllGamesAsync(cancellationToken);
             return Ok(games);
+        }
+        [HttpPost("Add")]
+        public async Task<ActionResult<List<Game>>> PostGames(GameDTO gameDTO, CancellationToken cancellationToken)
+        {
+             await _gameService.AddGameAsync(gameDTO, cancellationToken);
+            return Ok();
         }
 
         [HttpGet("GetById/{id}")]
@@ -39,14 +39,6 @@ namespace Profile.API.Controllers
                 return NotFound(); 
             }
             return Ok(game);
-        }
-
-        [HttpPut("UpdateById/{id}")]
-        public async Task<ActionResult> UpdateGame(string id, [FromBody] Game game, CancellationToken cancellationToken)
-        {
-            game.Id = id;
-            await _gameService.UpdateGameAsync(game, cancellationToken);
-            return NoContent();
         }
 
         [HttpDelete("DeleteById/{id}")]

@@ -1,6 +1,5 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
-using Profile.BLL.Interfaces.Repositories;
+﻿using Microsoft.AspNetCore.Mvc;
+using Profile.BLL.Interfaces.Services;
 
 namespace Profile.API.Controllers
 {
@@ -8,36 +7,34 @@ namespace Profile.API.Controllers
     [Route("UserStatistics")]
     public class UserStatisticsController : ControllerBase
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
+        private readonly IUserStatisticsService _userStatisticsService;
 
-        public UserStatisticsController(IUnitOfWork unitOfWork, IMapper mapper)
+        public UserStatisticsController(IUserStatisticsService userStatisticsService)
         {
-            _mapper = mapper;
-            _unitOfWork = unitOfWork;
+            _userStatisticsService = userStatisticsService;
         }
 
-        [HttpGet("getMoveStatisticsById")]
-        public async Task<ActionResult> GetPlayerMoveStatistics(string playerId)
+        [HttpGet("move/statistics")]
+        public async Task<ActionResult> GetMoveStatisticsAsync(Guid playerId, CancellationToken cancellationToken)
         {
-            return Ok();
+         return Ok(await  _userStatisticsService.GetMoveStatisticsAsync(playerId, cancellationToken));
         }
 
-        [HttpGet("getWinRateById")]
-        public async Task<ActionResult> GetPlayerWins(string playerId)
+        [HttpGet("win/count")]
+        public async Task<ActionResult> GetWinsConuntAsync(Guid playerId, CancellationToken cancellationToken)
         {
-            return Ok();
+            return Ok(await _userStatisticsService.GetWinsCountAsync(playerId, cancellationToken));
         }
-        [HttpGet("getLossRateById")]
-        public async Task<ActionResult> GetPlayerLosses(string playerId)
+        [HttpGet("lose/count")]
+        public async Task<ActionResult> GetLosesCountAsync(Guid playerId, CancellationToken cancellationToken)
         {
-            return Ok();
+            return Ok(await _userStatisticsService.GetLossesCountAsync(playerId, cancellationToken));
         }
 
-        [HttpGet("statistics/player/{playerId}/move/win-rate")]
-        public async Task<ActionResult> GetPlayerMoveWinRate(string playerId)
+        [HttpGet("win-rate")]
+        public async Task<ActionResult> GetWinRateAsync(Guid playerId, CancellationToken cancellationToken)
         {
-            return Ok();
+            return Ok(await _userStatisticsService.GetWinRateAsync(playerId, cancellationToken));
         }
 
     }

@@ -1,19 +1,19 @@
-﻿using MongoDB.Driver;
+﻿using Microsoft.Extensions.Options;
+using MongoDB.Driver;
+using Profile.BLL.Configuretion;
 using Profile.BLL.Interfaces.Repositories;
 using Profile.DAL.Entities.Mongo;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-
 namespace Profile.BLL.Repositories
 {
     public class GameRepository : IGameRepository
     {
         private readonly IMongoCollection<Game> _games;
 
-        public GameRepository(IMongoDatabase database)
+        public GameRepository(IOptions<MongoDbConfiguration> mongoDbConfiguration)
         {
-            _games = database.GetCollection<Game>("Games");
+            var mongoClient = new MongoClient(mongoDbConfiguration.Value.ConnectionString);
+            var mongoDb = mongoClient.GetDatabase(mongoDbConfiguration.Value.DatabaseName);
+            _games = mongoDb.GetCollection<Game>(mongoDbConfiguration.Value.GameCollectionName);
         }
 
         public async Task<IEnumerable<Game>> GetAllGamesAsync(CancellationToken cancellationToken = default)
@@ -42,3 +42,4 @@ namespace Profile.BLL.Repositories
         }
     }
 }
+    

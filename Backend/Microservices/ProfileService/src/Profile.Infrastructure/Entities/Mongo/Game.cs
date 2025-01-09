@@ -10,10 +10,10 @@ namespace Profile.DAL.Entities.Mongo
         public string Id { get; set; } = ObjectId.GenerateNewId().ToString();
 
         [BsonElement("firstPlayer")]
-        public string? FirstPlayer { get; set; }
+        public string? FirstPlayerId { get; set; }
 
         [BsonElement("secondPlayer")]
-        public string? SecondPlayer { get; set; }
+        public string? SecondPlayerId { get; set; }
 
         [BsonElement("rounds")]
         public List<Round> Rounds { get; set; } = new List<Round>();

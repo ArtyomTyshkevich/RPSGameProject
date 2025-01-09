@@ -1,5 +1,4 @@
-﻿
-namespace Profile.BLL.DTOs
+﻿namespace Profile.BLL.DTOs
 {
     public class UserDTO
     {

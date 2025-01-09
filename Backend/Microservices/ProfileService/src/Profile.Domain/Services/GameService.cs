@@ -1,44 +1,41 @@
-﻿using Profile.BLL.Interfaces.Repositories;
+﻿using AutoMapper;
+using Profile.BLL.DTOs;
+using Profile.BLL.Interfaces.Repositories;
 using Profile.BLL.Interfaces.Services;
 using Profile.DAL.Entities.Mongo;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Profile.BLL.Services
 {
     public class GameService : IGameService
     {
-        private readonly IGameRepository _gameRepository;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public GameService(IGameRepository gameRepository)
+        public GameService(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _gameRepository = gameRepository;
+            _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
-        public async Task<IEnumerable<Game>> GetAllGamesAsync(CancellationToken cancellationToken)
+        public async Task<IEnumerable<GameDTO>> GetAllGamesAsync(CancellationToken cancellationToken)
         {
-            return await _gameRepository.GetAllGamesAsync(cancellationToken);
+            var games = await _unitOfWork.Games.GetAllGamesAsync(cancellationToken);
+            return _mapper.Map<IEnumerable<GameDTO>>(games);
         }
 
-        public async Task<Game> GetGameByIdAsync(string id, CancellationToken cancellationToken)
+        public async Task<GameDTO> GetGameByIdAsync(string id, CancellationToken cancellationToken)
         {
-            return await _gameRepository.GetGameByIdAsync(id, cancellationToken);
-        }
-
-        public async Task AddGameAsync(Game game, CancellationToken cancellationToken)
-        {
-            await _gameRepository.AddGameAsync(game, cancellationToken);
-        }
-
-        public async Task UpdateGameAsync(Game game, CancellationToken cancellationToken)
-        {
-            await _gameRepository.UpdateGameAsync(game, cancellationToken);
+            return _mapper.Map<GameDTO>(await _unitOfWork.Games.GetGameByIdAsync(id, cancellationToken));
         }
 
         public async Task DeleteGameAsync(string id, CancellationToken cancellationToken)
         {
-            await _gameRepository.DeleteGameAsync(id, cancellationToken);
+            await _unitOfWork.Games.DeleteGameAsync(id, cancellationToken);
+        }
+        public async Task AddGameAsync(GameDTO gameDTO, CancellationToken cancellationToken)
+        {
+            var game = _mapper.Map<Game>(gameDTO);
+            await _unitOfWork.Games.AddGameAsync(game, cancellationToken);
         }
     }
 }

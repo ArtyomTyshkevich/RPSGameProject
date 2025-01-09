@@ -1,6 +1,5 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
-using Profile.BLL.Interfaces.Repositories;
+﻿using Microsoft.AspNetCore.Mvc;
+using Profile.BLL.Interfaces.Services;
 
 namespace Profile.API.Controllers
 {
@@ -8,31 +7,28 @@ namespace Profile.API.Controllers
     [Route("GlobalStatistics")]
     public class GlobalStatisticsController : ControllerBase
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
-
-        public GlobalStatisticsController(IUnitOfWork unitOfWork, IMapper mapper)
+        private readonly IGlobalStatisticsServices _globalStatisticsServices;
+        public GlobalStatisticsController(IGlobalStatisticsServices globalStatisticsService)
         {
-            _mapper = mapper;
-            _unitOfWork = unitOfWork;
+            _globalStatisticsServices = globalStatisticsService;
         }
 
-        [HttpGet("GetMostUsedMove")]
-        public async Task<ActionResult> GetMostUsedMove()
+        [HttpGet("moves/most-used")]
+        public async Task<ActionResult> GetMostUsedMove(CancellationToken cancellationToken)
         {
-            return Ok();
+            return Ok(await _globalStatisticsServices.GetMostUsedMoveAsync(cancellationToken));
         }
 
-        [HttpGet("statistics/move/win-rate")]
-        public async Task<ActionResult> GetMoveWinRateForAllPlayers()
+        [HttpGet("moves/win-rate")]
+        public async Task<ActionResult> GetMovesWinRatePlayers(CancellationToken cancellationToken)
         {
-            return Ok();
+            return Ok(await _globalStatisticsServices.GetMoveWinRateAsync(cancellationToken));
         }
 
-        [HttpGet("statistics/move-usage")]
-        public async Task<ActionResult> GetMoveUsageStatistics()
+        [HttpGet("moves/usage")]
+        public async Task<ActionResult> GetMovesUsageStatistics(CancellationToken cancellationToken)
         {
-            return Ok();
+            return Ok(await _globalStatisticsServices.GetMoveUsageStatisticsAsync(cancellationToken));
         }
 
     }
