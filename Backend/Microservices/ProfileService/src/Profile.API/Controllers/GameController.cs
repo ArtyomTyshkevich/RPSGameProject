@@ -34,10 +34,6 @@ namespace Profile.API.Controllers
         public async Task<ActionResult<Game>> GetGameById(string id, CancellationToken cancellationToken)
         {
             var game = await _gameService.GetGameByIdAsync(id, cancellationToken);
-            if (game == null)
-            {
-                return NotFound(); 
-            }
             return Ok(game);
         }
 
