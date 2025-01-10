@@ -16,6 +16,7 @@ namespace Auth.BLL.DI
             services.AddFluentValidationAutoValidation();
             services.ConfigureAuthentication(configuration);
             services.ConfigureDatabase(configuration);
+            services.ConfigureGrpcClients(configuration);
             services.ConfigureIdentity();
             services.ConfigureSwagger();
             services.AddScoped<IUserRepository, UserRepository>();

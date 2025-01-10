@@ -1,4 +1,5 @@
 using Auth.BLL.Commands;
+using Auth.BLL.Commands.GrpcCommands;
 using Auth.BLL.DTOs.Identity;
 using Auth.BLL.Queries;
 using MediatR;
@@ -31,6 +32,8 @@ namespace Library.WebAPI.Controllers
         {
             var query = new RegisterCommand { RegisterRequest = request };
             var response = await _mediator.Send(query, cancellationToken);
+            var sendUserDataCommand = new SendUserDataCommand { Email = request.Email };
+            await _mediator.Send(sendUserDataCommand, cancellationToken);
             return Ok(response);
         }
 
