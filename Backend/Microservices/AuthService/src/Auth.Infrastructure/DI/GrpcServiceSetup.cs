@@ -17,12 +17,12 @@ namespace Auth.BLL.DI
             //    options.Address = new Uri(profileServiceUrl);
             //});
 
-            services.AddGrpcClient<GameService.GameServiceClient>(options =>
+            services.AddGrpcClient<GameServiceGRPC.GameServiceGRPCClient>(options =>
             {
                 options.Address = new Uri(gameServiceUrl);
             });
 
-            services.AddGrpcClient<ChatService.ChatServiceClient>(options =>
+            services.AddGrpcClient<ChatServiceGRPC.ChatServiceGRPCClient>(options =>
             {
                 options.Address = new Uri(chatServiceUrl);
             });

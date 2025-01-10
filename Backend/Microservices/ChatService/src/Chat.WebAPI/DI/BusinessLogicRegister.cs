@@ -11,6 +11,7 @@ namespace Chat.WebAPI.DI
     {
         public static void AddBusinessLogic(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddGrpc();
             services.AddFluentValidationAutoValidation();
             services.ConfigureDatabase(configuration);
             services.ConfigureCache(configuration);

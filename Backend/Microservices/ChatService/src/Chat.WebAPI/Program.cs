@@ -1,3 +1,4 @@
+using Chat.Data.Services;
 using Chat.WebAPI.DI;
 using Chat.WebAPI.Hubs;
 
@@ -19,7 +20,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.MapGrpcService<UserGRPCService>();
 app.UseCors("AllowAll");
 app.UseAuthorization();
 
