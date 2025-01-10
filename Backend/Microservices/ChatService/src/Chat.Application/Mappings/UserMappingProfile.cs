@@ -4,9 +4,9 @@ using Chat.Domain.Entities;
 
 namespace Chat.Application.Mappings
 {
-    public class MappingProfile : Profile
+    public class UserMappingProfile : Profile
     {
-        public MappingProfile()
+        public UserMappingProfile()
         {
             CreateMap<User, UserDTO>()
                 .ForMember(destination => destination.Id, options => options.MapFrom(source => source.Id))
