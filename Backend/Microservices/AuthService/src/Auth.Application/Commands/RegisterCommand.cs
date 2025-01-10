@@ -7,4 +7,4 @@ namespace Auth.BLL.Commands
     {
         public RegisterRequest RegisterRequest { get; set; }
     }
-}        //public async Task<AuthResponse> Register(RegisterRequest request, CancellationToken cancellationToken)
+} 

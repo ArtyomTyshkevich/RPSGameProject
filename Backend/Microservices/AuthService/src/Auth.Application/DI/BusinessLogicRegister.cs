@@ -17,6 +17,7 @@ namespace Auth.BLL.DI
             services.ConfigureAuthentication(configuration);
             services.ConfigureSwagger();
             services.ConfigureDatabase(configuration);
+            services.ConfigureGrpcClients(configuration);
             services.ConfigureIdentity();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();

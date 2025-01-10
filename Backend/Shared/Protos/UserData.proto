@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+option csharp_namespace = "UserGrpcService";
+
+service UserService {
+    rpc SendUserData(UserData) returns (SaveUserResponse);
+}
+
+message UserData {
+    string id = 1;
+    string nickname = 2;
+    string email = 3;
+    int32 rating = 4;
+}
+
+message SaveUserResponse {
+    bool success = 1;
+    string message = 2;
+}
+
+service ProfileService {
+    rpc SaveUser(UserData) returns (SaveUserResponse);
+}
+
+service GameService {
+    rpc SaveUser(UserData) returns (SaveUserResponse);
+}
+service ChatService {
+    rpc SaveUser(UserData) returns (SaveUserResponse);
+}
