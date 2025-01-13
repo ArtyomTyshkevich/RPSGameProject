@@ -127,6 +127,8 @@ services:
       - Jwt__Audience=https://localhost:5001
       - Jwt__TokenValidityInMinutes=30
       - ConnectionStrings__DefaultConnection=Server=authdb;Database=AuthDb;User Id=sa;Password=password@12345#;TrustServerCertificate=True;
+      - GrpcSettings__GameServiceUrl=https://localhost:8092
+      - GrpcSettings__ChatServiceUrl=https://localhost:8083
     depends_on:
       - authdb
     ports:
