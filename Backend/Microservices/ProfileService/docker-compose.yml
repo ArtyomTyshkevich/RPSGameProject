@@ -1,0 +1,54 @@
+networks:
+  backend:
+
+services:
+  profiledb:
+    container_name: profile-db
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=password@12345#
+    networks:
+      - backend
+    ports:
+      - "8001:1433" 
+
+  profile.webapi:
+    container_name: profile-api
+    build:
+      context: .
+      dockerfile: src/Profile.API/Dockerfile
+    networks:
+      - backend
+    environment:
+      - ConnectionStrings__DefaultConnection=Server=Profiledb;Database=ProfileDb;User Id=sa;Password=password@12345#;TrustServerCertificate=True;
+    depends_on:
+      - profiledb
+    ports:
+      - "8015:80"
+      - "8095:443"
+
+  profile-redis:
+    image: "redis:latest"
+    restart: always
+    ports:
+      - "6379:6379"
+    networks:
+      - backend
+ 
+  mongodb:
+    image: mongo:latest
+    container_name: mongo-container
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=rootpassword
+    networks:
+      - backend
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:
