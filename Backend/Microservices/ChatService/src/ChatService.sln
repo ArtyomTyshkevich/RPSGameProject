@@ -21,6 +21,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat.Tests", "Chat.Tests\Ch
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat.WebAPI", "Chat.WebAPI\Chat.WebAPI.csproj", "{3B50AFE8-7F92-43C5-A7A4-29F43E7FE136}"
 EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "..\..\..\docker-compose.dcproj", "{13D13897-C57D-484E-AF9D-F3E40A55F7A4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +49,10 @@ Global
 		{3B50AFE8-7F92-43C5-A7A4-29F43E7FE136}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3B50AFE8-7F92-43C5-A7A4-29F43E7FE136}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3B50AFE8-7F92-43C5-A7A4-29F43E7FE136}.Release|Any CPU.Build.0 = Release|Any CPU
+		{13D13897-C57D-484E-AF9D-F3E40A55F7A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13D13897-C57D-484E-AF9D-F3E40A55F7A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13D13897-C57D-484E-AF9D-F3E40A55F7A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13D13897-C57D-484E-AF9D-F3E40A55F7A4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
