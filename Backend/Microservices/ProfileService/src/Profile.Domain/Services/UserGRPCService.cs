@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
-using Chat.Application.Interfaces;
-using Chat.Domain.Entities;
 using Grpc.Core;
+using Profile.BLL.Interfaces.Repositories;
+using Profile.DAL.Entities;
 using UserGrpcService;
 using static UserGrpcService.UserService;
 
-namespace Chat.Data.Services
+namespace Profile.BLL.Services
 {
     public class UserGRPCService : UserServiceBase
     {
@@ -20,7 +20,7 @@ namespace Chat.Data.Services
         {
             try
             {
-                await _unitOfWork.Users.AddAsync(_mapper.Map<User>(request));
+                await _unitOfWork.Users.CreateAsync(_mapper.Map<User>(request));
                 await _unitOfWork.SaveChangesAsync();
             }
             catch (Exception ex)

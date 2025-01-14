@@ -128,15 +128,15 @@ services:
       - Jwt__Audience=https://localhost:5001
       - Jwt__TokenValidityInMinutes=30
       - ConnectionStrings__DefaultConnection=Server=authdb;Database=AuthDb;User Id=sa;Password=password@12345#;TrustServerCertificate=True;
-      - GrpcSettings__GameServiceUrl=https://localhost:8092
-      - GrpcSettings__ChatServiceUrl=https://localhost:8083
+      - GrpcSettings__GameServiceUrl=http://game-service:8092
+      - GrpcSettings__ChatServiceUrl=http://chat-service:8083
     depends_on:
       - authdb
     ports:
       - "8002:80"
       - "8082:443"
 
-  chat.api:
+  chat.webapi:
     container_name: chat-api
     build:
       context: ./Microservices/ChatService/src
@@ -154,7 +154,7 @@ services:
       - "8003:80"
       - "8083:443"
 
-  game.api:
+  game.webapi:
     container_name: game-api
     build:
       context: ./Microservices/GameService
@@ -198,9 +198,9 @@ services:
       - ./nginx/certs/localhost.key:/etc/nginx/certs/localhost.key
       - ./nginx/certs/localhost.crt:/etc/nginx/certs/localhost.crt
     depends_on:
-      - chat.api
+      - chat.webapi
       - auth.api 
-      - game.api
+      - game.webapi
       - profile.api
     networks:
       - backend
