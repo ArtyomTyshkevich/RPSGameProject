@@ -1,0 +1,57 @@
+version: '3.9'
+
+networks:
+  backend:
+    driver: bridge
+
+services:
+  gamedb:
+    container_name: game-db
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=password@12345
+    networks:
+      - backend
+    ports:
+      - "8011:1433"
+
+  rabbitmq:
+    container_name: game-rabbitmq
+    image: rabbitmq:management
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    networks:
+      - backend
+
+  gameredis:
+    container_name: game-redis
+    image: "redis:latest"
+    restart: always
+    ports:
+      - "6380:6379"
+    networks:
+      - backend
+
+  game.webapi:
+    container_name: game-api
+    build:
+      context: .
+      dockerfile: src/Game.WebAPI/Dockerfile
+    networks:
+      - backend
+    environment:
+      - ConnectionStrings__DefaultConnection=Server=Gamedb;Database=GameDb;User Id=sa;Password=password@12345;TrustServerCertificate=True;
+    depends_on:
+      - gamedb
+    ports:
+      - "8012:80"
+      - "8092:443"
+
+
+volumes:
+  mongo_data:

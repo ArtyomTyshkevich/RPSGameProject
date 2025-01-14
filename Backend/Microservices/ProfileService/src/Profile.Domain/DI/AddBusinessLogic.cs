@@ -16,7 +16,7 @@ namespace Profile.BLL.DI
     {
         public static void AddBusinessLogic(this IServiceCollection services, IConfiguration configuration)
         {
-
+            services.AddGrpc();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IGameRepository, GameRepository>();
