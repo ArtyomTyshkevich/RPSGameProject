@@ -39,13 +39,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Protos\" />
+    <Protobuf Include="Protos\UserData.proto" GrpcServices="Server" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Protobuf Include="..\..\..\..\Shared\Protos\UserData.proto">
-      <Link>Protos\UserData.proto</Link>
-    </Protobuf>
-  </ItemGroup>
-
 </Project>

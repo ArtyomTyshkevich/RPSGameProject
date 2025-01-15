@@ -3,11 +3,11 @@ using Grpc.Core;
 using Profile.BLL.Interfaces.Repositories;
 using Profile.DAL.Entities;
 using UserGrpcService;
-using static UserGrpcService.UserService;
+using static UserGrpcService.ProfileServiceGRPC;
 
 namespace Profile.BLL.Services
 {
-    public class UserGRPCService : UserServiceBase
+    public class UserGRPCService : ProfileServiceGRPCBase
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -16,7 +16,7 @@ namespace Profile.BLL.Services
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
-        public override async Task<SaveUserResponse> SendUserData(UserRequest request, ServerCallContext context)
+        public override async Task<SaveUserResponse> SaveUser(UserRequest request, ServerCallContext context)
         {
             try
             {

@@ -128,8 +128,9 @@ services:
       - Jwt__Audience=https://localhost:5001
       - Jwt__TokenValidityInMinutes=30
       - ConnectionStrings__DefaultConnection=Server=authdb;Database=AuthDb;User Id=sa;Password=password@12345#;TrustServerCertificate=True;
-      - GrpcSettings__GameServiceUrl=http://game-service:8092
-      - GrpcSettings__ChatServiceUrl=http://chat-service:8083
+      - GrpcSettings__ChatServiceUrl=https://chat.webapi:7001
+      - GrpcSettings__GameServiceUrl=https://game.webapi:7002
+      - GrpcSettings__ProfileServiceUrl=https://profile.api:7003
     depends_on:
       - authdb
     ports:
@@ -146,11 +147,17 @@ services:
     environment:
       - Logstash__Uri=http://logstash:5044
       - ConnectionStrings__DefaultConnection=Server=Chatdb;Database=LibraryDb;User Id=sa;Password=password@12345#;TrustServerCertificate=True;
+      - Kestrel__Endpoints__WebApi__Protocols=Http1
+      - Kestrel__Endpoints__WebApi__Url=https://chat.webapi:443
+      - Kestrel__Endpoints__Grpc__Protocols=Http2
+      - Kestrel__Endpoints__Grpc__Url=https://chat.webapi:7001
+
     depends_on:
       - chatdb
       - chatmongodb
       - chatredis
     ports:
+      - "7001:7001"
       - "8003:80"
       - "8083:443"
 
@@ -164,6 +171,9 @@ services:
     environment:
       - Logstash__Uri=http://logstash:5044
       - ConnectionStrings__DefaultConnection=Server=Gamedb;Database=GameDb;User Id=sa;Password=password@12345;TrustServerCertificate=True;
+      - Kestrel__Endpoints__WebApi__Url=https://chat.webapi:443
+      - Kestrel__Endpoints__Grpc__Protocols=Http2
+      - Kestrel__Endpoints__Grpc__Url=https://chat.webapi:7002
     depends_on:
       - gamedb
     ports:
@@ -180,6 +190,9 @@ services:
     environment:
       - Logstash__Uri=http://logstash:5044
       - ConnectionStrings__DefaultConnection=Server=Profiledb;Database=ProfileDb;User Id=sa;Password=password@12345#;TrustServerCertificate=True;
+      - Kestrel__Endpoints__WebApi__Url=https://chat.webapi:443
+      - Kestrel__Endpoints__Grpc__Protocols=Http2
+      - Kestrel__Endpoints__Grpc__Url=https://chat.api:7003
     depends_on:
       - profiledb
       - profilemongodb

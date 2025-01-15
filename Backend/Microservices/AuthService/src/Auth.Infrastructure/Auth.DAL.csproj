@@ -7,12 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Protobuf Include="..\..\..\..\Shared\Protos\UserData.proto">
-      <Link>Protos\UserData.proto</Link>
-    </Protobuf>
-   </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="13.0.1" />
     <PackageReference Include="FluentValidation" Version="11.11.0" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
@@ -45,9 +39,8 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.36.0" />
   </ItemGroup>
-
+ 
   <ItemGroup>
-    <Folder Include="Protos\" />
+    <Protobuf Include="Protos\UserData.proto" GrpcServices="Client" />
   </ItemGroup>
-
 </Project>

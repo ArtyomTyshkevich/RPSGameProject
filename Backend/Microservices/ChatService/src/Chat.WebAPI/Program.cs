@@ -2,16 +2,15 @@ using Chat.Data.Configuration;
 using Chat.Data.Services;
 using Chat.WebAPI.DI;
 using Chat.WebAPI.Hubs;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddSignalR();
-
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddBusinessLogic(builder.Configuration);
-builder.Host.ConfigureLogs(builder.Configuration);
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())

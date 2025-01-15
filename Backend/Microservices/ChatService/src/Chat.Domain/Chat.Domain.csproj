@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -33,13 +33,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Proto\" />
+    <Protobuf Include="Protos\UserData.proto" GrpcServices="Server" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Protobuf Include="..\..\..\..\Shared\Protos\UserData.proto">
-      <Link>Proto\UserData.proto</Link>
-    </Protobuf>
-  </ItemGroup>
-
+  
 </Project>
