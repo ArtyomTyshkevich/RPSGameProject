@@ -40,4 +40,8 @@
     <ProjectReference Include="..\Chat.Domain\Chat.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Certificates\" />
+  </ItemGroup>
+
 </Project>

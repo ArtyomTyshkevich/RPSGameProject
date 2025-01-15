@@ -4,11 +4,11 @@ using Game.Application.Interfaces.Repositories;
 using Game.Domain.Entities;
 using Grpc.Core;
 using UserGrpcService;
-using static UserGrpcService.UserService;
+using static UserGrpcService.GameServiceGRPC;
 
 namespace Game.Data.Services
 {
-    public class UserGRPCService : UserServiceBase
+    public class UserGRPCService : GameServiceGRPCBase
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -17,7 +17,7 @@ namespace Game.Data.Services
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
-        public override async Task<SaveUserResponse> SendUserData(UserRequest request, ServerCallContext context)
+        public override async Task<SaveUserResponse> SaveUser(UserRequest request, ServerCallContext context)
         {
             try
             {

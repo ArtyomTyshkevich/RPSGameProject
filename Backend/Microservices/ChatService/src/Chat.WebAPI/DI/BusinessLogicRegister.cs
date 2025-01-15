@@ -4,6 +4,7 @@ using Chat.Data.Repositories;
 using FluentValidation.AspNetCore;
 using Chat.Data.Services;
 using Chat.Data.Configuration;
+using Chat.Application.Mappings;
 
 namespace Chat.WebAPI.DI
 {
@@ -20,7 +21,7 @@ namespace Chat.WebAPI.DI
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ICacheService, CacheService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddAutoMapper(typeof(Program));
+            services.AddAutoMapper(typeof(UserMappingProfile).Assembly);
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using UserGrpcService; 
+using UserGrpcService;
 
 namespace Auth.BLL.DI
 {
@@ -8,23 +8,35 @@ namespace Auth.BLL.DI
     {
         public static void ConfigureGrpcClients(this IServiceCollection services, IConfiguration configuration)
         {
-            //var profileServiceUrl = configuration["GrpcSettings:ProfileServiceUrl"];
             var gameServiceUrl = configuration["GrpcSettings:GameServiceUrl"];
             var chatServiceUrl = configuration["GrpcSettings:ChatServiceUrl"];
-
-            //services.AddGrpcClient<ProfileService.ProfileServiceClient>(options =>
-            //{
-            //    options.Address = new Uri(profileServiceUrl);
-            //});
+            var profileServiceUrl = configuration["GrpcSettings:ProfileServiceUrl"];
 
             services.AddGrpcClient<GameServiceGRPC.GameServiceGRPCClient>(options =>
             {
                 options.Address = new Uri(gameServiceUrl);
+            })
+            .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
+            {
+                ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
             });
 
             services.AddGrpcClient<ChatServiceGRPC.ChatServiceGRPCClient>(options =>
             {
                 options.Address = new Uri(chatServiceUrl);
+            })
+            .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
+            {
+                ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+            });
+
+            services.AddGrpcClient<ProfileServiceGRPC.ProfileServiceGRPCClient>(options =>
+            {
+                options.Address = new Uri(profileServiceUrl);
+            })
+            .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
+            {
+                ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
             });
         }
     }
