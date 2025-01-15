@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Profile.BLL.DTOs;
 using Profile.BLL.Interfaces.Services;
-using Profile.DAL.Entities.Mongo;
 
 namespace Profile.API.Controllers
 {
@@ -18,20 +17,20 @@ namespace Profile.API.Controllers
         }
 
         [HttpGet("GetAll")]
-        public async Task<ActionResult<List<Game>>> GetAllGames(CancellationToken cancellationToken)
+        public async Task<ActionResult<List<GameDTO>>> GetAllGames(CancellationToken cancellationToken)
         {
             var games = await _gameService.GetAllGamesAsync(cancellationToken);
             return Ok(games);
         }
         [HttpPost("Add")]
-        public async Task<ActionResult<List<Game>>> PostGames(GameDTO gameDTO, CancellationToken cancellationToken)
+        public async Task<ActionResult<List<GameDTO>>> PostGames(GameDTO gameDTO, CancellationToken cancellationToken)
         {
              await _gameService.AddGameAsync(gameDTO, cancellationToken);
             return Ok();
         }
 
         [HttpGet("GetById/{id}")]
-        public async Task<ActionResult<Game>> GetGameById(string id, CancellationToken cancellationToken)
+        public async Task<ActionResult<GameDTO>> GetGameById(string id, CancellationToken cancellationToken)
         {
             var game = await _gameService.GetGameByIdAsync(id, cancellationToken);
             return Ok(game);

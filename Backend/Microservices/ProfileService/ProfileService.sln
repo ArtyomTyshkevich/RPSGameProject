@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.34928.147
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Api", "Api", "{8F9ECCFC-D3DD-49D9-A4B6-C6C1CDD171F8}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "API", "API", "{8F9ECCFC-D3DD-49D9-A4B6-C6C1CDD171F8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Profile.BLL", "src\Profile.Domain\Profile.BLL.csproj", "{397AFC42-AA55-4442-930F-C6B6D55EFA2A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Profile.BLL", "src\Profile.BLL\Profile.BLL.csproj", "{397AFC42-AA55-4442-930F-C6B6D55EFA2A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Profile.DAL", "src\Profile.Infrastructure\Profile.DAL.csproj", "{644FADA3-9121-4488-A864-5DFFDBAC35BE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Profile.DAL", "src\Profile.DAL\Profile.DAL.csproj", "{644FADA3-9121-4488-A864-5DFFDBAC35BE}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Profile.API", "src\Profile.API\Profile.API.csproj", "{583C1BC9-C673-4E8B-AD0C-6A85820D54BF}"
 EndProject
@@ -16,6 +16,10 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Profile.Tests", "src\Profile.Tests\Profile.Tests.csproj", "{6EF71B22-1DD5-4031-9251-3C586C4BEFE4}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "..\..\docker-compose.dcproj", "{13D13897-C57D-484E-AF9D-F3E40A55F7A4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DAL", "DAL", "{91864C6B-1C48-4EC1-8A85-2111697B139B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BLL", "BLL", "{84FAC9CE-5B4E-4163-9AF0-344D06292489}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -48,6 +52,8 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{397AFC42-AA55-4442-930F-C6B6D55EFA2A} = {84FAC9CE-5B4E-4163-9AF0-344D06292489}
+		{644FADA3-9121-4488-A864-5DFFDBAC35BE} = {91864C6B-1C48-4EC1-8A85-2111697B139B}
 		{583C1BC9-C673-4E8B-AD0C-6A85820D54BF} = {8F9ECCFC-D3DD-49D9-A4B6-C6C1CDD171F8}
 		{6EF71B22-1DD5-4031-9251-3C586C4BEFE4} = {C14A4590-C7EE-4C0F-89E7-AD3629B2235D}
 	EndGlobalSection

@@ -31,6 +31,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Profile.DAL\Profile.DAL.csproj" />
     <ProjectReference Include="..\Profile.Infrastructure\Profile.DAL.csproj" />
   </ItemGroup>
 
