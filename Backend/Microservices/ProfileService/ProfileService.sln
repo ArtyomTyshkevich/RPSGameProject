@@ -21,6 +21,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DAL", "DAL", "{91864C6B-1C4
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BLL", "BLL", "{84FAC9CE-5B4E-4163-9AF0-344D06292489}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RPSGame.Broker", "..\..\Shared\Broker\RPSGame.Broker.csproj", "{0C706D1E-9EC5-46CF-B429-4084B3690E47}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +49,10 @@ Global
 		{13D13897-C57D-484E-AF9D-F3E40A55F7A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{13D13897-C57D-484E-AF9D-F3E40A55F7A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{13D13897-C57D-484E-AF9D-F3E40A55F7A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C706D1E-9EC5-46CF-B429-4084B3690E47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C706D1E-9EC5-46CF-B429-4084B3690E47}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C706D1E-9EC5-46CF-B429-4084B3690E47}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C706D1E-9EC5-46CF-B429-4084B3690E47}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

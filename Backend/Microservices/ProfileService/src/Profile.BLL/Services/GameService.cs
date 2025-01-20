@@ -3,6 +3,7 @@ using Profile.BLL.DTOs;
 using Profile.BLL.Interfaces.Repositories;
 using Profile.BLL.Interfaces.Services;
 using Profile.DAL.Entities.Mongo;
+using RPSGame.Broker.Events;
 
 namespace Profile.BLL.Services
 {
@@ -32,9 +33,9 @@ namespace Profile.BLL.Services
         {
             await _unitOfWork.Games.DeleteGameAsync(id, cancellationToken);
         }
-        public async Task AddGameAsync(GameDTO gameDTO, CancellationToken cancellationToken)
+        public async Task AddGameAsync(GameResultDto gameResultDto, CancellationToken cancellationToken)
         {
-            var game = _mapper.Map<Game>(gameDTO);
+            var game = _mapper.Map<Game>(gameResultDto);
             await _unitOfWork.Games.AddGameAsync(game, cancellationToken);
         }
     }

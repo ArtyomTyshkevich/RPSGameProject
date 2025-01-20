@@ -39,6 +39,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Shared\Broker\RPSGame.Broker.csproj" />
+    <ProjectReference Include="..\..\..\..\Shared\Broker\RPSGame.Broker\RPSGame.Broker\RPSGame.Broker.csproj" />
     <ProjectReference Include="..\Game.Application\Game.Application.csproj" />
     <ProjectReference Include="..\Game.Domain\Game.Domain.csproj" />
   </ItemGroup>

@@ -1,16 +1,23 @@
-﻿using Game.Application.Interfaces.Repositories.UnitOfWork;
+﻿using AutoMapper;
+using Game.Application.Interfaces.Repositories.UnitOfWork;
 using Game.Application.Interfaces.Services;
 using Game.Domain.Entities;
 using Game.Domain.Enums;
+using MassTransit;
+using RPSGame.Broker.Events;
 
 namespace Game.Data.Services
 {
     public class RoundService : IRoundService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IPublishEndpoint _publishEndpoint;
+        private readonly IMapper _mapper;
 
-        public RoundService(IUnitOfWork unitOfWork)
+        public RoundService(IUnitOfWork unitOfWork, IPublishEndpoint publishEndpoint, IMapper mapper)
         {
+            _mapper = mapper;
+            _publishEndpoint = publishEndpoint;
             _unitOfWork = unitOfWork;
         }
 
@@ -46,7 +53,7 @@ namespace Game.Data.Services
             var roomWinner = DetermineWinnerRoom(room);
             if (roomWinner != null)
             {
-                await ProcessRoomWinner(room, roomWinner.Value, cancellationToken);
+                await GameEndProcess(room, roomWinner.Value, cancellationToken);
             }
             else
             {
@@ -54,24 +61,17 @@ namespace Game.Data.Services
             }
         }
 
-        private async Task ProcessRoomWinner(Room room, GameResults winner, CancellationToken cancellationToken)
+        private async Task GameEndProcess(Room room, GameResults winner, CancellationToken cancellationToken)
         {
             room.GameResult = winner;
             await _unitOfWork.SaveChangesAsync(cancellationToken);
             await UpdatePlayerRatings(room, cancellationToken);
             await PreparationForCleaningRum(room, cancellationToken);
+            await UpdatePlayerRatingsAsync(room, cancellationToken);
+            await SaveGameResultAsync(room,cancellationToken);
+            await ClearRoomAsync(room, cancellationToken);
         }
-
-        private async Task ProceedToNextRound(Room room, CancellationToken cancellationToken)
-        {
-            if (room.RoundNum < room.Rounds.Count)
-            {
-                room.RoundNum++;
-                await _unitOfWork.SaveChangesAsync(cancellationToken);
-            }
-        }
-
-        private async Task UpdatePlayerRatings(Room room, CancellationToken cancellationToken)
+        private async Task UpdatePlayerRatingsAsync(Room room, CancellationToken cancellationToken)
         {
             if (room.GameResult == GameResults.FirstPlayerWon)
             {
@@ -86,10 +86,30 @@ namespace Game.Data.Services
             await _unitOfWork.SaveChangesAsync(cancellationToken);
         }
 
-        private async Task PreparationForCleaningRum(Room room, CancellationToken cancellationToken)
+        private async Task SaveGameResultAsync(Room room, CancellationToken cancellationToken)
+        {
+            await _publishEndpoint.Publish(new GameResultsProcessedEvent
+            {
+                FirstPlayerRating = room.FirstPlayer!.Rating,
+                SecondPlayerRating = room.SecondPlayer!.Rating,
+                Game = _mapper.Map<GameResultDto>(room)
+
+            }, cancellationToken);
+        }
+
+        private async Task ClearRoomAsync(Room room, CancellationToken cancellationToken)
         {
             room.Status = RoomStatuses.InPreparation;
             await _unitOfWork.SaveChangesAsync(cancellationToken);
+        }
+
+        private async Task ProceedToNextRound(Room room, CancellationToken cancellationToken)
+        {
+            if (room.RoundNum < room.Rounds.Count)
+            {
+                room.RoundNum++;
+                await _unitOfWork.SaveChangesAsync(cancellationToken);
+            }
         }
 
         private async Task SetPlayerMove(Room room, Round currentRound, Guid playerId, PlayerMoves move,CancellationToken cancellationToken)
