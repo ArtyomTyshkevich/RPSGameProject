@@ -1,4 +1,5 @@
 ﻿using Profile.BLL.DTOs;
+using RPSGame.Broker.Events;
 
 namespace Profile.BLL.Interfaces.Services
 {
@@ -7,7 +8,6 @@ namespace Profile.BLL.Interfaces.Services
         Task<IEnumerable<GameDTO>> GetAllGamesAsync(CancellationToken cancellationToken);
         Task<GameDTO> GetGameByIdAsync(string id, CancellationToken cancellationToken);
         Task DeleteGameAsync(string id, CancellationToken cancellationToken);
-        Task AddGameAsync(GameDTO gameDTO, CancellationToken cancellationToken);
-    }
+        Task AddGameAsync(GameResultDto gameResultDto, CancellationToken cancellationToken);
 }
        

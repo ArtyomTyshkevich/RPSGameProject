@@ -8,5 +8,6 @@ namespace Profile.BLL.Interfaces.Services
         Task<UserDTO> GetByIdAsync(Guid id, CancellationToken cancellationToken);
         Task UpdateAsync(UserDTO userDTO, CancellationToken cancellationToken);
         Task DeleteAsync(Guid id, CancellationToken cancellationToken);
+        Task UpdateRating(Guid id, int rating, CancellationToken cancellationToken);
     }
 }
