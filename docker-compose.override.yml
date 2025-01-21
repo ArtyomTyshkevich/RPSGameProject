@@ -31,7 +31,6 @@ services:
       - "80"
       - "443"
     volumes:
-      - ./Backend/Shared:/src/Shared
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
  

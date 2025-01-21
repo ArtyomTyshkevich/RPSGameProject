@@ -1,5 +1,3 @@
-#See https://aka.ms/customizecontainer to learn how to customize your debug container and how Visual Studio uses this Dockerfile to build your images for faster debugging.
-
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 WORKDIR /app
 EXPOSE 80
@@ -7,11 +5,14 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 ARG BUILD_CONFIGURATION=Release
+WORKDIR /Shared
+COPY ["Backend/Shared/Broker/Broker/Broker.csproj", "Broker/Broker/"]
 WORKDIR /src
-COPY ["Backend/Microservices/GameService/src/Game.WebAPI/Game.WebAPI.csproj", "src/Game.WebAPI/"]
 COPY ["Backend/Microservices/GameService/src/Game.Application/Game.Application.csproj", "src/Game.Application/"]
 COPY ["Backend/Microservices/GameService/src/Game.Domain/Game.Domain.csproj", "src/Game.Domain/"]
 COPY ["Backend/Microservices/GameService/src/Game.Data/Game.Data.csproj", "src/Game.Data/"]
+COPY ["Backend/Microservices/GameService/src/Game.Domain/Protos/UserData.proto", "src/Game.Domain/Protos/"]
+COPY ["Backend/Microservices/GameService/src/Game.WebAPI/Game.WebAPI.csproj", "src/Game.WebAPI/"]
 RUN dotnet restore "./src/Game.WebAPI/Game.WebAPI.csproj"
 COPY . .
 WORKDIR "/src/src/Game.WebAPI"
