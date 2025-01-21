@@ -117,7 +117,7 @@ services:
   auth.api:
     container_name: auth-api
     build:
-      context: ./Microservices/AuthService
+      context: ./Backend/Microservices/AuthService
       dockerfile: src/Auth.API/Dockerfile
     networks:
       - backend
@@ -140,7 +140,7 @@ services:
   chat.webapi:
     container_name: chat-api
     build:
-      context: ./Microservices/ChatService/src
+      context: ./Backend/Microservices/ChatService/src
       dockerfile: Chat.WebAPI/Dockerfile
     networks:
       - backend
@@ -165,7 +165,7 @@ services:
     container_name: game-api
     build:
       context: .
-      dockerfile: /Microservices/GameService/src/Game.WebAPI/Dockerfile
+      dockerfile: /Backend/Microservices/GameService/src/Game.WebAPI/Dockerfile
     networks:
       - backend
     environment:
@@ -183,7 +183,7 @@ services:
   profile.api:
     container_name: profile-api
     build:
-      context: ./Microservices/ProfileService
+      context: ./Backend/Microservices/ProfileService
       dockerfile: src/Profile.API/Dockerfile
     networks:
       - backend

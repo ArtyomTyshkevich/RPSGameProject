@@ -8,11 +8,10 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["Shared/Broker/Broker/Broker.csproj", "src/Broker/"]
-COPY ["Microservices/GameService/src/Game.WebAPI/Game.WebAPI.csproj", "src/Game.WebAPI/"]
-COPY ["Microservices/GameService/src/Game.Application/Game.Application.csproj", "src/Game.Application/"]
-COPY ["Microservices/GameService/src/Game.Domain/Game.Domain.csproj", "src/Game.Domain/"]
-COPY ["Microservices/GameService/src/Game.Data/Game.Data.csproj", "src/Game.Data/"]
+COPY ["Backend/Microservices/GameService/src/Game.WebAPI/Game.WebAPI.csproj", "src/Game.WebAPI/"]
+COPY ["Backend/Microservices/GameService/src/Game.Application/Game.Application.csproj", "src/Game.Application/"]
+COPY ["Backend/Microservices/GameService/src/Game.Domain/Game.Domain.csproj", "src/Game.Domain/"]
+COPY ["Backend/Microservices/GameService/src/Game.Data/Game.Data.csproj", "src/Game.Data/"]
 RUN dotnet restore "./src/Game.WebAPI/Game.WebAPI.csproj"
 COPY . .
 WORKDIR "/src/src/Game.WebAPI"
@@ -25,4 +24,4 @@ RUN dotnet publish "./Game.WebAPI.csproj" -c $BUILD_CONFIGURATION -o /app/publis
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "Game.WebAPI.dll"]D:\RPSGameProject\Backend\Shared\Broker\Broker\Broker.csproj
+ENTRYPOINT ["dotnet", "Game.WebAPI.dll"]
