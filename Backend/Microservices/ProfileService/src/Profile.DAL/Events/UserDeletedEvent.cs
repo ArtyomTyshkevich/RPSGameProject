@@ -1,4 +1,4 @@
-﻿namespace RPSGame.Broker.Events
+﻿namespace Profile.DAL.Events
 {
     public class UserDeletedEvent
     {

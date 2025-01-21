@@ -1,6 +1,6 @@
 ﻿using MassTransit;
 using Profile.BLL.Interfaces.Services;
-using RPSGame.Broker.Events;
+using Profile.DAL.Events;
 
 namespace Profile.BLL.Consumers
 {

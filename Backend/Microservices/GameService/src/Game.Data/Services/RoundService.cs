@@ -1,23 +1,23 @@
 ﻿using AutoMapper;
+using Broker.Events;
+using Game.Application.Interfaces.Buses;
 using Game.Application.Interfaces.Repositories.UnitOfWork;
 using Game.Application.Interfaces.Services;
 using Game.Domain.Entities;
 using Game.Domain.Enums;
-using MassTransit;
-using RPSGame.Broker.Events;
 
 namespace Game.Data.Services
 {
     public class RoundService : IRoundService
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IPublishEndpoint _publishEndpoint;
+        private readonly IBrokerBus _bus;
         private readonly IMapper _mapper;
 
-        public RoundService(IUnitOfWork unitOfWork, IPublishEndpoint publishEndpoint, IMapper mapper)
+        public RoundService(IUnitOfWork unitOfWork, IBrokerBus bus, IMapper mapper)
         {
             _mapper = mapper;
-            _publishEndpoint = publishEndpoint;
+            _bus = bus;
             _unitOfWork = unitOfWork;
         }
 
@@ -88,7 +88,7 @@ namespace Game.Data.Services
 
         private async Task SaveGameResultAsync(Room room, CancellationToken cancellationToken)
         {
-            await _publishEndpoint.Publish(new GameResultsProcessedEvent
+            await _bus.Publish(new GameResultsProcessedEvent
             {
                 FirstPlayerRating = room.FirstPlayer!.Rating,
                 SecondPlayerRating = room.SecondPlayer!.Rating,

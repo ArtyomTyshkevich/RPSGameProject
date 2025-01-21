@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
+using Broker.Events;
 using Game.Application.Interfaces.Repositories.UnitOfWork;
 using MassTransit;
-using RPSGame.Broker.Events;
 
 namespace Game.Data.Consumers
 {

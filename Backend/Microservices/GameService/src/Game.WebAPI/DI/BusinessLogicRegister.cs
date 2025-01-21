@@ -29,6 +29,7 @@ namespace Game.WebAPI.DI
             services.AddScoped<ICacheService, CacheService>();
             services.AddScoped<CleanRoomsJob>();
             services.ConfigureMassTransit(configuration);
+            services.ConfigureBrokerMassTransit(configuration);
             services.ConfigureDatabase(configuration);
             services.ConfigureCache(configuration);
             services.ConfigureAuthentication(configuration);

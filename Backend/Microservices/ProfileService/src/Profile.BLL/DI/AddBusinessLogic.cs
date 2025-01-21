@@ -22,6 +22,7 @@ namespace Profile.BLL.DI
             services.AddScoped<IGameRepository, GameRepository>();
             services.AddScoped<IGameService, GameService>();
             services.AddScoped<IUserService, UserService>();
+            services.ConfigureBrokerMassTransit(configuration);
             services.AddScoped<IGlobalStatisticsServices, GlobalStatisticsServices>();
             services.AddScoped<IUserStatisticsService, UserStatisticsService>();
             services.ConfigureDatabase(configuration);
