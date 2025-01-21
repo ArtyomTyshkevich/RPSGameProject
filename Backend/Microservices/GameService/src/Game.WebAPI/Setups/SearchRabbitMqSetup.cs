@@ -1,13 +1,14 @@
-﻿using Game.Data.Consumers;
+﻿using Game.Application.Interfaces.Buses;
+using Game.Data.Consumers;
 using MassTransit;
 
  namespace Game.WebAPI.Setups
 {
-    public static class RabbitMqSetup
+    public static class SearchRabbitMqSetup
     {
         public static void ConfigureMassTransit(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddMassTransit(x =>
+            services.AddMassTransit<ISearchRabbitMqBus>(x =>
             {
                 x.AddConsumer<GameSearchConsumer>();
 

@@ -4,7 +4,7 @@
     <ProjectVersion>2.1</ProjectVersion>
     <DockerTargetOS>Linux</DockerTargetOS>
     <DockerPublishLocally>False</DockerPublishLocally>
-    <ProjectGuid>a65919d1-aadb-4a9e-b5b4-edaa002e6d7e</ProjectGuid>
+    <ProjectGuid>0ee3f68d-54cf-4509-99e5-ba4e1708775a</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
     <DockerServiceUrl>{Scheme}://localhost:{ServicePort}/swagger</DockerServiceUrl>
     <DockerServiceName>game.webapi</DockerServiceName>

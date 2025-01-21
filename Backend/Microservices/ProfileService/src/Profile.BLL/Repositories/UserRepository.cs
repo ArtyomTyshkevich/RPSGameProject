@@ -41,7 +41,7 @@ namespace Profile.BLL.Repositories
         public async Task DeleteAsync(Guid userId, CancellationToken cancellationToken = default)
         {
             var user = await _gameDbContext.Users
-                                .FindAsync(userId, cancellationToken);
+                                .FindAsync(userId);
             if (user != null)
             {
                 _gameDbContext.Users.Remove(user);

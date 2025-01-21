@@ -162,8 +162,8 @@ services:
   game.webapi:
     container_name: game-api
     build:
-      context: ./Microservices/GameService
-      dockerfile: src/Game.WebAPI/Dockerfile
+      context: .
+      dockerfile: /Microservices/GameService/src/Game.WebAPI/Dockerfile
     networks:
       - backend
     environment:

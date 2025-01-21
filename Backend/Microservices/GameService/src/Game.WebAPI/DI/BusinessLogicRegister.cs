@@ -26,6 +26,7 @@ namespace Game.WebAPI.DI
             services.AddScoped<ISearchService, SearchService>();
             services.AddScoped<ICacheService, CacheService>();
             services.ConfigureMassTransit(configuration);
+            services.ConfigureBrokerMassTransit(configuration);
             services.ConfigureDatabase(configuration);
             services.ConfigureCache(configuration);
             services.AddAutoMapper(typeof(RoomMappingProfile).Assembly);

@@ -4,7 +4,7 @@ using Profile.BLL.DTOs;
 using Profile.BLL.Interfaces.Repositories;
 using Profile.BLL.Interfaces.Services;
 using Profile.DAL.Entities;
-using RPSGame.Broker.Events;
+using Profile.DAL.Events;
 
 namespace Profile.BLL.Services
 {
@@ -38,7 +38,14 @@ namespace Profile.BLL.Services
             var user = _mapper.Map<User>(userDTO);
             await _unitOfWork.Users.UpdateAsync(user);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
-            await _publishEndpoint.Publish(_mapper.Map<UserUpdatedEvent>(user), cancellationToken);
+            await _publishEndpoint.Publish(
+                _mapper.Map<UserUpdatedEvent>(user),
+                context =>
+                {
+                    context.SetRoutingKey("user.updated");
+                },
+                cancellationToken);
+
         }
 
         public async Task DeleteAsync(Guid userId, CancellationToken cancellationToken)

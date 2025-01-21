@@ -1,5 +1,5 @@
 ﻿using Profile.BLL.DTOs;
-using RPSGame.Broker.Events;
+using Profile.DAL.Events;
 
 namespace Profile.BLL.Interfaces.Services
 {
@@ -9,5 +9,6 @@ namespace Profile.BLL.Interfaces.Services
         Task<GameDTO> GetGameByIdAsync(string id, CancellationToken cancellationToken);
         Task DeleteGameAsync(string id, CancellationToken cancellationToken);
         Task AddGameAsync(GameResultDto gameResultDto, CancellationToken cancellationToken);
+    }
 }
        

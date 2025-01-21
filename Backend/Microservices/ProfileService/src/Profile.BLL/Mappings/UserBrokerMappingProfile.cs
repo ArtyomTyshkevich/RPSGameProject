@@ -1,6 +1,5 @@
-﻿using Profile.BLL.DTOs;
-using Profile.DAL.Entities;
-using RPSGame.Broker.Events;
+﻿using Profile.DAL.Entities;
+using Profile.DAL.Events;
 
 namespace Profile.BLL.Mappings
 {

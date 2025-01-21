@@ -22,12 +22,6 @@ namespace Profile.API.Controllers
             var games = await _gameService.GetAllGamesAsync(cancellationToken);
             return Ok(games);
         }
-        [HttpPost("Add")]
-        public async Task<ActionResult<List<GameDTO>>> PostGames(GameDTO gameDTO, CancellationToken cancellationToken)
-        {
-             await _gameService.AddGameAsync(gameDTO, cancellationToken);
-            return Ok();
-        }
 
         [HttpGet("GetById/{id}")]
         public async Task<ActionResult<GameDTO>> GetGameById(string id, CancellationToken cancellationToken)

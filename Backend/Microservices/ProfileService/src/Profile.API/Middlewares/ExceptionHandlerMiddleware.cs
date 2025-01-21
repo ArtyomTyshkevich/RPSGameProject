@@ -21,7 +21,7 @@ namespace Profile.API.Middlewares
                 await _next(context);
             }
             catch (Exception exception)
-            {
+                {
                 await HandleExceptionAsync(context, exception);
             }
         }

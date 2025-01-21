@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
+using Broker.Events;
 using Game.Application.Interfaces.Repositories.UnitOfWork;
 using Game.Domain.Entities;
 using MassTransit;
-using RPSGame.Broker.Events;
 
-namespace Game.Data.Consumers
+namespace Profile.DAL.Events
 {
     public class UserUpdateConsumer : IConsumer<UserUpdatedEvent>
     {
@@ -21,8 +21,8 @@ namespace Game.Data.Consumers
         public async Task Consume(ConsumeContext<UserUpdatedEvent> context)
         {
             var cancellationToken = context.CancellationToken;
-            await _unitOfWork.Users.UpdateAsync(_mapper.Map<User>(context.Message));
-            await _unitOfWork.SaveChangesAsync();
+            await _unitOfWork.Users.UpdateAsync(_mapper.Map<User>(context.Message), cancellationToken);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
         }
     }
 }

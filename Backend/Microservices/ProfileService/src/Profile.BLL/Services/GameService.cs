@@ -3,7 +3,7 @@ using Profile.BLL.DTOs;
 using Profile.BLL.Interfaces.Repositories;
 using Profile.BLL.Interfaces.Services;
 using Profile.DAL.Entities.Mongo;
-using RPSGame.Broker.Events;
+using Profile.DAL.Events;
 
 namespace Profile.BLL.Services
 {
