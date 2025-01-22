@@ -60,7 +60,7 @@ namespace Game.WebAPI.Controllers
             return NoContent();
         }
 
-        [HttpDelete("inactive")]
+        [HttpDelete("?status=inactive")]
         public async Task<IActionResult> DeleteInactiveRooms(CancellationToken cancellationToken)
         {
             _logger.LogInformation("Starting to delete inactive rooms.");

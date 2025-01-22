@@ -59,7 +59,7 @@ namespace Library.WebAPI.Controllers
             return Ok(newTokens);
         }
 
-        [Authorize]
+       
         [HttpPost("revoke/{username}")]
         public async Task<IActionResult> Revoke(string username, CancellationToken cancellationToken)
         {

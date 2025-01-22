@@ -18,7 +18,7 @@ namespace Profile.API.Controllers
             _logger = logger;
         }
 
-        [HttpGet("GetAll")]
+        [HttpGet]
         public async Task<ActionResult<List<UserDTO>>> GetAll(CancellationToken cancellationToken)
         {
             _logger.LogInformation("[GetAll] Fetching all users.");
@@ -27,7 +27,7 @@ namespace Profile.API.Controllers
             return Ok(usersDTO);
         }
 
-        [HttpGet("GetById")]
+        [HttpGet("{id:guid}")]
         public async Task<ActionResult<UserDTO>> GetById(Guid id, CancellationToken cancellationToken)
         {
             _logger.LogInformation("[GetById] Fetching user with ID: {UserId}.", id);
@@ -41,7 +41,7 @@ namespace Profile.API.Controllers
             return Ok(userDTO);
         }
 
-        [HttpPut("UpdateById")]
+        [HttpPut]
         public async Task<ActionResult> Update(UserDTO userDTO, CancellationToken cancellationToken)
         {
             _logger.LogInformation("[Update] Updating user with ID: {UserId}.", userDTO.Id);
@@ -50,7 +50,7 @@ namespace Profile.API.Controllers
             return NoContent();
         }
 
-        [HttpDelete("DeleteById")]
+        [HttpDelete("{id:guid}")]
         public async Task<ActionResult> Delete(Guid id, CancellationToken cancellationToken)
         {
             _logger.LogInformation("[Delete] Deleting user with ID: {UserId}.", id);

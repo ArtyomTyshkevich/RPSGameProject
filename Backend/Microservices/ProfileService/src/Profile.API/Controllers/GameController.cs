@@ -6,7 +6,7 @@ using Profile.DAL.Entities.Mongo;
 namespace Profile.API.Controllers
 {
     [ApiController]
-    [Route("game")]
+    [Route("games")]
     public class GameController : ControllerBase
     {
         private readonly IGameService _gameService;
@@ -18,7 +18,7 @@ namespace Profile.API.Controllers
             _logger = logger;
         }
 
-        [HttpGet("GetAll")]
+        [HttpGet]
         public async Task<ActionResult<List<Game>>> GetAllGames(CancellationToken cancellationToken)
         {
             _logger.LogInformation("[GetAllGames] Retrieving all games");
@@ -26,7 +26,7 @@ namespace Profile.API.Controllers
             return Ok(games);
         }
 
-        [HttpPost("Add")]
+        [HttpPost]
         public async Task<IActionResult> PostGame([FromBody] GameDTO gameDTO, CancellationToken cancellationToken)
         {
             if (gameDTO == null)
@@ -40,7 +40,7 @@ namespace Profile.API.Controllers
             return Ok();
         }
 
-        [HttpGet("GetById/{id}")]
+        [HttpGet("/{id:string}")]
         public async Task<ActionResult<Game>> GetGameById(string id, CancellationToken cancellationToken)
         {
             if (string.IsNullOrEmpty(id))
@@ -60,7 +60,7 @@ namespace Profile.API.Controllers
             return Ok(game);
         }
 
-        [HttpDelete("DeleteById/{id}")]
+        [HttpDelete("{id:string}")]
         public async Task<IActionResult> DeleteGame(string id, CancellationToken cancellationToken)
         {
             if (string.IsNullOrEmpty(id))

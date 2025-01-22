@@ -4,7 +4,7 @@ using Profile.BLL.Interfaces.Services;
 namespace Profile.API.Controllers
 {
     [ApiController]
-    [Route("UserStatistics")]
+    [Route("user-statistics")]
     public class UserStatisticsController : ControllerBase
     {
         private readonly IUserStatisticsService _userStatisticsService;
@@ -43,7 +43,7 @@ namespace Profile.API.Controllers
             return Ok(result);
         }
 
-        [HttpGet("win-rate")]
+        [HttpGet("winrate")]
         public async Task<ActionResult> GetWinRateAsync(Guid playerId, CancellationToken cancellationToken)
         {
             _logger.LogInformation("[GetWinRateAsync] Fetching win rate for player with ID: {PlayerId}.", playerId);

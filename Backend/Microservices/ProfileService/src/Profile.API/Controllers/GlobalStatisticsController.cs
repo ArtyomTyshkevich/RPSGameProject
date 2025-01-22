@@ -1,11 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Profile.BLL.Interfaces.Services;
 
 namespace Profile.API.Controllers
 {
     [ApiController]
-    [Route("GlobalStatistics")]
+    [Route("global-statistics")]
     public class GlobalStatisticsController : ControllerBase
     {
         private readonly IGlobalStatisticsServices _globalStatisticsServices;
@@ -25,7 +24,7 @@ namespace Profile.API.Controllers
             return Ok(result);
         }
 
-        [HttpGet("moves/win-rate")]
+        [HttpGet("moves/winrate")]
         public async Task<IActionResult> GetMovesWinRatePlayers(CancellationToken cancellationToken)
         {
             _logger.LogInformation("[GetMovesWinRatePlayers] Fetching moves win rate statistics.");
