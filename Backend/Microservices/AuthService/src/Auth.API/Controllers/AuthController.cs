@@ -12,25 +12,31 @@ namespace Library.WebAPI.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IMediator _mediator;
+        private readonly ILogger<AuthController> _logger;
 
-        public AuthController(IMediator mediator)
+        public AuthController(IMediator mediator, ILogger<AuthController> logger)
         {
             _mediator = mediator;
+            _logger = logger;
         }
 
         [HttpPost("login")]
         public async Task<ActionResult<AuthResponse>> Authenticate([FromBody] AuthRequest request, CancellationToken cancellationToken)
         {
+            _logger.LogInformation("login start.");
             var query = new AuthenticateQuery { AuthRequest = request };
             var response = await _mediator.Send(query, cancellationToken);
+            _logger.LogInformation("login success.");
             return Ok(response);
         }
 
         [HttpPost("register")]
         public async Task<ActionResult<AuthResponse>> Register([FromBody] RegisterRequest request, CancellationToken cancellationToken)
         {
+            _logger.LogInformation("Register start.");
             var query = new RegisterCommand { RegisterRequest = request };
             var response = await _mediator.Send(query, cancellationToken);
+            _logger.LogInformation("Register success.");
             return Ok(response);
         }
 
