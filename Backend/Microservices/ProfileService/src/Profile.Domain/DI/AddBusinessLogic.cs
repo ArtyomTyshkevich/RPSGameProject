@@ -25,6 +25,8 @@ namespace Profile.BLL.DI
             services.AddScoped<IGlobalStatisticsServices, GlobalStatisticsServices>();
             services.AddScoped<IUserStatisticsService, UserStatisticsService>();
             services.ConfigureDatabase(configuration);
+            services.ConfigureAuthentication(configuration);
+            services.ConfigureSwagger();
             services.Configure<MongoDbConfiguration>
                 (
                 configuration.GetSection("MongoDbSettings")

@@ -92,5 +92,29 @@ namespace Game.Data.Repositories
         {
             _gameDbContext.Attach(room);
         }
+        public async Task CleanRoomsInPreparationAsync(CancellationToken cancellationToken = default)
+        {
+            var rooms = await _gameDbContext.Rooms
+                .Where(room => room.Status==RoomStatuses.InPreparation)
+                .Include(room => room.FirstPlayer)
+                .Include(room => room.SecondPlayer)
+                .Include(room => room.Rounds)       
+                .ToListAsync(cancellationToken);
+            foreach (var room in rooms)
+            {
+                room.FirstPlayer = null;
+                room.SecondPlayer = null;
+                room.RoundNum = 0;
+                room.GameResult = null;
+                room.Status = RoomStatuses.WaitingPlayers;
+
+                foreach (var round in room.Rounds)
+                {
+                    round.RoundResult = null;
+                    round.SecondPlayerMove = null;
+                    round.FirstPlayerMove = null;
+                }
+            }
+        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Game.Application.DTOs;
 using Game.Application.Interfaces.Services;
 using Game.Domain.Enums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Game.WebAPI.Controllers
@@ -19,6 +20,7 @@ namespace Game.WebAPI.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "AdminOnly")]
         public async Task<ActionResult<List<RoomDTO>>> GetAll(CancellationToken cancellationToken)
         {
             _logger.LogInformation("Starting to fetch all rooms.");
@@ -60,7 +62,7 @@ namespace Game.WebAPI.Controllers
             return NoContent();
         }
 
-        [HttpDelete("?status=inactive")]
+        [HttpDelete("inactive")]
         public async Task<IActionResult> DeleteInactiveRooms(CancellationToken cancellationToken)
         {
             _logger.LogInformation("Starting to delete inactive rooms.");

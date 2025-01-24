@@ -7,12 +7,12 @@ namespace Profile.API.Controllers
 {
     [ApiController]
     [Route("games")]
-    public class GameController : ControllerBase
+    public class GamesController : ControllerBase
     {
         private readonly IGameService _gameService;
-        private readonly ILogger<GameController> _logger;
+        private readonly ILogger<GamesController> _logger;
 
-        public GameController(IGameService gameService, ILogger<GameController> logger)
+        public GamesController(IGameService gameService, ILogger<GamesController> logger)
         {
             _gameService = gameService;
             _logger = logger;
@@ -35,12 +35,12 @@ namespace Profile.API.Controllers
                 return BadRequest("Game data is required.");
             }
 
-            _logger.LogInformation("[PostGame] Adding new game: {GameName}", gameDTO.Name);
+            _logger.LogInformation("[PostGame] Adding new game: {GameName}", gameDTO.Id);
             await _gameService.AddGameAsync(gameDTO, cancellationToken);
             return Ok();
         }
 
-        [HttpGet("/{id:string}")]
+        [HttpGet("{id}")]
         public async Task<ActionResult<Game>> GetGameById(string id, CancellationToken cancellationToken)
         {
             if (string.IsNullOrEmpty(id))
@@ -60,7 +60,7 @@ namespace Profile.API.Controllers
             return Ok(game);
         }
 
-        [HttpDelete("{id:string}")]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteGame(string id, CancellationToken cancellationToken)
         {
             if (string.IsNullOrEmpty(id))

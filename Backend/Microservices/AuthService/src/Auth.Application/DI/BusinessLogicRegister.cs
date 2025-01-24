@@ -15,9 +15,9 @@ namespace Auth.BLL.DI
         {
             services.AddFluentValidationAutoValidation();
             services.ConfigureAuthentication(configuration);
+            services.ConfigureSwagger();
             services.ConfigureDatabase(configuration);
             services.ConfigureIdentity();
-            services.ConfigureSwagger();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
         }

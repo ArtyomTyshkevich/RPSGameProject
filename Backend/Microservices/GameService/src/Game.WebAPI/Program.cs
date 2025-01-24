@@ -1,3 +1,4 @@
+using Game.Data.Configuration;
 using Game.WebAPI.DI;
 using Game.WebAPI.Hubs;
 using Game.WebAPI.NewFolder;
