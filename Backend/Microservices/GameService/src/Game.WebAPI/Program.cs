@@ -1,7 +1,9 @@
+using Chat.Data.Extensions;
 using Game.Data.Configuration;
 using Game.WebAPI.DI;
 using Game.WebAPI.Hubs;
 using Game.WebAPI.NewFolder;
+using Hangfire;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,8 +26,12 @@ app.UseCustomExceptionHandler();
 app.UseHttpsRedirection();
 app.UseAuthorization();
 
+app.UseHangfireDashboard("/hangfire-dashboard", new DashboardOptions()
+{
+    IgnoreAntiforgeryToken = true
+});
 app.MapControllers();
-
+app.Services.SetupJobs();
 app.MapHub<GameHub>("/GameHub");
 
 app.Run();

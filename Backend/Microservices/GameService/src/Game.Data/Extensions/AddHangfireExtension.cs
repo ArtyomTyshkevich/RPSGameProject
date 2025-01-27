@@ -8,7 +8,7 @@ namespace Chat.Data.Extensions
 {
     public static class AddHangfireExtension
     {
-        public static IServiceCollection AddHangfire(this IServiceCollection @this, IConfiguration configuration)
+        public static IServiceCollection AddHangfireConfig(this IServiceCollection @this, IConfiguration configuration)
         {
             @this.AddHangfire(globalConfiguration =>
             {
@@ -16,9 +16,11 @@ namespace Chat.Data.Extensions
                     .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
                     .UseSimpleAssemblyNameTypeSerializer()
                     .UseRecommendedSerializerSettings()
-                    .UseSqlServerStorage(configuration.GetConnectionString("RoomsHangfireConnection"));
+                    .UseSqlServerStorage(configuration.GetConnectionString("DefaultConnection"), new Hangfire.SqlServer.SqlServerStorageOptions
+                    {
+                        PrepareSchemaIfNecessary = true
+                    });
             });
-
             @this.AddHangfireServer();
 
             return @this;
