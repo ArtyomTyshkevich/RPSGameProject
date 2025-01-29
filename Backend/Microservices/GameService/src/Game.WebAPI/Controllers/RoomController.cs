@@ -78,7 +78,7 @@ namespace Game.WebAPI.Controllers
 
             return NoContent();
         }
-
+            
         [HttpPatch("{roomId:guid}/status")]
         public async Task<IActionResult> UpdateRoomStatus(Guid roomId, [FromQuery] RoomStatuses newStatus, CancellationToken cancellationToken)
         {
