@@ -41,5 +41,9 @@
   <ItemGroup>
     <Protobuf Include="Protos/UserData.proto" GrpcServices="Server" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Protobuf Include="Protos/UserData.proto" GrpcServices="Server" />
+  </ItemGroup>
   
 </Project>

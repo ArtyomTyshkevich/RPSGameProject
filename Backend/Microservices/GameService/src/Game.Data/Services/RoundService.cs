@@ -112,6 +112,15 @@ namespace Game.Data.Services
             }
         }
 
+        private async Task ProceedToNextRound(Room room, CancellationToken cancellationToken)
+        {
+            if (room.RoundNum < room.Rounds.Count)
+            {
+                room.RoundNum++;
+                await _unitOfWork.SaveChangesAsync(cancellationToken);
+            }
+        }
+
         private async Task SetPlayerMove(Room room, Round currentRound, Guid playerId, PlayerMoves move,CancellationToken cancellationToken)
         {
             if (room.FirstPlayer?.Id == playerId)
