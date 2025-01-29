@@ -28,17 +28,6 @@ namespace Profile.API.Controllers
             return Ok(games);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> PostGame([FromBody] GameDTO gameDTO, CancellationToken cancellationToken)
-        {
-
-            _logger.LogInformation("[PostGame] Adding new game: {GameName}", gameDTO.Id);
-
-            await _gameService.AddGameAsync(gameDTO, cancellationToken);
-
-            return Ok();
-        }
-
         [HttpGet("{id}")]
         public async Task<ActionResult<Game>> GetGameById(string id, CancellationToken cancellationToken)
         {
