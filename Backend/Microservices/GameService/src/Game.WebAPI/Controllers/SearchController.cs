@@ -22,7 +22,7 @@ namespace Game.WebAPI.Controllers
             _logger = logger;
         }
 
-        [HttpPost("Start")]
+        [HttpPost("{id}/start")]
         public async Task<IActionResult> StartSearchGame([FromBody] Guid id, CancellationToken cancellationToken)
         {
             _logger.LogInformation("StartSearchGame initiated. Game ID: {GameId}", id);
@@ -40,7 +40,7 @@ namespace Game.WebAPI.Controllers
             }
         }
 
-        [HttpPost("Stop")]
+        [HttpPost("{id}/stop")]
         public async Task<IActionResult> StopSearchGame([FromBody] Guid id, CancellationToken cancellationToken)
         {
             _logger.LogInformation("StopSearchGame initiated. Game ID: {GameId}", id);
