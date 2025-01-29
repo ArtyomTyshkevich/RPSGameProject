@@ -1,5 +1,4 @@
-﻿// File: /Configurations/RulesConfiguration.cs
-using Game.Domain.Entities;
+﻿using Game.Domain.Entities;
 using Game.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;

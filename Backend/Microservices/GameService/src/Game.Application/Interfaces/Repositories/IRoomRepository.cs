@@ -10,5 +10,6 @@ namespace Game.Application.Interfaces.Repositories
         Task DeleteInactiveRoomsAsync(CancellationToken cancellationToken = default);
         Task UpdateRoomStatusAsync(Guid roomId, RoomStatuses newStatus, CancellationToken cancellationToken = default);
         void Attach(Room room);
+        Task CleanRoomsInPreparationAsync(CancellationToken cancellationToken = default);
     }
 }

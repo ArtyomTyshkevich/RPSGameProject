@@ -59,7 +59,7 @@ namespace Game.Data.Services
             room.GameResult = winner;
             await _unitOfWork.SaveChangesAsync(cancellationToken);
             await UpdatePlayerRatings(room, cancellationToken);
-            await ClearRoom(room, cancellationToken);
+            await PreparationForCleaningRum(room, cancellationToken);
         }
 
         private async Task ProceedToNextRound(Room room, CancellationToken cancellationToken)
@@ -86,19 +86,9 @@ namespace Game.Data.Services
             await _unitOfWork.SaveChangesAsync(cancellationToken);
         }
 
-        private async Task ClearRoom(Room room, CancellationToken cancellationToken)
+        private async Task PreparationForCleaningRum(Room room, CancellationToken cancellationToken)
         {
-            room.FirstPlayer = null;
-            room.SecondPlayer = null;
-            room.RoundNum = 0;
-            room.GameResult = null;
             room.Status = RoomStatuses.InPreparation;
-            foreach (var round in room.Rounds)
-            {
-                round.RoundResult = null;
-                round.SecondPlayerMove = null;
-                round.FirstPlayerMove = null;
-            }
             await _unitOfWork.SaveChangesAsync(cancellationToken);
         }
 
