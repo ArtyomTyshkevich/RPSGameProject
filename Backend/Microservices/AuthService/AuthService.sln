@@ -19,7 +19,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DAL", "DAL", "{6DC9E68E-7F7
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BLL", "BLL", "{2D5F9081-DDAB-4582-B3E8-3686CEB6C8CE}"
 EndProject
-Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "..\..\docker-compose.dcproj", "{13D13897-C57D-484E-AF9D-F3E40A55F7A4}"
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "..\..\..\docker-compose.dcproj", "{13D13897-C57D-484E-AF9D-F3E40A55F7A4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
