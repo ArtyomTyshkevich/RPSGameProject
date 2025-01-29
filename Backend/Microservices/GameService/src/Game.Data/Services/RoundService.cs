@@ -19,8 +19,8 @@ namespace Game.Data.Services
             var currentRound = room.Rounds[room.RoundNum];
 
             await SetPlayerMove(room, currentRound, playerId, move, cancellationToken);
-
-            if (currentRound.FirstPlayerMove.HasValue && currentRound.SecondPlayerMove.HasValue)
+            var roomIsFull = currentRound.FirstPlayerMove.HasValue && currentRound.SecondPlayerMove.HasValue;
+            if (roomIsFull)
             {
                 await ProcessRoundResult(room, currentRound, cancellationToken);
             }

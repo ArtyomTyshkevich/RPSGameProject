@@ -29,7 +29,8 @@ namespace Chat.WebAPI.Hubs
         {
             _logger.LogInformation("[JoinChatAsync] User {UserId} attempting to join chat.", id);
 
-            var userDTO = _mapper.Map<UserDTO>(await _unitOfWork.Users.GetByIdAsync(id));
+            var user = await _unitOfWork.Users.GetByIdAsync(id);
+            var userDTO = _mapper.Map<UserDTO>(user);
             if (userDTO == null)
             {
                 _logger.LogWarning("[JoinChatAsync] User {UserId} not found.", id);

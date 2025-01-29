@@ -27,17 +27,11 @@ namespace Game.WebAPI.Controllers
         {
             _logger.LogInformation("StartSearchGame initiated. Game ID: {GameId}", id);
 
-            try
-            {
-                await _searchService.StartSearchGame(id, cancellationToken);
-                _logger.LogInformation("StartSearchGame succeeded. Game ID: {GameId}", id);
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "StartSearchGame failed. Game ID: {GameId}", id);
-                throw;
-            }
+            await _searchService.StartSearchGame(id, cancellationToken);
+
+            _logger.LogInformation("StartSearchGame succeeded. Game ID: {GameId}", id);
+
+            return Ok();
         }
 
         [HttpPost("Stop")]
@@ -45,17 +39,11 @@ namespace Game.WebAPI.Controllers
         {
             _logger.LogInformation("StopSearchGame initiated. Game ID: {GameId}", id);
 
-            try
-            {
-                await _searchService.StopSearchGame(id, cancellationToken);
-                _logger.LogInformation("StopSearchGame succeeded. Game ID: {GameId}", id);
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "StopSearchGame failed. Game ID: {GameId}", id);
-                throw;
-            }
+            await _searchService.StopSearchGame(id, cancellationToken);
+
+            _logger.LogInformation("StopSearchGame succeeded. Game ID: {GameId}", id);
+
+            return Ok();
         }
     }
 }

@@ -60,10 +60,11 @@ namespace Game.Data.Services
             return _mapper.ProjectTo<RoomDTO>(rooms.AsQueryable()).ToList();
         }
 
-        public async Task<RoomDTO?> GetRoomByIdAsync(Guid id, CancellationToken cancellationToken)
+        public async Task<RoomDTO> GetRoomByIdAsync(Guid id, CancellationToken cancellationToken)
         {
             var room = await _unitOfWork.Rooms.GetByIdAsync(id, cancellationToken);
-            return room != null ? _mapper.Map<RoomDTO>(room) : null;
+            var roomDTO = _mapper.Map<RoomDTO>(room);
+            return roomDTO;
         }
 
         public async Task DeleteRoomByIdAsync(Guid id, CancellationToken cancellationToken)
