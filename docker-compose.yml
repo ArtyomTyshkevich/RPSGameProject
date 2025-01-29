@@ -84,12 +84,24 @@ services:
     volumes:
       - mongo_data_chat:/data/db
 
-  rabbitmq:
-    container_name: game-rabbitmq
+  brokerrabbitmq:
+    container_name: broker-rabbitmq
     image: rabbitmq:management
     ports:
       - "15672:15672"
       - "5672:5672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    networks:
+      - backend 
+      
+  gamerabbitmq:
+    container_name: game-rabbitmq
+    image: rabbitmq:management
+    ports:
+      - "15673:15673"
+      - "5673:5673"
     environment:
       - RABBITMQ_DEFAULT_USER=guest
       - RABBITMQ_DEFAULT_PASS=guest
@@ -117,8 +129,8 @@ services:
   auth.api:
     container_name: auth-api
     build:
-      context: ./Backend/Microservices/AuthService
-      dockerfile: src/Auth.API/Dockerfile
+      context: .
+      dockerfile: /Backend/Microservices/AuthService/src/Auth.API/Dockerfile
     networks:
       - backend
     environment:
@@ -139,8 +151,8 @@ services:
   chat.webapi:
     container_name: chat-api
     build:
-      context: ./Backend/Microservices/ChatService/src
-      dockerfile: Chat.WebAPI/Dockerfile
+      context: .
+      dockerfile: /Backend/Microservices/ChatService/src/Chat.WebAPI/Dockerfile
     networks:
       - backend
     environment:
@@ -180,8 +192,8 @@ services:
   profile.api:
     container_name: profile-api
     build:
-      context: ./Backend/Microservices/ProfileService
-      dockerfile: src/Profile.API/Dockerfile
+      context: .
+      dockerfile: /Backend/Microservices/ProfileService/src/Profile.API/Dockerfile
     networks:
       - backend
     environment:
@@ -203,9 +215,9 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-      - ./nginx/certs/localhost.key:/etc/nginx/certs/localhost.key
-      - ./nginx/certs/localhost.crt:/etc/nginx/certs/localhost.crt
+      - ./Backend/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./Backend/nginx/certs/localhost.key:/etc/nginx/certs/localhost.key
+      - ./Backend/nginx/certs/localhost.crt:/etc/nginx/certs/localhost.crt
     depends_on:
       - chat.webapi
       - auth.api 
