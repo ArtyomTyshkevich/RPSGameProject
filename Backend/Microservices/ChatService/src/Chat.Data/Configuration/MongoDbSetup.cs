@@ -2,15 +2,19 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-public static class MongoDbSetup
+namespace Chat.Data.Configuration
 {
-    public static void ConfigureMongoDb(this IServiceCollection services, IConfiguration configuration)
+    public static class MongoDbSetup
     {
-        services.AddSingleton<MongoDbContext>(sp =>
+        public static void ConfigureMongoDb(this IServiceCollection services, IConfiguration configuration)
         {
-            var connectionString = configuration["MongoDB:ConnectionString"];
-            var databaseName = configuration["MongoDB:DatabaseName"];
-            return new MongoDbContext(connectionString, databaseName);
-        });
+            services.AddSingleton<MongoDbContext>(sp =>
+            {
+                var connectionString = configuration["MongoDB:ConnectionString"];
+                var databaseName = configuration["MongoDB:DatabaseName"];
+
+                return new MongoDbContext(connectionString, databaseName);
+            });
+        }
     }
 }

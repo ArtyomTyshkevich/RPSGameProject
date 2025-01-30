@@ -1,5 +1,5 @@
-﻿using Profile.DAL.Entities;
-using Profile.DAL.Events;
+﻿using Broker.Events;
+using Profile.DAL.Entities;
 
 namespace Profile.BLL.Mappings
 {

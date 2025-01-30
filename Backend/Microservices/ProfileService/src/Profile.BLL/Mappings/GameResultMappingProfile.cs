@@ -1,6 +1,5 @@
-﻿using Profile.DAL.Entities.Mongo;
-using Profile.DAL.Events;
-
+﻿using Broker.Events;
+using Profile.DAL.Entities.Mongo;
 namespace Profile.BLL.Mappings
 {
     public class GameResultMappingProfile : AutoMapper.Profile

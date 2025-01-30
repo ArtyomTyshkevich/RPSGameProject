@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
+using Broker.Events;
 using Profile.BLL.DTOs;
 using Profile.BLL.Interfaces.Repositories;
 using Profile.BLL.Interfaces.Services;
 using Profile.DAL.Entities.Mongo;
-using Profile.DAL.Events;
 
 namespace Profile.BLL.Services
 {

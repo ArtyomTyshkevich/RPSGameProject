@@ -19,6 +19,7 @@ namespace Auth.BLL.DI
             services.ConfigureSwagger();
             services.ConfigureDatabase(configuration);
             services.ConfigureGrpcClients(configuration);
+            services.ConfigureBrokerMassTransit(configuration);
             services.ConfigureIdentity();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();

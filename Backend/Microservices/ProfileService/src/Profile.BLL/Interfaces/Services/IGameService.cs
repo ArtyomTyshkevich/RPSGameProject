@@ -1,5 +1,5 @@
-﻿using Profile.BLL.DTOs;
-using Profile.DAL.Events;
+﻿using Broker.Events;
+using Profile.BLL.DTOs;
 
 namespace Profile.BLL.Interfaces.Services
 {

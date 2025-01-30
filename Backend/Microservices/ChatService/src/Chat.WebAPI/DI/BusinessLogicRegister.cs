@@ -18,6 +18,7 @@ namespace Chat.WebAPI.DI
             services.ConfigureCache(configuration);
             services.ConfigureMongoDb(configuration);
             services.ConfigureAuthentication(configuration);
+            services.ConfigureBrokerMassTransit(configuration);
             services.ConfigureSwagger();
             services.AddScoped<IMessageRepository, MessageRepository>();
             services.AddScoped<IUserRepository, UserRepository>();

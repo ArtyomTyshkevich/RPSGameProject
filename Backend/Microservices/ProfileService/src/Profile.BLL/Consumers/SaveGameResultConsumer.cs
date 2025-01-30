@@ -1,6 +1,6 @@
-﻿using MassTransit;
+﻿using Broker.Events;
+using MassTransit;
 using Profile.BLL.Interfaces.Services;
-using Profile.DAL.Events;
 
 namespace Profile.BLL.Consumers
 {

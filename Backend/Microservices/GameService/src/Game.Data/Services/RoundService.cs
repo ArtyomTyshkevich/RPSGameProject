@@ -64,9 +64,7 @@ namespace Game.Data.Services
         private async Task GameEndProcess(Room room, GameResults winner, CancellationToken cancellationToken)
         {
             room.GameResult = winner;
-            await _unitOfWork.SaveChangesAsync(cancellationToken);
-            await UpdatePlayerRatings(room, cancellationToken);
-            await PreparationForCleaningRum(room, cancellationToken);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);;
             await UpdatePlayerRatingsAsync(room, cancellationToken);
             await SaveGameResultAsync(room,cancellationToken);
             await ClearRoomAsync(room, cancellationToken);
@@ -101,15 +99,6 @@ namespace Game.Data.Services
         {
             room.Status = RoomStatuses.InPreparation;
             await _unitOfWork.SaveChangesAsync(cancellationToken);
-        }
-
-        private async Task ProceedToNextRound(Room room, CancellationToken cancellationToken)
-        {
-            if (room.RoundNum < room.Rounds.Count)
-            {
-                room.RoundNum++;
-                await _unitOfWork.SaveChangesAsync(cancellationToken);
-            }
         }
 
         private async Task ProceedToNextRound(Room room, CancellationToken cancellationToken)

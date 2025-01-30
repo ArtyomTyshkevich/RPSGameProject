@@ -41,6 +41,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Shared\Broker\Broker\Broker.csproj" />
     <ProjectReference Include="..\Auth.Infrastructure\Auth.DAL.csproj" />
   </ItemGroup>
 

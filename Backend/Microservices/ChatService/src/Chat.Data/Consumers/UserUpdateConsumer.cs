@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using Broker.Events;
-using Game.Application.Interfaces.Repositories.UnitOfWork;
-using Game.Domain.Entities;
+using Chat.Application.Interfaces;
+using Chat.Domain.Entities;
 using MassTransit;
 
-namespace Profile.DAL.Events
+namespace Game.Data.Consumers
 {
     public class UserUpdateConsumer : IConsumer<UserUpdatedEvent>
     {
@@ -22,7 +22,7 @@ namespace Profile.DAL.Events
         {
             var cancellationToken = context.CancellationToken;
             var user = _mapper.Map<User>(context.Message);
-            await _unitOfWork.Users.UpdateAsync(user, cancellationToken);
+            await _unitOfWork.Users.UpdateAsync(user);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
         }
     }

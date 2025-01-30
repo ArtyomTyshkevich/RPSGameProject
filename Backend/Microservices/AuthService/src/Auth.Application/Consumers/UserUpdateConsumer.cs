@@ -1,10 +1,10 @@
-﻿using AutoMapper;
+﻿using Auth.DAL.Entities;
+using AutoMapper;
 using Broker.Events;
-using Game.Application.Interfaces.Repositories.UnitOfWork;
-using Game.Domain.Entities;
+using Library.Application.Interfaces;
 using MassTransit;
 
-namespace Profile.DAL.Events
+namespace Auth.BLL.Consumers
 {
     public class UserUpdateConsumer : IConsumer<UserUpdatedEvent>
     {
@@ -15,7 +15,7 @@ namespace Profile.DAL.Events
         public UserUpdateConsumer(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _mapper = mapper;
-            _unitOfWork = unitOfWork;        
+            _unitOfWork = unitOfWork;
         }
 
         public async Task Consume(ConsumeContext<UserUpdatedEvent> context)

@@ -45,5 +45,22 @@ namespace Library.Data.Repositories
             return await _authDbContext.Users
                 .FirstAsync(user => user.Email == Email, cancellationToken);
         }
+        public async Task UpdateAsync(User user, CancellationToken cancellationToken = default)
+        {
+            _authDbContext.Users
+                .Update(user);
+        }
+
+        public async Task DeleteAsync(Guid userId, CancellationToken cancellationToken = default)
+        {
+            var user = await _authDbContext.Users
+                .FindAsync(userId, cancellationToken);
+
+            if (user != null)
+            {
+                _authDbContext.Users
+                    .Remove(user);
+            }
+        }
     }
 }

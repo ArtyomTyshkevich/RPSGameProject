@@ -5,7 +5,9 @@
       "commandVersion": "1.0",
       "serviceActions": {
         "auth.api": "StartDebugging",
-        "chat.webapi": "StartDebugging"
+        "chat.webapi": "StartDebugging",
+        "game.webapi": "StartDebugging",
+        "profile.api": "StartDebugging"
       }
     }
   }

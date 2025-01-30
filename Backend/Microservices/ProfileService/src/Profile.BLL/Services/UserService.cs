@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
+using Broker.Events;
 using MassTransit;
 using Profile.BLL.DTOs;
 using Profile.BLL.Interfaces.Repositories;
 using Profile.BLL.Interfaces.Services;
 using Profile.DAL.Entities;
-using Profile.DAL.Events;
 
 namespace Profile.BLL.Services
 {

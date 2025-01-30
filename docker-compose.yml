@@ -153,7 +153,7 @@ services:
     container_name: chat-api
     build:
       context: .
-      dockerfile: /Backend/Microservices/ChatService/src/Chat.WebAPI/Dockerfile
+      dockerfile: Backend/Microservices/ChatService/src/Chat.WebAPI/Dockerfile
     networks:
       - backend
     environment:
@@ -177,7 +177,7 @@ services:
     container_name: game-api
     build:
       context: .
-      dockerfile: /Backend/Microservices/GameService/src/Game.WebAPI/Dockerfile
+      dockerfile: Backend/Microservices/GameService/src/Game.WebAPI/Dockerfile
     networks:
       - backend
     environment:
@@ -196,7 +196,7 @@ services:
     container_name: profile-api
     build:
       context: .
-      dockerfile: /Backend/Microservices/ProfileService/src/Profile.API/Dockerfile
+      dockerfile: Backend/Microservices/ProfileService/src/Profile.API/Dockerfile
     networks:
       - backend
     environment:
@@ -248,7 +248,7 @@ services:
   logstash:
     image: logstash:8.17.0
     volumes:
-      - ./Shared/Logstash/Pipeline:/usr/share/logstash/pipeline
+      - ./Backend/Shared/Logstash/Pipeline:/usr/share/logstash/pipeline
     ports:
       - 9600:9600
     depends_on:
