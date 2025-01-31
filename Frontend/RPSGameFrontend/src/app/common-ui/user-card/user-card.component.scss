@@ -1,0 +1,17 @@
+.user-card {
+    border: 1px solid var(--light-color);
+    padding: 15px 24px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+}
+
+.user-card__name {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.user-card__rating {
+    display: flex;
+    justify-content: flex-end; 
+}

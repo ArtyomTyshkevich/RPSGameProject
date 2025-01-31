@@ -1,8 +1,5 @@
-import { RoomTypes } from "../enums/RoomTypes";
-import { RoomStatuses } from "../enums/RoomStatuses";
-
-export interface Room {
-  id: string;
-  roomType: RoomTypes;
-  roomStatus: RoomStatuses;
+export interface RegisterRequest {
+  email: string;
+  password: string;
+  confirmPassword: string;
 }

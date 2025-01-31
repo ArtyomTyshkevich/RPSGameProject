@@ -1,7 +1,6 @@
-import ChatUser from "./ChatUser"
+import ChatUser from "./chatUser"
 
 export interface UserConnection {
     userDTO: ChatUser;
     chatRoom: string;
-  }
-  
+}
