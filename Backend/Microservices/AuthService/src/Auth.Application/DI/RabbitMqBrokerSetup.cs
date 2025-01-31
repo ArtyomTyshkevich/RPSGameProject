@@ -19,12 +19,12 @@ namespace Auth.BLL.DI
                         h.Password(configuration["BrokerSettings:Password"]!);
                     });
 
-                    cfg.ReceiveEndpoint("UserDeletedQueue_GameService", e =>
+                    cfg.ReceiveEndpoint("UserDeletedQueue_AuthService", e =>
                     {
                         e.ConfigureConsumer<UserDeleteConsumer>(context);
                     });
 
-                    cfg.ReceiveEndpoint("UserUpdatedQueue_GameService", e =>
+                    cfg.ReceiveEndpoint("UserUpdatedQueue_AuthService", e =>
                     {
                         e.ConfigureConsumer<UserUpdateConsumer>(context);
 

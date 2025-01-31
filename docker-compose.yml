@@ -87,6 +87,7 @@ services:
   brokerrabbitmq:
     container_name: broker-rabbitmq
     image: rabbitmq:management
+    mem_limit: 5g 
     ports:
       - "15672:15672"
       - "5672:5672"

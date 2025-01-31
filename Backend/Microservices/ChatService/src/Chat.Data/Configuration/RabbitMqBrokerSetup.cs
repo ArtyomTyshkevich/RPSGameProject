@@ -19,12 +19,12 @@ namespace Chat.Data.Configuration
                         h.Password(configuration["BrokerSettings:Password"]!);
                     });
 
-                    cfg.ReceiveEndpoint("UserDeletedQueue_GameService", e =>
+                    cfg.ReceiveEndpoint("UserDeletedQueue_ChatService", e =>
                     {
                         e.ConfigureConsumer<UserDeleteConsumer>(context);
                     });
 
-                    cfg.ReceiveEndpoint("UserUpdatedQueue_GameService", e =>
+                    cfg.ReceiveEndpoint("UserUpdatedQueue_ChatService", e =>
                     {
                         e.ConfigureConsumer<UserUpdateConsumer>(context);
 
