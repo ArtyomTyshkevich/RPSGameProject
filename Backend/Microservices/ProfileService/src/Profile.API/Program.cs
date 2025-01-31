@@ -1,5 +1,6 @@
 using Profile.API.Middlewares;
 using Profile.BLL.DI;
+using Profile.BLL.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +11,8 @@ builder.Services.AddBusinessLogic(builder.Configuration);
 builder.Host.ConfigureLogs(builder.Configuration);
 
 var app = builder.Build();
+
+app.MapGrpcService<UserGRPCService>();
 
 if (app.Environment.IsDevelopment())
 {

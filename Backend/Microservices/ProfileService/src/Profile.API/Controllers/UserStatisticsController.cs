@@ -20,8 +20,11 @@ namespace Profile.API.Controllers
         public async Task<ActionResult> GetMoveStatisticsAsync(Guid playerId, CancellationToken cancellationToken)
         {
             _logger.LogInformation("[GetMoveStatisticsAsync] Fetching move statistics for player with ID: {PlayerId}.", playerId);
+
             var result = await _userStatisticsService.GetMoveStatisticsAsync(playerId, cancellationToken);
+
             _logger.LogInformation("[GetMoveStatisticsAsync] Successfully fetched move statistics for player with ID: {PlayerId}.", playerId);
+
             return Ok(result);
         }
 
@@ -29,8 +32,11 @@ namespace Profile.API.Controllers
         public async Task<ActionResult> GetWinsCountAsync(Guid playerId, CancellationToken cancellationToken)
         {
             _logger.LogInformation("[GetWinsCountAsync] Fetching win count for player with ID: {PlayerId}.", playerId);
+
             var result = await _userStatisticsService.GetWinsCountAsync(playerId, cancellationToken);
+
             _logger.LogInformation("[GetWinsCountAsync] Successfully fetched win count for player with ID: {PlayerId}.", playerId);
+
             return Ok(result);
         }
 
@@ -38,8 +44,11 @@ namespace Profile.API.Controllers
         public async Task<ActionResult> GetLossesCountAsync(Guid playerId, CancellationToken cancellationToken)
         {
             _logger.LogInformation("[GetLossesCountAsync] Fetching losses count for player with ID: {PlayerId}.", playerId);
+
             var result = await _userStatisticsService.GetLossesCountAsync(playerId, cancellationToken);
+
             _logger.LogInformation("[GetLossesCountAsync] Successfully fetched losses count for player with ID: {PlayerId}.", playerId);
+
             return Ok(result);
         }
 
@@ -47,8 +56,11 @@ namespace Profile.API.Controllers
         public async Task<ActionResult> GetWinRateAsync(Guid playerId, CancellationToken cancellationToken)
         {
             _logger.LogInformation("[GetWinRateAsync] Fetching win rate for player with ID: {PlayerId}.", playerId);
+
             var result = await _userStatisticsService.GetWinRateAsync(playerId, cancellationToken);
+
             _logger.LogInformation("[GetWinRateAsync] Successfully fetched win rate for player with ID: {PlayerId}.", playerId);
+
             return Ok(result);
         }
     }

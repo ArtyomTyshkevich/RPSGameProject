@@ -22,7 +22,7 @@ namespace Game.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("Game.Domain.Entities.GameRule", b =>
+            modelBuilder.Entity("GameDTO.Domain.Entities.GameRule", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -107,7 +107,7 @@ namespace Game.Data.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Game.Domain.Entities.Room", b =>
+            modelBuilder.Entity("GameDTO.Domain.Entities.Room", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -140,7 +140,7 @@ namespace Game.Data.Migrations
                     b.ToTable("Rooms");
                 });
 
-            modelBuilder.Entity("Game.Domain.Entities.Round", b =>
+            modelBuilder.Entity("GameDTO.Domain.Entities.Round", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -165,7 +165,7 @@ namespace Game.Data.Migrations
                     b.ToTable("Rounds");
                 });
 
-            modelBuilder.Entity("Game.Domain.Entities.User", b =>
+            modelBuilder.Entity("GameDTO.Domain.Entities.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -186,13 +186,13 @@ namespace Game.Data.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("Game.Domain.Entities.Room", b =>
+            modelBuilder.Entity("GameDTO.Domain.Entities.Room", b =>
                 {
-                    b.HasOne("Game.Domain.Entities.User", "FirstPlayer")
+                    b.HasOne("GameDTO.Domain.Entities.User", "FirstPlayer")
                         .WithMany()
                         .HasForeignKey("FirstPlayerId");
 
-                    b.HasOne("Game.Domain.Entities.User", "SecondPlayer")
+                    b.HasOne("GameDTO.Domain.Entities.User", "SecondPlayer")
                         .WithMany()
                         .HasForeignKey("SecondPlayerId");
 
@@ -201,14 +201,14 @@ namespace Game.Data.Migrations
                     b.Navigation("SecondPlayer");
                 });
 
-            modelBuilder.Entity("Game.Domain.Entities.Round", b =>
+            modelBuilder.Entity("GameDTO.Domain.Entities.Round", b =>
                 {
-                    b.HasOne("Game.Domain.Entities.Room", null)
+                    b.HasOne("GameDTO.Domain.Entities.Room", null)
                         .WithMany("Rounds")
                         .HasForeignKey("RoomId");
                 });
 
-            modelBuilder.Entity("Game.Domain.Entities.Room", b =>
+            modelBuilder.Entity("GameDTO.Domain.Entities.Room", b =>
                 {
                     b.Navigation("Rounds");
                 });

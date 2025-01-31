@@ -19,7 +19,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DAL", "DAL", "{6DC9E68E-7F7
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BLL", "BLL", "{2D5F9081-DDAB-4582-B3E8-3686CEB6C8CE}"
 EndProject
-Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "..\..\docker-compose.dcproj", "{13D13897-C57D-484E-AF9D-F3E40A55F7A4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Broker", "..\..\Shared\Broker\Broker\Broker.csproj", "{5C7B3ECC-57DF-4A85-904C-44E682432210}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "..\..\..\docker-compose.dcproj", "{13D13897-C57D-484E-AF9D-F3E40A55F7A4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,6 +45,10 @@ Global
 		{907C6B53-FD05-40C5-AADC-2E27CD422537}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{907C6B53-FD05-40C5-AADC-2E27CD422537}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{907C6B53-FD05-40C5-AADC-2E27CD422537}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C7B3ECC-57DF-4A85-904C-44E682432210}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C7B3ECC-57DF-4A85-904C-44E682432210}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C7B3ECC-57DF-4A85-904C-44E682432210}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C7B3ECC-57DF-4A85-904C-44E682432210}.Release|Any CPU.Build.0 = Release|Any CPU
 		{13D13897-C57D-484E-AF9D-F3E40A55F7A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{13D13897-C57D-484E-AF9D-F3E40A55F7A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{13D13897-C57D-484E-AF9D-F3E40A55F7A4}.Release|Any CPU.ActiveCfg = Release|Any CPU

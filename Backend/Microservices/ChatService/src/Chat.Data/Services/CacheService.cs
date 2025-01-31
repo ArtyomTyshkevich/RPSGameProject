@@ -1,6 +1,5 @@
 ﻿using Chat.Application.DTOs;
 using Chat.Application.Interfaces;
-using Chat.Domain.Entities;
 using Microsoft.Extensions.Caching.Distributed;
 using System.Text.Json;
 

@@ -1,4 +1,5 @@
 using Auth.BLL.Commands;
+using Auth.BLL.Commands.GrpcCommands;
 using Auth.BLL.DTOs.Identity;
 using Auth.BLL.Queries;
 using MediatR;
@@ -38,8 +39,10 @@ namespace Library.WebAPI.Controllers
         {
             _logger.LogInformation("[Register] Registration attempt started for user: {Username}", request.Email);
 
-            var command = new RegisterCommand { RegisterRequest = request };
-            var response = await _mediator.Send(command, cancellationToken);
+            var query = new RegisterCommand { RegisterRequest = request };
+            var response = await _mediator.Send(query, cancellationToken);
+            var sendUserDataCommand = new SendUserDataCommand { Email = request.Email };
+            await _mediator.Send(sendUserDataCommand, cancellationToken);
 
             _logger.LogInformation("[Register] Registration successful for user: {Username}", request.Email);
 

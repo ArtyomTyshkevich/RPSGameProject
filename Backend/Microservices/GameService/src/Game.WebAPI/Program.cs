@@ -1,11 +1,13 @@
 using Chat.Data.Extensions;
 using Game.Data.Configuration;
+using Game.Data.Services;
 using Game.WebAPI.DI;
 using Game.WebAPI.Hubs;
 using Game.WebAPI.NewFolder;
 using Hangfire;
 
 var builder = WebApplication.CreateBuilder(args);
+
 
 builder.Services.AddSignalR();
 builder.Services.AddControllers();
@@ -15,6 +17,8 @@ builder.Services.AddBusinessLogic(builder.Configuration);
 builder.Host.ConfigureLogs(builder.Configuration);
 
 var app = builder.Build();
+
+app.MapGrpcService<UserGRPCService>();
 
 if (app.Environment.IsDevelopment())
 {

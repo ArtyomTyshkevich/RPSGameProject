@@ -1,0 +1,275 @@
+version: '3.9'
+
+networks:
+  backend:
+    driver: bridge
+
+services:
+  authdb:
+    container_name: auth-db
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=password@12345#
+    networks:
+      - backend
+    ports:
+      - "8007:1433"
+
+  chatredis:
+    image: "redis:latest"
+    restart: always
+    ports:
+      - "6379:6379"
+    networks:
+      - backend
+
+  gamedb:
+    container_name: game-db
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=password@12345
+    networks:
+      - backend
+    ports:
+      - "8011:1433"
+
+  chatdb:
+    container_name: Chat-db
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=password@12345#
+    networks:
+      - backend
+    ports:
+      - "8001:1433"
+
+  profiledb:
+    container_name: profile-db
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=password@12345#
+    networks:
+      - backend
+    ports:
+      - "8022:1433"
+
+  profilemongodb:
+    image: mongo:latest
+    container_name: profile-mongodb
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=rootpassword
+    networks:
+      - backend
+    volumes:
+      - mongo_data:/data/db  
+
+  chatmongodb:
+    container_name: Chat-mongodb
+    image: mongo:latest
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=example
+    ports:
+      - "27018:27017"
+    networks:
+      - backend
+    volumes:
+      - mongo_data_chat:/data/db
+
+  brokerrabbitmq:
+    container_name: broker-rabbitmq
+    image: rabbitmq:management
+    mem_limit: 5g 
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    networks:
+      - backend 
+      
+  gamerabbitmq:
+    container_name: game-rabbitmq
+    image: rabbitmq:management
+    ports:
+      - "15673:15673"
+      - "5673:5673"
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    networks:
+      - backend
+
+  profileredis:
+    container_name: profile-redis
+    image: "redis:latest"
+    restart: always
+    ports:
+      - "6389:6389"
+    networks:
+      - backend
+
+  gameredis:
+    container_name: game-redis
+    image: "redis:latest"
+    restart: always
+    ports:
+      - "6380:6379"
+    networks:
+      - backend
+
+  auth.api:
+    container_name: auth-api
+    build:
+      context: .
+      dockerfile: /Backend/Microservices/AuthService/src/Auth.API/Dockerfile
+    networks:
+      - backend
+    environment:
+      - Logstash__Uri=http://logstash:5044
+      - Jwt__Secret=superSecretKey@345432242344324245
+      - Jwt__Issuer=https://localhost:5001 
+      - Jwt__Audience=https://localhost:5001
+      - Jwt__TokenValidityInMinutes=30
+      - ConnectionStrings__DefaultConnection=Server=authdb;Database=AuthDb;User Id=sa;Password=password@12345#;TrustServerCertificate=True;
+      - GrpcSettings__ChatServiceUrl=https://chat.webapi:7001
+      - GrpcSettings__GameServiceUrl=https://game.webapi:7002
+      - GrpcSettings__ProfileServiceUrl=https://profile.api:7003
+    depends_on:
+      - authdb
+    ports:
+      - "8002:80"
+      - "8082:443"
+
+  chat.webapi:
+    container_name: chat-api
+    build:
+      context: .
+      dockerfile: Backend/Microservices/ChatService/src/Chat.WebAPI/Dockerfile
+    networks:
+      - backend
+    environment:
+      - Logstash__Uri=http://logstash:5044
+      - ConnectionStrings__DefaultConnection=Server=Chatdb;Database=LibraryDb;User Id=sa;Password=password@12345#;TrustServerCertificate=True;
+      - Kestrel__Endpoints__WebApi__Protocols=Http1
+      - Kestrel__Endpoints__WebApi__Url=https://chat.webapi:443
+      - Kestrel__Endpoints__Grpc__Protocols=Http2
+      - Kestrel__Endpoints__Grpc__Url=https://chat.webapi:7001
+
+    depends_on:
+      - chatdb
+      - chatmongodb
+      - chatredis
+    ports:
+      - "7001:7001"
+      - "8003:80"
+      - "8083:443"
+
+  game.webapi:
+    container_name: game-api
+    build:
+      context: .
+      dockerfile: Backend/Microservices/GameService/src/Game.WebAPI/Dockerfile
+    networks:
+      - backend
+    environment:
+      - Logstash__Uri=http://logstash:5044
+      - ConnectionStrings__DefaultConnection=Server=Gamedb;Database=GameDb;User Id=sa;Password=password@12345;TrustServerCertificate=True;
+      - Kestrel__Endpoints__WebApi__Url=https://chat.webapi:443
+      - Kestrel__Endpoints__Grpc__Protocols=Http2
+      - Kestrel__Endpoints__Grpc__Url=https://chat.webapi:7002
+    depends_on:
+      - gamedb
+    ports:
+      - "8012:80"
+      - "8092:443"
+
+  profile.api:
+    container_name: profile-api
+    build:
+      context: .
+      dockerfile: Backend/Microservices/ProfileService/src/Profile.API/Dockerfile
+    networks:
+      - backend
+    environment:
+      - Logstash__Uri=http://logstash:5044
+      - ConnectionStrings__DefaultConnection=Server=Profiledb;Database=ProfileDb;User Id=sa;Password=password@12345#;TrustServerCertificate=True;
+      - Kestrel__Endpoints__WebApi__Url=https://chat.webapi:443
+      - Kestrel__Endpoints__Grpc__Protocols=Http2
+      - Kestrel__Endpoints__Grpc__Url=https://chat.api:7003
+    depends_on:
+      - profiledb
+      - profilemongodb
+    ports:
+      - "8015:80"
+      - "8095:443"
+
+  nginx:
+    container_name: nginx
+    image: nginx:latest
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Backend/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./Backend/nginx/certs/localhost.key:/etc/nginx/certs/localhost.key
+      - ./Backend/nginx/certs/localhost.crt:/etc/nginx/certs/localhost.crt
+    depends_on:
+      - chat.webapi
+      - auth.api 
+      - game.webapi
+      - profile.api
+    networks:
+      - backend
+   
+  elasticsearch:
+    container_name: elasticsearch
+    image: elasticsearch:8.16.2
+    ports:
+      - 9200:9200
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+    environment:
+      - xpack.security.enabled=false
+      - xpack.watcher.enabled=false
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - discovery.type=single-node
+    networks:
+      - backend
+
+  logstash:
+    image: logstash:8.17.0
+    volumes:
+      - ./Backend/Shared/Logstash/Pipeline:/usr/share/logstash/pipeline
+    ports:
+      - 9600:9600
+    depends_on:
+      - elasticsearch
+    networks:
+        - backend
+
+  kibana:
+    container_name: kibana
+    image: kibana:8.14.3
+    ports:
+      - 5601:5601
+    depends_on:
+      - elasticsearch
+    environment:
+      - ELASTICSEARCH_URL=http://elasticsearch:9200
+    networks:
+      - backend
+
+volumes:
+  mongo_data:
+  mongo_data_chat:
+  elasticsearch_data:

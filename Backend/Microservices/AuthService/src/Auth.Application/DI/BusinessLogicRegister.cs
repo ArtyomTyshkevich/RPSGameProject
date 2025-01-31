@@ -1,4 +1,5 @@
 ﻿using Auth.BLL.Interfaces;
+using Auth.BLL.Mappers;
 using Auth.BLL.Repositories.UnitOfWork;
 using Auth.DAL.DI;
 using FluentValidation.AspNetCore;
@@ -17,9 +18,12 @@ namespace Auth.BLL.DI
             services.ConfigureAuthentication(configuration);
             services.ConfigureSwagger();
             services.ConfigureDatabase(configuration);
+            services.ConfigureGrpcClients(configuration);
+            services.ConfigureBrokerMassTransit(configuration);
             services.ConfigureIdentity();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddAutoMapper(typeof(UserMappingProfile));
         }
     }
 }

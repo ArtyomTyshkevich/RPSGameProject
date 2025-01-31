@@ -7,14 +7,16 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 ARG BUILD_CONFIGURATION=Release
+WORKDIR /Shared
+COPY ["Backend/Shared/Broker/Broker", "Broker/Broker/"]
 WORKDIR /src
-COPY ["Chat.WebAPI/Chat.WebAPI.csproj", "Chat.WebAPI/"]
-COPY ["Chat.Application/Chat.Application.csproj", "Chat.Application/"]
-COPY ["Chat.Domain/Chat.Domain.csproj", "Chat.Domain/"]
-COPY ["Chat.Data/Chat.Data.csproj", "Chat.Data/"]
-RUN dotnet restore "./Chat.WebAPI/Chat.WebAPI.csproj"
-COPY . .
-WORKDIR "/src/Chat.WebAPI"
+COPY ["Backend/Microservices/ChatService/src/Chat.WebAPI/Chat.WebAPI.csproj", "src/Chat.WebAPI/"]
+COPY ["Backend/Microservices/ChatService/src/Chat.Application/Chat.Application.csproj", "src/Chat.Application/"]
+COPY ["Backend/Microservices/ChatService/src/Chat.Domain/Chat.Domain.csproj", "src/Chat.Domain/"]
+COPY ["Backend/Microservices/ChatService/src/Chat.Data/Chat.Data.csproj", "src/Chat.Data/"]
+RUN dotnet restore "./src/Chat.WebAPI/Chat.WebAPI.csproj"
+COPY ["Backend/Microservices/ChatService/src", "src/"]
+WORKDIR "/src/src/Chat.WebAPI"
 RUN dotnet build "./Chat.WebAPI.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish

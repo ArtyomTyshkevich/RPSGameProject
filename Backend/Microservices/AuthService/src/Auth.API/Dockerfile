@@ -11,12 +11,14 @@ RUN apt-get update && apt-get install -y wget && \
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 ARG BUILD_CONFIGURATION=Release
+WORKDIR /Shared
+COPY ["Backend/Shared/Broker/Broker", "Broker/Broker/"]
 WORKDIR /src
-COPY ["src/Auth.API/Auth.API.csproj", "src/Auth.API/"]
-COPY ["src/Auth.Application/Auth.BLL.csproj", "src/Auth.Application/"]
-COPY ["src/Auth.Infrastructure/Auth.DAL.csproj", "src/Auth.Infrastructure/"]
+COPY ["Backend/Microservices/AuthService/src/Auth.API/Auth.API.csproj", "src/Auth.API/"]
+COPY ["Backend/Microservices/AuthService/src/Auth.Application/Auth.BLL.csproj", "src/Auth.Application/"]
+COPY ["Backend/Microservices/AuthService/src/Auth.Infrastructure/Auth.DAL.csproj", "src/Auth.Infrastructure/"]
 RUN dotnet restore "./src/Auth.API/Auth.API.csproj"
-COPY . .
+COPY ["Backend/Microservices/AuthService/src", "src/"]
 WORKDIR "/src/src/Auth.API"
 RUN dotnet build "./Auth.API.csproj" -c $BUILD_CONFIGURATION -o /app/build
 

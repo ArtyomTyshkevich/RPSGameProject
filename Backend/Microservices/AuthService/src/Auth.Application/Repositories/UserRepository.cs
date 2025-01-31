@@ -15,20 +15,20 @@ namespace Library.Data.Repositories
             _authDbContext = authDbContext;
         }
 
-        public async Task<List<User>> Get(CancellationToken cancellationToken)
+        public async Task<List<User>> GetAsync(CancellationToken cancellationToken)
         {
             return await _authDbContext.Users
                                             .Include(user => user.UserName)
                                             .ToListAsync(cancellationToken);
         }
 
-        public async Task<User?> GetById(Guid userId, CancellationToken cancellationToken)
+        public async Task<User?> GetByIdAsync(Guid userId, CancellationToken cancellationToken)
         {
             return await _authDbContext.Users
                                  .FirstOrDefaultAsync(user => user.Id == userId, cancellationToken);
         }
 
-        public async Task<List<IdentityRole<Guid>>> GetRoles(User user, CancellationToken cancellationToken)
+        public async Task<List<IdentityRole<Guid>>> GetRolesAsync(User user, CancellationToken cancellationToken)
         {
             var roles = await _authDbContext.Roles
                 .Where(role => _authDbContext.UserRoles
@@ -40,10 +40,27 @@ namespace Library.Data.Repositories
             return roles;
         }
 
-        public async Task<User> GetByMail(string mail, CancellationToken cancellationToken)
+        public async Task<User> GetByEmailAsync(string Email, CancellationToken cancellationToken)
         {
             return await _authDbContext.Users
-                .FirstAsync(user => user.Email == mail, cancellationToken);
+                .FirstAsync(user => user.Email == Email, cancellationToken);
+        }
+        public async Task UpdateAsync(User user, CancellationToken cancellationToken = default)
+        {
+            _authDbContext.Users
+                .Update(user);
+        }
+
+        public async Task DeleteAsync(Guid userId, CancellationToken cancellationToken = default)
+        {
+            var user = await _authDbContext.Users
+                .FindAsync(userId, cancellationToken);
+
+            if (user != null)
+            {
+                _authDbContext.Users
+                    .Remove(user);
+            }
         }
     }
 }

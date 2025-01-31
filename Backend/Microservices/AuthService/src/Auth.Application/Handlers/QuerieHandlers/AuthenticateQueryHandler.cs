@@ -27,7 +27,7 @@ namespace Auth.BLL.Handlers.QuerieHandlers
         public async Task<AuthResponse> Handle(AuthenticateQuery request, CancellationToken cancellationToken)
         {
             var user = await ValidateUserCredentials(request.AuthRequest, cancellationToken);
-            var roles = await _unitOfWork.Users.GetRoles(user, cancellationToken); ;
+            var roles = await _unitOfWork.Users.GetRolesAsync(user, cancellationToken); ;
             var createTokenCommand = new CreateTokenCommand { User = user, Roles = roles };
             var accessToken = await _mediator.Send(createTokenCommand, cancellationToken);
             UpdateUserTokenAndExpiry(user);
@@ -48,7 +48,7 @@ namespace Auth.BLL.Handlers.QuerieHandlers
             {
                 throw new BadCredentialsException();
             }
-            var user = await _unitOfWork.Users.GetByMail(request.Email, cancellationToken);
+            var user = await _unitOfWork.Users.GetByEmailAsync(request.Email, cancellationToken);
             if (user is null) throw new UserNotFoundException(request.Email);
             return user;
         }
