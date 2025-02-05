@@ -139,7 +139,7 @@ services:
       - Jwt__Secret=superSecretKey@345432242344324245
       - Jwt__Issuer=https://localhost:5001 
       - Jwt__Audience=https://localhost:5001
-      - Jwt__TokenValidityInMinutes=30
+      - Jwt__TokenValidityInMinutes=1
       - ConnectionStrings__DefaultConnection=Server=authdb;Database=AuthDb;User Id=sa;Password=password@12345#;TrustServerCertificate=True;
       - GrpcSettings__ChatServiceUrl=https://chat.webapi:7001
       - GrpcSettings__GameServiceUrl=https://game.webapi:7002

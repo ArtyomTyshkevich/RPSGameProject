@@ -1,8 +1,61 @@
 :root {
     --dark-color: #000000;
     --light-color: #FFFFFF;
+    --primary-color: #4CAF50;
+    --secondary-color: #FFC107;
 }
+
 body {
     background-color: var(--dark-color);
-    color:#FFFFFF
+    color: var(--light-color);
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.game-control-label {
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 20px;
+    color: var(--light-color);
+    margin-bottom: 6px;
+}
+
+.game-input {
+    display: block;
+    margin-top: 12px;
+    border: 1px solid var(--light-color);
+    border-radius: 6px;
+    padding: 14px 18px;
+    background: var(--dark-color);
+    color: var(--light-color);
+    font-size: 16px;
+    line-height: 22px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.btn {
+    background-color: var(--primary-color);
+    color: var(--light-color);
+    border: 2px solid var(--primary-color);
+    border-radius: 6px;
+    padding: 12px 24px;
+    font-size: 18px;
+    font-weight: 700;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    outline: none;
+    display: inline-block;
+}
+
+.btn:hover {
+    background-color: var(--secondary-color);
+    color: var(--dark-color);
+    border-color: var(--secondary-color);
+}
+
+.btn:focus {
+    box-shadow: 0 0 5px 2px var(--primary-color);
 }

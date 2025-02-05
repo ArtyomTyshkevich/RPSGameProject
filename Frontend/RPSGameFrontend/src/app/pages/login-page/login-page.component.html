@@ -1,0 +1,22 @@
+<form [formGroup]="form" class="login-form" (ngSubmit)="onSubmit()">
+  <h1>Login</h1>
+  
+  <label class="game-control-label">
+    Login
+    <input formControlName="email" class="game-input" type="email" placeholder="Enter login">
+  </label>
+
+  <label class="control-label">
+    Password        
+    <input formControlName="password" class="game-input" type="password" placeholder="Enter password">
+  </label>
+
+  <button class="btn" [disabled]="form.invalid">
+    Login
+  </button>
+
+  <p class="register-link">
+    Don't have an account? 
+    <a [routerLink]="['/register']" class="register-link-text">Register</a>
+  </p>
+</form>

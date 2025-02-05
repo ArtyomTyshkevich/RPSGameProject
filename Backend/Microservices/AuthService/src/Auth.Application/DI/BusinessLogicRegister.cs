@@ -24,6 +24,7 @@ namespace Auth.BLL.DI
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddAutoMapper(typeof(UserMappingProfile));
+            services.ConfigureCors(configuration);
         }
     }
 }

@@ -1,0 +1,36 @@
+<form [formGroup]="form" class="register-form" (ngSubmit)="onSubmit()">
+  <h1>Register</h1>
+
+  <label class="control-label">
+    Nickname
+    <input formControlName="nickname" class="game-input" type="text" placeholder="Enter username">
+  </label>
+
+  <label class="control-label">
+    Email
+    <input formControlName="email" class="game-input" type="email" placeholder="Enter email">
+  </label>
+
+  <label class="control-label">
+    Password
+    <input formControlName="password" class="game-input" type="password" placeholder="Enter password">
+  </label>
+
+  <label class="control-label">
+    Confirm Password
+    <input formControlName="passwordConfirm" class="game-input" type="password" placeholder="Confirm password">
+  </label>
+
+  <label class="control-label">
+    Date of Birth
+    <input formControlName="birthDate" class="game-input" type="date">
+  </label>
+
+  <button class="btn" [disabled]="form.invalid">
+    Register
+  </button>
+  <p class="register-link">
+    Don't have an account? 
+    <a [routerLink]="['/login']" class="register-link-text">Register</a>
+  </p>
+</form>

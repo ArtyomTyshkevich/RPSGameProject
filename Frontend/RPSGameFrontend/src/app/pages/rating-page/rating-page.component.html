@@ -1,5 +1,5 @@
-<h1>LOl</h1>
-<app-user-card></app-user-card>
-<app-user-card></app-user-card>
-<app-user-card></app-user-card>
-<app-user-card></app-user-card>
+<div class="user-card_wrapper">
+    <div *ngFor="let user of users; let index = index">
+      <app-user-card [user]="user" [index]="index"></app-user-card>
+    </div>
+  </div>

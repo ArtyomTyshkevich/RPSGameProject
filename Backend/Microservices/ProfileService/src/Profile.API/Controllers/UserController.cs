@@ -1,13 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Profile.BLL.DTOs;
 using Profile.BLL.Interfaces.Services;
 
 namespace Profile.API.Controllers
 {
     [ApiController]
-    [Route("user")]
+    [Route("users")]
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
@@ -20,6 +19,7 @@ namespace Profile.API.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<List<UserDTO>>> GetAll(CancellationToken cancellationToken)
         {
             _logger.LogInformation("[GetAll] Fetching all users.");
