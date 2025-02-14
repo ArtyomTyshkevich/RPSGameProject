@@ -6,11 +6,18 @@ import { UrlTree } from '@angular/router';
 export const canActivateAuth = (): boolean | UrlTree => {
   const authService = inject(AuthService);
   const router = inject(Router);
-  console.log("lol");
   if (authService.isAuth) {
-    console.log("true");
     return true;
   }
 
-  return router.createUrlTree(['/login']); 
+  return router.createUrlTree(['/start']); 
+};
+export const wasActivated = (): boolean | UrlTree => {
+  const authService = inject(AuthService);
+  const router = inject(Router);
+  if (!authService.isAuth) {
+    return true;
+  }
+
+  return router.createUrlTree(['']); 
 };

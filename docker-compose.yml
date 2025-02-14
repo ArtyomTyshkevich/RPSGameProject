@@ -78,7 +78,7 @@ services:
       - MONGO_INITDB_ROOT_USERNAME=root
       - MONGO_INITDB_ROOT_PASSWORD=example
     ports:
-      - "27018:27017"
+      - "27018:27018"
     networks:
       - backend
     volumes:
@@ -101,8 +101,8 @@ services:
     container_name: game-rabbitmq
     image: rabbitmq:management
     ports:
-      - "15673:15673"
-      - "5673:5673"
+      - "15673:15672"
+      - "5673:5672"
     environment:
       - RABBITMQ_DEFAULT_USER=guest
       - RABBITMQ_DEFAULT_PASS=guest
@@ -221,7 +221,7 @@ services:
       - "443:443"
     volumes:
       - ./Backend/nginx/nginx.conf:/etc/nginx/nginx.conf
-      - ./Backend/nginx/certs/localhost.key:/etc/nginx/certs/localhost.key
+      - ./Backend/nginx/certs/localhost-decrypted.key:/etc/nginx/certs/localhost.key
       - ./Backend/nginx/certs/localhost.crt:/etc/nginx/certs/localhost.crt
     depends_on:
       - chat.webapi

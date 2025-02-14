@@ -20,7 +20,6 @@ namespace Game.WebAPI.Controllers
         }
 
         [HttpGet]
-        [Authorize(Policy = "AdminOnly")]
         public async Task<ActionResult<List<RoomDTO>>> GetAll(CancellationToken cancellationToken)
         {
             _logger.LogInformation("Starting to fetch all rooms.");

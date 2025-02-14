@@ -1,0 +1,71 @@
+.room-card {
+    background: var(--secondary-bg);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    margin: 10px;
+    transition: transform 0.3s ease;
+    color: var(--light-color);
+
+    &:hover {
+        transform: translateY(-5px);
+    }
+
+    &__id {
+        font-size: 20px;
+        font-weight: 700;
+        color: var(--primary-color);
+        margin-bottom: 12px;
+    }
+
+    &__type,
+    &__status {
+        font-size: 16px;
+        font-weight: 500;
+        color: var(--light-color);
+        margin-bottom: 8px;
+    }
+
+    &__type {
+        color: var(--primary-color);
+    }
+
+    &__status {
+        color: var(--secondary-color);
+    }
+
+    .btn-delete,
+    .btn-inactive {
+        background-color: var(--primary-color);
+        color: var(--light-color);
+        border: 2px solid var(--primary-color);
+        border-radius: 6px;
+        padding: 10px 20px;
+        font-size: 16px;
+        font-weight: 700;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-top: 10px;
+        outline: none;
+
+        &:hover {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        &:focus {
+            box-shadow: 0 0 5px 2px var(--primary-color);
+        }
+
+        &:disabled {
+            background-color: var(--secondary-bg-disabled);
+            cursor: not-allowed;
+        }
+    }
+
+    .btn-delete {
+        margin-right: 10px;
+    }
+}

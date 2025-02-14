@@ -6,6 +6,7 @@ import { AuthResponse } from '../cores/models/auth/AuthResponse';
 import { Observable, tap } from 'rxjs'; 
 import { TokenModel } from '../cores/models/auth/TokenModel';
 import { RegisterRequest } from '../cores/models/auth/RegisterRequest';
+import { jwtDecode } from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root'
@@ -23,15 +24,16 @@ export class AuthService {
   }
 
   login(authRequest: AuthRequest): Observable<AuthResponse> {
-    const url = 'https://localhost/auth/login';
+    const url = 'https://localhost:8082/auth/login';
     return this.http.post<AuthResponse>(url, authRequest).pipe(
       tap(val => {
         this.setTokens(val.token, val.refreshToken);
       })
     );
   }
+
   register(registerRequest: RegisterRequest): Observable<AuthResponse> {
-    const url = 'https://localhost/auth/register';
+    const url = 'https://localhost:8082/auth/register';
     return this.http.post<AuthResponse>(url, registerRequest).pipe(
       tap(val => {
         this.setTokens(val.token, val.refreshToken);
@@ -40,28 +42,49 @@ export class AuthService {
   }
 
   refreshTokens(): Observable<TokenModel> {
-    const url = 'https://localhost/auth/refresh-token';
+    const url = 'https://localhost:8082/auth/refresh-token';
 
     if (!this.refreshToken) {
       this.refreshToken = this.cookieService.get('refreshToken');
     }
-
-    if (!this.refreshToken) {
-      throw new Error("No refresh token available");
+    if (!this.token) {
+      this.token = this.cookieService.get('token');
     }
 
     const tokenModel: TokenModel = {
-      token: this.token || '',
+      accessToken: this.token,
       refreshToken: this.refreshToken
     };
-    console.log(tokenModel)
+
     return this.http.post<TokenModel>(url, tokenModel).pipe(
       tap(val => {
-        this.setTokens(val.token, val.refreshToken);
+        this.setTokens(val.accessToken, val.refreshToken);
       })
     );
   }
 
+  getUserIdFromToken(): string {
+    const token = this.token || this.cookieService.get('token');
+    if (!token) {
+        console.error("No token available");
+        return '';
+    }
+
+    try {
+        const decodedToken: any = jwtDecode(token);
+        return decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"] || '';
+    } catch (error) {
+        console.error('Token decoding error', error);
+        return '';
+    }
+}
+  logout(): void {
+    this.token = null;
+    this.refreshToken = null;
+    this.cookieService.delete('token');
+    this.cookieService.delete('refreshToken');
+  }
+  
   private setTokens(token: string, refreshToken: string) {
     this.token = token;
     this.refreshToken = refreshToken;

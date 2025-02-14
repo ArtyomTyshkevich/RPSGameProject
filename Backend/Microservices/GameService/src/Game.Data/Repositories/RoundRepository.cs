@@ -17,6 +17,11 @@ namespace Game.Data.Repositories
         public async Task<Round> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
         {
             return await _context.Rounds
+                .FirstAsync(r => r.Id == id, cancellationToken);
+        }
+        public async Task<Round> GetByIdAsNoTrakingAsync(Guid id, CancellationToken cancellationToken = default)
+        {
+            return await _context.Rounds
                 .AsNoTracking()
                 .FirstAsync(r => r.Id == id, cancellationToken);
         }
@@ -35,7 +40,6 @@ namespace Game.Data.Repositories
         {
             _context.Rounds.Update(round);
         }
-
         public async Task DeleteAsync(Guid id, CancellationToken cancellationToken = default)
         {
             var round = await GetByIdAsync(id, cancellationToken);

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Options;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using Profile.BLL.Configuretion;
 using Profile.BLL.Interfaces.Repositories;
@@ -28,6 +29,8 @@ namespace Profile.BLL.Repositories
 
         public async Task AddGameAsync(Game game, CancellationToken cancellationToken = default)
         {
+            var bsonDocument = game.ToBsonDocument();
+            Console.WriteLine(bsonDocument.ToString());
             await _games.InsertOneAsync(game, cancellationToken: cancellationToken);
         }
 

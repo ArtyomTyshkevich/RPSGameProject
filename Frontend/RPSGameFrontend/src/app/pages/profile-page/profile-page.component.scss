@@ -1,0 +1,119 @@
+:root {
+    --primary-bg: #3d1b56;
+    --secondary-bg: #f6e77c;
+    --highlight-bg: #b487d9;
+    --text-color: #1d1d1d;
+  }
+  
+  .profile-container {
+    width: 450px;
+    background-color: var(--secondary-bg);
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    border: 3px solid black;
+    position: relative;
+  }
+  
+  .profile-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 10px;
+    border-bottom: 2px solid black;
+  
+    .avatar {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background-color: white;
+      overflow: hidden;
+      img {
+        width: 100%;
+        height: 100%;
+      }
+    }
+  
+    .user-info {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      margin-left: 10px;
+  
+      label {
+        font-size: 14px;
+        font-weight: bold;
+        color: var(--text-color);
+      }
+  
+      .input-field {
+        width: 100%;
+        padding: 5px;
+        border: 1px solid black;
+        border-radius: 4px;
+      }
+    }
+  
+    .close-btn {
+      background: none;
+      border: none;
+      font-size: 18px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+  }
+  
+  .profile-body {
+    display: flex;
+    padding-top: 10px;
+  
+    .history-section {
+      flex: 1;
+      padding-right: 10px;
+  
+      h3 {
+        font-size: 16px;
+        font-weight: bold;
+      }
+  
+      .history-box {
+        width: 100%;
+        height: 100px;
+        background-color: var(--highlight-bg);
+        border: 2px solid black;
+        border-radius: 5px;
+      }
+    }
+  
+    .stats-section {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+  
+      h3 {
+        font-size: 16px;
+        font-weight: bold;
+      }
+  
+      .stat-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 8px;
+  
+        span {
+          font-size: 14px;
+          font-weight: bold;
+        }
+  
+        .stat-box {
+          width: 50px;
+          height: 20px;
+          background-color: var(--highlight-bg);
+          border: 2px solid black;
+          border-radius: 5px;
+        }
+      }
+    }
+  }
+  

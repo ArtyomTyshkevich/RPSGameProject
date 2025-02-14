@@ -10,7 +10,6 @@ export const authTokenInterceptor: HttpInterceptorFn = (req, next) => {
   if (!token) {
     return next(req);
   }
-
   const clonedRequest = req.clone({
     setHeaders: {
       Authorization: `Bearer ${token}`
@@ -39,6 +38,7 @@ const refreshAndProceed = (authService: AuthService, req: HttpRequest<any>, next
     }),
     catchError(error => {
       console.error('Failed to refresh token:', error);
+      authService.logout()
       return throwError(() => error);
     })
   );

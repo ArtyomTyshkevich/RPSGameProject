@@ -1,4 +1,5 @@
-﻿using Profile.BLL.Enums;
+﻿using Profile.BLL.DTOs;
+using Profile.BLL.Enums;
 
 namespace Profile.BLL.Interfaces.Services
 {
@@ -8,5 +9,6 @@ namespace Profile.BLL.Interfaces.Services
         Task<Dictionary<PlayerMoves, int>> GetMoveStatisticsAsync(Guid playerId, CancellationToken cancellationToken);
         Task<double> GetWinRateAsync(Guid playerId, CancellationToken cancellationToken);
         Task<int> GetWinsCountAsync(Guid playerId, CancellationToken cancellationToken);
+        Task<UserWithStatistics> CreateUserWithStatistics(Guid playerId, CancellationToken cancellationToken);
     }
 }

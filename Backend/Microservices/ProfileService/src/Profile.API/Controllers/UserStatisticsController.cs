@@ -4,7 +4,7 @@ using Profile.BLL.Interfaces.Services;
 namespace Profile.API.Controllers
 {
     [ApiController]
-    [Route("user-statistics")]
+    [Route("users/{Id}/statistics")]
     public class UserStatisticsController : ControllerBase
     {
         private readonly IUserStatisticsService _userStatisticsService;
@@ -16,50 +16,62 @@ namespace Profile.API.Controllers
             _logger = logger;
         }
 
-        [HttpGet("move/statistics")]
-        public async Task<ActionResult> GetMoveStatisticsAsync(Guid playerId, CancellationToken cancellationToken)
+        [HttpGet("moves")]
+        public async Task<ActionResult> GetMoveStatisticsAsync(Guid Id, CancellationToken cancellationToken)
         {
-            _logger.LogInformation("[GetMoveStatisticsAsync] Fetching move statistics for player with ID: {PlayerId}.", playerId);
+            _logger.LogInformation("Fetching move statistics for player {PlayerId}.", Id);
 
-            var result = await _userStatisticsService.GetMoveStatisticsAsync(playerId, cancellationToken);
+            var result = await _userStatisticsService.GetMoveStatisticsAsync(Id, cancellationToken);
 
-            _logger.LogInformation("[GetMoveStatisticsAsync] Successfully fetched move statistics for player with ID: {PlayerId}.", playerId);
+            _logger.LogInformation("Successfully fetched move statistics for player {PlayerId}.", Id);
 
             return Ok(result);
         }
 
-        [HttpGet("win/count")]
-        public async Task<ActionResult> GetWinsCountAsync(Guid playerId, CancellationToken cancellationToken)
+        [HttpGet("wins/count")]
+        public async Task<ActionResult> GetWinsCountAsync(Guid Id, CancellationToken cancellationToken)
         {
-            _logger.LogInformation("[GetWinsCountAsync] Fetching win count for player with ID: {PlayerId}.", playerId);
+            _logger.LogInformation("Fetching win count for player {PlayerId}.", Id);
 
-            var result = await _userStatisticsService.GetWinsCountAsync(playerId, cancellationToken);
+            var result = await _userStatisticsService.GetWinsCountAsync(Id, cancellationToken);
 
-            _logger.LogInformation("[GetWinsCountAsync] Successfully fetched win count for player with ID: {PlayerId}.", playerId);
+            _logger.LogInformation("Successfully fetched win count for player {PlayerId}.", Id);
 
             return Ok(result);
         }
 
-        [HttpGet("lose/count")]
-        public async Task<ActionResult> GetLossesCountAsync(Guid playerId, CancellationToken cancellationToken)
+        [HttpGet("losses/count")]
+        public async Task<ActionResult> GetLossesCountAsync(Guid Id, CancellationToken cancellationToken)
         {
-            _logger.LogInformation("[GetLossesCountAsync] Fetching losses count for player with ID: {PlayerId}.", playerId);
+            _logger.LogInformation("Fetching losses count for player {PlayerId}.", Id);
 
-            var result = await _userStatisticsService.GetLossesCountAsync(playerId, cancellationToken);
+            var result = await _userStatisticsService.GetLossesCountAsync(Id, cancellationToken);
 
-            _logger.LogInformation("[GetLossesCountAsync] Successfully fetched losses count for player with ID: {PlayerId}.", playerId);
+            _logger.LogInformation("Successfully fetched losses count for player {PlayerId}.", Id);
+
+            return Ok(result);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> GetUserStatisticsAsync(Guid Id, CancellationToken cancellationToken)
+        {
+            _logger.LogInformation("Fetching statistics for player {PlayerId}.", Id);
+
+            var result = await _userStatisticsService.CreateUserWithStatistics(Id, cancellationToken);
+
+            _logger.LogInformation("Successfully fetched statistics for player {PlayerId}.", Id);
 
             return Ok(result);
         }
 
         [HttpGet("winrate")]
-        public async Task<ActionResult> GetWinRateAsync(Guid playerId, CancellationToken cancellationToken)
+        public async Task<ActionResult> GetWinRateAsync(Guid Id, CancellationToken cancellationToken)
         {
-            _logger.LogInformation("[GetWinRateAsync] Fetching win rate for player with ID: {PlayerId}.", playerId);
+            _logger.LogInformation("Fetching win rate for player {PlayerId}.", Id);
 
-            var result = await _userStatisticsService.GetWinRateAsync(playerId, cancellationToken);
+            var result = await _userStatisticsService.GetWinRateAsync(Id, cancellationToken);
 
-            _logger.LogInformation("[GetWinRateAsync] Successfully fetched win rate for player with ID: {PlayerId}.", playerId);
+            _logger.LogInformation("Successfully fetched win rate for player {PlayerId}.", Id);
 
             return Ok(result);
         }

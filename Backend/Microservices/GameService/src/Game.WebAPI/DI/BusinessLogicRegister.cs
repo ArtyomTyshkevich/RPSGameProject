@@ -30,6 +30,7 @@ namespace Game.WebAPI.DI
             services.AddScoped<CleanRoomsJob>();
             services.ConfigureMassTransit(configuration);
             services.ConfigureBrokerMassTransit(configuration);
+            services.ConfigureCors(configuration);
             services.ConfigureDatabase(configuration);
             services.ConfigureCache(configuration);
             services.ConfigureAuthentication(configuration);

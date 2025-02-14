@@ -1,0 +1,23 @@
+
+<div class="box" *ngIf="pageState==menuStates.InSearch">
+  <H1> Идет поиск</H1>
+</div>
+   
+    <div class="box" *ngIf="pageState==menuStates.MainMenu">
+      <button [routerLink]="['/rating']" class="rating-btn">
+        <i class="icon-star"></i>
+      </button>
+      <button [routerLink]="['/profile']" class="profile-btn">
+        <i class="icon-user"></i>
+      </button>
+      <button [routerLink]="['/rooms']" class="profile-btn">
+        <i class="icon-user"></i>
+      </button>
+      <div class="menu-container">
+        <a (click)="logout()">Выйти</a>
+        <button class="play-btn" (click)="startGameSearch()" >Играть</button>
+        <button class="chat-btn" [routerLink]="['/chat']">Чат</button>
+      </div>
+    </div>
+
+  

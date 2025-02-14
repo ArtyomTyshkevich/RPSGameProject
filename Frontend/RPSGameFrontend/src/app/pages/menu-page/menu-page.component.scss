@@ -1,0 +1,121 @@
+
+.box {
+  padding: 30vh;
+  width: 70vw;
+  max-width: 50vw;
+}
+.rating-btn,
+.profile-btn {
+    position: absolute;
+    top: 2vw;
+    width: 8vw;
+    height: 12vh;
+    background: linear-gradient(135deg, #aaff16, #006aff);
+    border: none;
+    border-radius: 1.5vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    color: #ffd600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 0 20px rgba(255, 69, 16, 0.6); 
+    z-index: 2;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    overflow: hidden;
+    
+    &:hover {
+        background: linear-gradient(135deg, #0022ff, #b700ff);
+        transform: translateY(-7px) scale(1.05);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3), 0 0 30px rgba(255, 69, 16, 0.8); 
+    }
+}
+
+.rating-btn {
+    left: 2vw;
+}
+
+.profile-btn {
+    right: 2vw;
+}
+
+.menu-container button {
+    width: 18vw;
+    height: 12vh;
+    font-size: 24px;
+    border: none;
+    border-radius: 2vw;
+    font-weight: bold;
+    background: linear-gradient(135deg, #6a11cb, #2575fc); /* Градиент для фиолетовых кнопок */
+    color: #ffd600; /* Желтый текст */
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 0 20px rgba(106, 17, 203, 0.6); /* Мягкая тень */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    overflow: hidden;
+
+    &:hover {
+        background: linear-gradient(135deg, #2575fc, #6a11cb); /* Ярче градиент */
+        transform: translateY(-7px) scale(1.05);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3), 0 0 30px rgba(106, 17, 203, 0.8); /* Подсветка и тени */
+    }
+}
+
+.play-btn {
+    background: linear-gradient(135deg, #6a11cb, #2575fc); /* Градиент */
+    color: #ffd600; /* Желтый текст */
+    box-shadow: 0 6px 12px rgba(106, 17, 203, 0.4), 0 0 20px rgba(255, 69, 16, 0.6); /* Тень и светлый контур */
+
+    &:hover {
+        background: linear-gradient(135deg, #2575fc, #6a11cb); /* Ярче фиолетовый */
+        transform: translateY(-7px) scale(1.05);
+        box-shadow: 0 8px 16px rgba(106, 17, 203, 0.5), 0 0 30px rgba(106, 17, 203, 0.8); /* Подсветка */
+    }
+}
+
+/* Анимации */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes moveBackground {
+    from {
+        transform: translate(0, 0);
+    }
+    to {
+        transform: translate(-50%, -50%);
+    }
+}
+
+@keyframes rotateBackground {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}

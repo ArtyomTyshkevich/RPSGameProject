@@ -29,7 +29,7 @@ namespace Game.Data.Services
             await _unitOfWork.SaveChangesAsync();
         }
 
-        public async Task<bool> AddUserToRoomAsync(User user, CancellationToken cancellationToken)
+        public async Task<Guid?> AddUserToRoomAsync(User user, CancellationToken cancellationToken)
         {
             var room = await _unitOfWork.Rooms.GetAvailableRoomAsync(RoomTypes.Default);
 
@@ -48,15 +48,15 @@ namespace Game.Data.Services
                 }
 
                 await _unitOfWork.SaveChangesAsync(cancellationToken);
-                return true;
+                return room.Id;
             }
 
-            return false;
+            return null;
         }
 
         public async Task<List<RoomDTO>> GetAllRoomsAsync(CancellationToken cancellationToken)
         {
-            var rooms = await _unitOfWork.Rooms.GetAllAsync(cancellationToken);
+                var rooms = await _unitOfWork.Rooms.GetAllAsync(cancellationToken);
             return _mapper.ProjectTo<RoomDTO>(rooms.AsQueryable()).ToList();
         }
 

@@ -1,0 +1,58 @@
+
+<div class="box">
+    <div *ngIf="roomState==gameStates.Draw">
+        <h2>Ничья</h2>
+    </div>
+    <div *ngIf="roomState==gameStates.WaitingPlayers">
+        <h2>Ожидание игроков</h2>
+    </div>
+    <div *ngIf="roomState==gameStates.RoundLoss">
+        <h2>Проиграл</h2>
+    </div>
+    <div class="game-header"></div>
+    <div *ngIf="roomState==gameStates.RoundWin">
+        <h2>Выиграл</h2>
+    </div>
+    <div class="game-header"></div>
+    <div *ngIf="roomState==gameStates.GameWin">
+        <h2>Выиграл игру</h2>
+    </div>
+    <div class="game-header"></div>     
+    <div *ngIf="roomState==gameStates.GameLoss">
+        <h2>Проиграл игру</h2>
+    </div>
+    <div class="game-header"></div>
+
+    <div class="game-area" *ngIf="roomState==gameStates.Round">
+        <div class="opponent-choices">
+            <div class="opponent-card"></div>
+            <div class="opponent-card"></div>
+            <div class="opponent-card"></div>
+        </div>
+
+        <div class="choice-block"></div>
+
+        <div class="buttons">
+            <button 
+                class="btn scissors" 
+                [class.selected]="selectedChoice === playerMoves.Scissors" 
+                (click)="selectChoice(playerMoves.Scissors)">
+                Scissors
+            </button>
+
+            <button 
+                class="btn rock" 
+                [class.selected]="selectedChoice === playerMoves.Rock" 
+                (click)="selectChoice(playerMoves.Rock)">
+                Rock
+            </button>
+
+            <button 
+                class="btn paper" 
+                [class.selected]="selectedChoice === playerMoves.Paper" 
+                (click)="selectChoice(playerMoves.Paper)">
+                Paper
+            </button>
+        </div>
+    </div>
+</div>

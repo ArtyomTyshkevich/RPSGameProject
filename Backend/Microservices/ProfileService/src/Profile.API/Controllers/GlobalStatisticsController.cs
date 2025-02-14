@@ -27,9 +27,9 @@ namespace Profile.API.Controllers
         }
 
         [HttpGet("moves/winrate")]
-        public async Task<IActionResult> GetMovesWinRatePlayers(CancellationToken cancellationToken)
+        public async Task<IActionResult> GetMovesWinRate(CancellationToken cancellationToken)
         {
-            _logger.LogInformation("[GetMovesWinRatePlayers] Fetching moves win rate statistics.");
+            _logger.LogInformation("[GetMovesWinRate] Fetching moves win rate statistics.");
 
             var result = await _globalStatisticsServices.GetMoveWinRateAsync(cancellationToken);
 

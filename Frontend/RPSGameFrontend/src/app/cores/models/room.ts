@@ -1,5 +1,5 @@
-import { RoomTypes } from "../enums/RoomTypes";
-import { RoomStatuses } from "../enums/RoomStatuses";
+import { RoomTypes } from "../enums/roomTypes";
+import { RoomStatuses } from "../enums/roomStatuses";
 
 export interface Room {
   id: string;

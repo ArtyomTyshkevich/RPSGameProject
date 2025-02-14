@@ -5,11 +5,13 @@ using Game.Application.Interfaces.Services;
 using Game.Domain.Enums;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Caching.Distributed;
+using System.Collections.Concurrent;
 
 namespace Game.WebAPI.Hubs
 {
     public class GameHub : Hub
     {
+        private readonly ConcurrentDictionary<Guid, SemaphoreSlim> _roomLocks = new();
         private readonly IUnitOfWork _unitOfWork;
         private readonly IRoundService _roundService;
         private readonly IMapper _mapper;
@@ -26,26 +28,41 @@ namespace Game.WebAPI.Hubs
             _cacheService = cacheService;
             _logger = logger;
         }
-
         public async Task SendMove(PlayerMoves move)
         {
-            _logger.LogInformation("[SendMove] Started. ConnectionId: {ConnectionId}, Move: {Move}", Context.ConnectionId, move);
+            var connectionId = Context.ConnectionId;
 
-            var connection = await _cacheService.GetConnection(Context.ConnectionId);
+            _logger.LogInformation("[SendMove] Started. ConnectionId: {ConnectionId}, Move: {Move}", connectionId, move);
+
+            var connection = await _cacheService.GetConnection(connectionId);
             if (connection != null)
             {
                 var roomId = Guid.Parse(connection.GameRoomId);
                 _logger.LogInformation("[SendMove] Processing move for RoomId: {RoomId}, UserId: {UserId}", roomId, connection.UserId);
 
-                var room = await _unitOfWork.Rooms.GetByIdAsync(roomId);
+                // Получаем или создаем семафор для комнаты
+                var roomLock = _roomLocks.GetOrAdd(roomId, _ => new SemaphoreSlim(1, 1));
 
-                using (var cts = new CancellationTokenSource())
+                try
                 {
-                    var cancellationToken = cts.Token;
-                    await _roundService.ProcessRound(room, connection.UserId, move, cancellationToken);
+                    // Ожидаем захвата семафора
+                    await roomLock.WaitAsync();
 
-                    await Clients.Group(roomId.ToString()).SendAsync("ReceiveMove", room);
+                    var room = await _unitOfWork.Rooms.GetByIdAsNoTrakingAsync(roomId);
+
+                    var cancellationTokenSource = new CancellationTokenSource();
+                    var cancellationToken = cancellationTokenSource.Token;
+
+                    var message = await _roundService.ProcessRound(room, connection.UserId, move, cancellationToken);
+
+                    await Clients.Group(roomId.ToString()).SendAsync("ReceiveMessage", message);
+
                     _logger.LogInformation("[SendMove] Move processed successfully for RoomId: {RoomId}", roomId);
+                }
+                finally
+                {
+                    // Освобождаем семафор
+                    roomLock.Release();
                 }
             }
         }
@@ -57,7 +74,12 @@ namespace Game.WebAPI.Hubs
             var connection = new UserConnection { UserId = userId, GameRoomId = roomId.ToString() };
             await Groups.AddToGroupAsync(Context.ConnectionId, connection.GameRoomId);
             await _cacheService.SetConnection(Context.ConnectionId, connection);
-
+            var room = await _unitOfWork.Rooms.GetByIdAsync(roomId);
+            var allPlayersInRoom = room.FirstPlayer != null && room.SecondPlayer != null;
+            if (allPlayersInRoom)
+            {
+                await Clients.Group(roomId.ToString()).SendAsync("AllPlayersInRoom");
+            }    
             _logger.LogInformation("[JoinChat] User {UserId} joined Room {RoomId}. ConnectionId: {ConnectionId}", userId, roomId, Context.ConnectionId);
         }
 

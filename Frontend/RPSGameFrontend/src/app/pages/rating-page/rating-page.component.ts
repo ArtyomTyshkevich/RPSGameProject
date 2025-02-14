@@ -21,5 +21,4 @@ export class RatingPageComponent {
         this.users = val;
       });
   }
-  
 }

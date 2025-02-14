@@ -2,6 +2,7 @@
 using Profile.BLL.Interfaces.Services;
 using Profile.DAL.Entities.Mongo;
 using Profile.BLL.Enums;
+using Profile.BLL.DTOs;
 
 namespace Profile.BLL.Services
 {
@@ -77,6 +78,33 @@ namespace Profile.BLL.Services
                 .Count();
 
             return totalGames > 0 ? Math.Round((double)winCount / totalGames, 2) : 0.0;
+        }
+
+        public async Task<UserWithStatistics> CreateUserWithStatistics(Guid playerId, CancellationToken cancellationToken)
+        {
+            var user = await _unitOfWork.Users.GetByIdAsync(playerId, cancellationToken);
+            var winrate = await GetWinRateAsync(playerId, cancellationToken);
+            var moveStatistics = await GetMoveStatisticsAsync(playerId, cancellationToken);
+            var winsCount = await GetWinsCountAsync(playerId, cancellationToken);
+            var lossesCount = await GetLossesCountAsync(playerId, cancellationToken);
+
+            moveStatistics.TryGetValue(PlayerMoves.Rock, out var rockUsage);
+            moveStatistics.TryGetValue(PlayerMoves.Paper, out var paperUsage);
+            moveStatistics.TryGetValue(PlayerMoves.Scissors, out var scissorsUsage);
+
+            return new UserWithStatistics
+            {
+                Id = playerId,
+                Name = user.Name,
+                Rating = user.Rating,
+                Mail = user.Mail,
+                Winrate = winrate,
+                RocksUsage = rockUsage,
+                PaperUsage = paperUsage,
+                ScissorsUsage = scissorsUsage,
+                Wins = winsCount,
+                Losses = lossesCount
+            };
         }
 
     }

@@ -1,50 +1,48 @@
 .user-card {
-    border: 1px solid var(--light-color);
-    padding: 15px 24px;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 32px;
-    align-items: center;
-    background-color: #9c867b;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    margin-bottom: 12px;
-}
-
-.user-card__place,
-.user-card__name,
-.user-card__mail,
-.user-card__rating {
-    padding: 8px;
-    text-align: center;
-}
-
-.user-card__place {
-    font-size: 1.2em;
-    color: #161313;
-}
-
-.user-card__name {
-    font-size: 1.1em;
-    color: #333;
-}
-
-.user-card__mail {
-    font-size: 1em;
-    color: #0e0909;
-}
-
-.user-card__rating {
-    font-size: 1.2em;
-    color: #222;
     display: flex;
-    justify-content: flex-end;
     align-items: center;
-}
-
-.user-card__rating strong {
-    background-color: #fdcc07;
-    padding: 5px 10px;
+    justify-content: space-between;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+    border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 12px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
+    padding: 16px;
+    margin: 10px 0;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    cursor: pointer;
+  
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.1));
+    }
+  
+    &__place {
+      font-size: 18px;
+      color: #ff6f61;
+      min-width: 40px;
+      text-align: center;
+    }
+  
+    &__name {
+      font-size: 18px;
+      color: #ffffff;
+      flex: 1;
+      margin: 0 20px;
+    }
+  
+    &__mail {
+      font-size: 16px;
+      color: #a0a0a0;
+      flex: 1;
+      margin: 0 20px;
+    }
+  
+    &__rating {
+      font-size: 18px;
+      color: #ffcc5c;
+      min-width: 60px;
+      text-align: center;
+    }
+  }

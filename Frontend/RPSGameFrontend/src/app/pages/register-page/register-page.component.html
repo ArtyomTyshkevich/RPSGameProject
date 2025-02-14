@@ -1,4 +1,4 @@
-<form [formGroup]="form" class="register-form" (ngSubmit)="onSubmit()">
+<form [formGroup]="form" class="box" (ngSubmit)="onSubmit()">
   <h1>Register</h1>
 
   <label class="control-label">
@@ -30,7 +30,7 @@
     Register
   </button>
   <p class="register-link">
-    Don't have an account? 
-    <a [routerLink]="['/login']" class="register-link-text">Register</a>
+    Do you have an account?
+    <a [routerLink]="['/login']" class="register-link-text">Login</a>
   </p>
 </form>

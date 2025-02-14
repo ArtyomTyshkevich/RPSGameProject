@@ -20,17 +20,20 @@ namespace Game.Data.Consumers
         public async Task Consume(ConsumeContext<UserDTO> context)
         {
             var cancellationToken = context.CancellationToken;
+            var userId = context.Message.Id;
 
             while (true)
             {
-                var user = await _unitOfWork.Users.GetByIdNoTrackingAsync(context.Message.Id, cancellationToken);
+                var user = await _unitOfWork.Users.GetByIdNoTrackingAsync(userId, cancellationToken);
                 if (user.Status != UserStatuses.InSearch)
                 {
                     break;
                 }
-                var isUserAdded = await _roomService.AddUserToRoomAsync(user, cancellationToken);
-                if (isUserAdded)
+
+                var roomId = await _roomService.AddUserToRoomAsync(user, cancellationToken);
+                if (roomId != null)
                 {
+                    await context.RespondAsync(new RoomResponse { RoomId = roomId.Value });
                     break;
                 }
                 else

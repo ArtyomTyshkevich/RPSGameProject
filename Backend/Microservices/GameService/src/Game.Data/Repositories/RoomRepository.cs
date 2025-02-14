@@ -23,6 +23,15 @@ namespace Game.Data.Repositories
                 .Include(room => room.Rounds)
                 .FirstAsync(room => room.Id == id, cancellationToken);
         }
+        public async Task<Room> GetByIdAsNoTrakingAsync(Guid id, CancellationToken cancellationToken = default)
+        {
+            return await _gameDbContext.Rooms
+                .AsNoTracking()
+                .Include(room => room.FirstPlayer)
+                .Include(room => room.SecondPlayer)
+                .Include(room => room.Rounds)
+                .FirstAsync(room => room.Id == id, cancellationToken);
+        }
 
         public async Task<List<Room>> GetAllAsync(CancellationToken cancellationToken = default)
         {
