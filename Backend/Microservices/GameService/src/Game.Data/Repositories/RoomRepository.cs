@@ -71,7 +71,7 @@ namespace Game.Data.Repositories
 
         public async Task UpdateRoomStatusAsync(Guid roomId, RoomStatuses newStatus, CancellationToken cancellationToken = default)
         {
-            var room = await _gameDbContext.Rooms.FindAsync(roomId, cancellationToken);
+            var room = await _gameDbContext.Rooms.FindAsync(roomId);
             if (room != null)
             {
                 room.Status = newStatus;
@@ -81,9 +81,13 @@ namespace Game.Data.Repositories
 
         public async Task DeleteAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            var room = await GetByIdAsync(id, cancellationToken);
+            var room = await _gameDbContext.Rooms
+                .Include(r => r.Rounds)
+                .FirstOrDefaultAsync(r => r.Id == id, cancellationToken);
+
             if (room != null)
             {
+                _gameDbContext.Rounds.RemoveRange(room.Rounds);
                 _gameDbContext.Rooms.Remove(room);
             }
         }
@@ -91,10 +95,20 @@ namespace Game.Data.Repositories
         public async Task DeleteInactiveRoomsAsync(CancellationToken cancellationToken = default)
         {
             var inactiveRooms = await _gameDbContext.Rooms
-                .Where(room => room.Status == RoomStatuses.Inactive)
+                .Include(r => r.Rounds)
+                .Where(r => r.Status == RoomStatuses.Inactive)
                 .ToListAsync(cancellationToken);
 
-            _gameDbContext.Rooms.RemoveRange(inactiveRooms);
+            if (inactiveRooms.Any())
+            {
+                var allRounds = inactiveRooms.SelectMany(r => r.Rounds);
+                _gameDbContext.Rounds.RemoveRange(allRounds);
+                _gameDbContext.Rooms.RemoveRange(inactiveRooms);
+            }
+        }
+        public void DetachRoom(Room room)
+        {
+            _gameDbContext.Entry(room).State = EntityState.Detached;
         }
 
         public void Attach(Room room)

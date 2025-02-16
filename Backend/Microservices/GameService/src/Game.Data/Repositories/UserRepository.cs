@@ -68,6 +68,10 @@ namespace Game.Data.Repositories
                 user.Status = newStatus;
             }
         }
+        public void Attach(User user)
+        {
+            _gameDbContext.Attach(user);
+        }
 
         public async Task ChangeRating(Guid userId, int points, CancellationToken cancellationToken)
         {

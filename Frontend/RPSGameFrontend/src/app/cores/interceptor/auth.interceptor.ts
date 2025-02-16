@@ -31,14 +31,14 @@ const refreshAndProceed = (authService: AuthService, req: HttpRequest<any>, next
     switchMap((newToken) => {
       const newRequest = req.clone({
         setHeaders: {
-          Authorization: `Bearer ${newToken}`
+          Authorization: `Bearer ${newToken.accessToken}`
         }
       });
       return next(newRequest);
     }),
     catchError(error => {
       console.error('Failed to refresh token:', error);
-      authService.logout()
+      authService.logout();
       return throwError(() => error);
     })
   );

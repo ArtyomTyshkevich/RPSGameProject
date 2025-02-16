@@ -1,4 +1,4 @@
-import ChatUser from "./chatUser"
+import ChatUser from "./UserWithStatistics"
 
 export interface UserConnection {
     userDTO: ChatUser;

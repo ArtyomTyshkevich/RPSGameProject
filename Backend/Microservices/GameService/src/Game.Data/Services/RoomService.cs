@@ -36,8 +36,11 @@ namespace Game.Data.Services
             if (room != null)
             {
                 _unitOfWork.Rooms.Attach(room);
-
-                if (room.FirstPlayer == null)
+                if (room.FirstPlayer == user || room.SecondPlayer == user)
+                {
+                    room.Status = RoomStatuses.InPreparation;
+                }
+                else if (room.FirstPlayer == null)
                 {
                     room.FirstPlayer = user;
                 }
@@ -46,9 +49,8 @@ namespace Game.Data.Services
                     room.SecondPlayer = user;
                     room.Status = RoomStatuses.InGame;
                 }
-
                 await _unitOfWork.SaveChangesAsync(cancellationToken);
-                return room.Id;
+                return  room.Id;
             }
 
             return null;

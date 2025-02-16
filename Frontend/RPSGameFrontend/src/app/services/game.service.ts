@@ -55,7 +55,6 @@ export class GameService {
       this.notifyAllPlayersInRoom();
     });
   }
-
   public notifyAllPlayersInRoom() {
     this.allPlayersInRoom.next();
   }
@@ -64,6 +63,9 @@ export class GameService {
     if (this.hubConnection) {
       this.hubConnection.stop()
         .then(() => {
+          // Очистка сообщений после отключения
+          this.message.next([]);
+  
           if (error) {
             console.error('Disconnected with error: ', error);
           } else {

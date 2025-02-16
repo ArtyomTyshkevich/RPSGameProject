@@ -1,13 +1,21 @@
-<div class="room-card">
-     <div class="room-card__id">
-         <strong>ID: {{room.id}}</strong>
-     </div>
-     <div class="room-card__tipe">
-         <strong>Type: {{room.roomType}}</strong>
-     </div>
-     <div class="room-card__status">
-         <strong>Status: {{room.roomStatus}}</strong>
-     </div>
-     <button class="btn-delete">Delete</button>
-     <button class="btn-inactive">Inactive</button>
- </div>
+<div class="room-card" [ngClass]="{'room-card--inactive': room.roomStatus === roomStatuses.Inactive}">
+    <div class="room-card__id">
+        <strong>{{ room.id }}</strong>
+    </div>
+    <div class="room-card__tipe">
+        <strong>{{ roomTypes[room.roomType] }}</strong>
+    </div>
+    <div class="room-card__status">
+        <strong>{{ roomStatuses[room.roomStatus] }}</strong>
+    </div>
+    <button class="btn-delete" (click)="onDelete()">Delete</button>
+    <button 
+        class="btn-toggle"
+        [ngClass]="{
+            'btn-activate': room.roomStatus === roomStatuses.Inactive,
+            'btn-inactivate': room.roomStatus !== roomStatuses.Inactive
+        }"
+        (click)="onToggleStatus()">
+        {{ room.roomStatus === roomStatuses.Inactive ? 'Activate' : 'Inactivate' }}
+    </button>
+  </div>

@@ -3,6 +3,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace Profile.DAL.Entities.Mongo
 {
+    [BsonIgnoreExtraElements]
     public class Round
     {
         [BsonElement("roundNumber")]

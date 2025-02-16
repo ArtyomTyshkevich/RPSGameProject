@@ -108,7 +108,7 @@ body {
     max-width: 500px;
     height: auto;
     padding: 40px;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 179, 1, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 20px;
     display: flex;
@@ -130,7 +130,7 @@ body {
         height: 200%;
         background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 10%, transparent 10.01%);
         background-size: 20px 20px;
-        animation: rotateBackground 360s linear infinite;
+        animation: rotateBackground 900s linear infinite;
         z-index: -1;
     } 
 }

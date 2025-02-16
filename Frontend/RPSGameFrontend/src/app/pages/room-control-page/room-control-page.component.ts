@@ -1,9 +1,10 @@
 import { Component, inject } from '@angular/core';
-import { UserPageService } from '../../services/user-page.service';
 import { CommonModule } from '@angular/common';
 import { RoomCardComponent } from '../../common-ui/room-card/room-card.component';
 import { Room } from '../../cores/models/room';
 import { RoomService } from '../../services/room.service';
+import { RoomTypes } from '../../cores/enums/roomTypes';
+import { RoomStatuses } from '../../cores/enums/roomStatuses';
 
 @Component({
   selector: 'app-rating-page',
@@ -12,14 +13,32 @@ import { RoomService } from '../../services/room.service';
   styleUrls: ['./room-control-page.component.scss']
 })
 export class RoomControlPageComponent {
-  roomSerivece = inject(RoomService);
+  roomService = inject(RoomService);
   rooms: Room[] = [];
 
   
   constructor() {
-    this.roomSerivece.getRooms()
+    this.roomService.getRooms()
       .subscribe(val => {
         this.rooms = val;
       });
   }
+  onCreateRoom() {
+    const newRoom: Room = {
+      id: null,
+      roomType: RoomTypes.Default,
+      roomStatus: RoomStatuses.InPreparation
+    };
+    this.roomService.createRoom(newRoom).subscribe(() => {
+    });
+    window.location.reload();
+  }
+  onDeleteInactiveRoom()
+  {
+    this.roomService.deleteInactiveRooms().subscribe(() => {
+    });
+    window.location.reload();
+  }
+
+
 }

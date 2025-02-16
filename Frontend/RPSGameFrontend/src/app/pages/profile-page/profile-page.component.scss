@@ -1,119 +1,182 @@
-:root {
-    --primary-bg: #3d1b56;
-    --secondary-bg: #f6e77c;
-    --highlight-bg: #b487d9;
-    --text-color: #1d1d1d;
+.box {
+  position: relative;
+  width: 85vw; // Шире для большего простора
+  max-width: 700px; // Максимальная ширина
+  height: auto;
+  padding: 40px;
+  background: linear-gradient(1deg, #6c3f8a, #17002a); // Градиентный синий фон
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 25px; // Более округлые углы
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.4); // Глубокая тень
+  overflow: hidden;
+  z-index: 1;
+  animation: fadeIn 0.8s ease-in-out;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 10%, transparent 10.01%);
+    background-size: 20px 20px;
+    animation: rotateBackground 360s linear infinite;
+    z-index: -1;
   }
-  
-  .profile-container {
-    width: 450px;
-    background-color: var(--secondary-bg);
-    border-radius: 10px;
-    padding: 15px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    border: 3px solid black;
-    position: relative;
-  }
-  
+
   .profile-header {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding-bottom: 10px;
-    border-bottom: 2px solid black;
-  
+    gap: 25px;
+    margin-bottom: 40px;
+
     .avatar {
-      width: 60px;
-      height: 60px;
+      width: 120px; // Большой аватар
+      height: 120px;
       border-radius: 50%;
-      background-color: white;
       overflow: hidden;
-      img {
+      border: 4px solid rgba(255, 255, 255, 0.3); // Светлая граница
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); // Тень для аватара
+
+      .avatar-img {
         width: 100%;
         height: 100%;
+        object-fit: cover;
       }
     }
-  
+
     .user-info {
-      display: flex;
-      flex-direction: column;
-      flex-grow: 1;
-      margin-left: 10px;
-  
+      flex: 1;
+
       label {
+        display: block;
         font-size: 14px;
-        font-weight: bold;
-        color: var(--text-color);
+        color: rgba(255, 255, 255, 0.8); // Светлый текст
+        margin-bottom: 5px;
       }
-  
+
       .input-field {
         width: 100%;
-        padding: 5px;
-        border: 1px solid black;
-        border-radius: 4px;
+        padding: 12px;
+        background: rgba(255, 255, 255, 0.1); // Полупрозрачный фон
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 10px;
+        color: white;
+        font-size: 16px;
+        margin-bottom: 10px;
+        transition: all 0.3s ease;
+
+        &:focus {
+          outline: none;
+          border-color: #00b4db; // Акцентный цвет при фокусе
+          box-shadow: 0 0 8px rgba(0, 180, 219, 0.6); // Свечение
+        }
       }
     }
-  
+
     .close-btn {
       background: none;
       border: none;
-      font-size: 18px;
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 28px;
       cursor: pointer;
-      font-weight: bold;
+      transition: color 0.3s ease;
+
+      &:hover {
+        color: #00b4db; // Акцентный цвет при наведении
+      }
     }
   }
-  
+
   .profile-body {
-    display: flex;
-    padding-top: 10px;
-  
     .history-section {
-      flex: 1;
-      padding-right: 10px;
-  
+      margin-bottom: 40px;
+
       h3 {
-        font-size: 16px;
-        font-weight: bold;
+        font-size: 22px;
+        color: white;
+        margin-bottom: 20px;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); // Тень для текста
       }
-  
+
       .history-box {
-        width: 100%;
-        height: 100px;
-        background-color: var(--highlight-bg);
-        border: 2px solid black;
-        border-radius: 5px;
+        background: rgba(0, 0, 0, 0.2); // Темный фон для контраста
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 15px;
+        padding: 20px;
+        min-height: 150px;
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 16px;
+        box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.2); // Внутренняя тень
+
+        .empty-history {
+          text-align: center;
+          color: rgba(255, 255, 255, 0.6);
+        }
       }
     }
-  
+
     .stats-section {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-  
       h3 {
-        font-size: 16px;
-        font-weight: bold;
+        font-size: 22px;
+        color: white;
+        margin-bottom: 20px;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
       }
-  
-      .stat-item {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-top: 8px;
-  
-        span {
-          font-size: 14px;
-          font-weight: bold;
-        }
-  
-        .stat-box {
-          width: 50px;
-          height: 20px;
-          background-color: var(--highlight-bg);
-          border: 2px solid black;
-          border-radius: 5px;
+
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 25px;
+
+        .stat-item {
+          text-align: center;
+
+          span {
+            display: block;
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 10px;
+          }
+
+          .stat-box {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 15px;
+            font-size: 20px;
+            color: white;
+            transition: all 0.3s ease;
+
+            &:hover {
+              transform: translateY(-5px);
+              box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+              background: rgba(0, 180, 219, 0.2); // Акцентный цвет при наведении
+            }
+          }
         }
       }
     }
   }
-  
+}
+
+@keyframes rotateBackground {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

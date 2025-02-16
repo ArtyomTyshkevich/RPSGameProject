@@ -7,5 +7,6 @@ namespace Game.Application.Interfaces.Services
         Task SetConnection(string connectionId, UserConnection connection);
         Task DeleteConnection(string connectionId);
         Task<UserConnection?> GetConnection(string connectionId);
+        Task<int> GetPlayerCountInRoom(Guid roomId);
     }
 }

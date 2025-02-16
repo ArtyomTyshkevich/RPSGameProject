@@ -71,7 +71,6 @@ export class ChatService {
     }
   }
 
-  /** Восстанавливаем соединение после обновления страницы */
   private restoreConnection() {
     const storedUserId = localStorage.getItem('userId');
     if (storedUserId) {

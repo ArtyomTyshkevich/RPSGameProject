@@ -6,12 +6,12 @@ using Game.Domain.Enums;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Caching.Distributed;
 using System.Collections.Concurrent;
+using static OpenQA.Selenium.BiDi.Modules.Input.Pointer;
 
 namespace Game.WebAPI.Hubs
 {
     public class GameHub : Hub
     {
-        private readonly ConcurrentDictionary<Guid, SemaphoreSlim> _roomLocks = new();
         private readonly IUnitOfWork _unitOfWork;
         private readonly IRoundService _roundService;
         private readonly IMapper _mapper;
@@ -35,37 +35,25 @@ namespace Game.WebAPI.Hubs
             _logger.LogInformation("[SendMove] Started. ConnectionId: {ConnectionId}, Move: {Move}", connectionId, move);
 
             var connection = await _cacheService.GetConnection(connectionId);
-            if (connection != null)
+            var roomId = Guid.Parse(connection.GameRoomId);
+
+
+            var room = await _unitOfWork.Rooms.GetByIdAsNoTrakingAsync(roomId);
+
+            var cancellationTokenSource = new CancellationTokenSource();
+            var cancellationToken = cancellationTokenSource.Token;
+
+            var message = await _roundService.ProcessRound(room, connection.UserId, move, cancellationToken);
+            if (message != null)
             {
-                var roomId = Guid.Parse(connection.GameRoomId);
-                _logger.LogInformation("[SendMove] Processing move for RoomId: {RoomId}, UserId: {UserId}", roomId, connection.UserId);
+                await Clients.Group(roomId.ToString()).SendAsync("ReceiveMessage", message);
 
-                // Получаем или создаем семафор для комнаты
-                var roomLock = _roomLocks.GetOrAdd(roomId, _ => new SemaphoreSlim(1, 1));
-
-                try
-                {
-                    // Ожидаем захвата семафора
-                    await roomLock.WaitAsync();
-
-                    var room = await _unitOfWork.Rooms.GetByIdAsNoTrakingAsync(roomId);
-
-                    var cancellationTokenSource = new CancellationTokenSource();
-                    var cancellationToken = cancellationTokenSource.Token;
-
-                    var message = await _roundService.ProcessRound(room, connection.UserId, move, cancellationToken);
-
-                    await Clients.Group(roomId.ToString()).SendAsync("ReceiveMessage", message);
-
-                    _logger.LogInformation("[SendMove] Move processed successfully for RoomId: {RoomId}", roomId);
-                }
-                finally
-                {
-                    // Освобождаем семафор
-                    roomLock.Release();
-                }
+                _logger.LogInformation("[SendMove] Move processed successfully for RoomId: {RoomId}", roomId);
             }
+
         }
+
+
 
         public async Task JoinChat(Guid userId, Guid roomId)
         {
@@ -79,17 +67,30 @@ namespace Game.WebAPI.Hubs
             if (allPlayersInRoom)
             {
                 await Clients.Group(roomId.ToString()).SendAsync("AllPlayersInRoom");
-            }    
+            }
             _logger.LogInformation("[JoinChat] User {UserId} joined Room {RoomId}. ConnectionId: {ConnectionId}", userId, roomId, Context.ConnectionId);
         }
 
-        public override async Task OnDisconnectedAsync(Exception? exception)
+
+public override async Task OnDisconnectedAsync(Exception? exception)
         {
             _logger.LogInformation("[OnDisconnectedAsync] Started. ConnectionId: {ConnectionId}", Context.ConnectionId);
 
             var connection = await _cacheService.GetConnection(Context.ConnectionId);
             if (connection != null)
             {
+                var roomId = Guid.Parse(connection.GameRoomId);
+
+
+                var room = await _unitOfWork.Rooms.GetByIdAsNoTrakingAsync(roomId);
+
+                var cancellationTokenSource = new CancellationTokenSource();
+                var cancellationToken = cancellationTokenSource.Token;
+                var message = await _roundService.DisconetedAsync(room, connection.UserId, cancellationToken);
+                if (message != null)
+                {
+                    await Clients.Group(roomId.ToString()).SendAsync("ReceiveMessage", message);
+                }
                 await _cache.RemoveAsync(Context.ConnectionId);
                 await Groups.RemoveFromGroupAsync(Context.ConnectionId, connection.GameRoomId);
 

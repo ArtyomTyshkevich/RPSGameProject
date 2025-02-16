@@ -81,7 +81,7 @@ namespace Game.WebAPI.Controllers
         [HttpPatch("{roomId:guid}/status")]
         public async Task<IActionResult> UpdateRoomStatus(Guid roomId, [FromQuery] RoomStatuses newStatus, CancellationToken cancellationToken)
         {
-            _logger.LogInformation("Starting to update status of room with ID: {RoomId} to {NewStatus}.", roomId, newStatus);
+                _logger.LogInformation("Starting to update status of room with ID: {RoomId} to {NewStatus}.", roomId, newStatus);
 
             await _roomService.UpdateRoomStatusAsync(roomId, newStatus, cancellationToken);
 

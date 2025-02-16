@@ -17,7 +17,7 @@ export const routes: Routes = [
   { path: 'login', component: LoginPageComponent, canActivate: [wasActivated]},
   { path: "register", component: RegisterPageComponent, canActivate: [wasActivated]},
   { path: 'chat', component: ChatPageComponent, canActivate: [canActivateAuth]},
-  { path: 'profile', component: ProfilePageComponent, canActivate: [canActivateAuth]},
+  { path: 'profile/:userId', component: ProfilePageComponent, canActivate: [canActivateAuth]},
   { path: 'game', component: GamePageComponent, canActivate: [canActivateAuth]},
   { path: 'rooms', component: RoomControlPageComponent, canActivate: [canActivateAuth]}
 ];

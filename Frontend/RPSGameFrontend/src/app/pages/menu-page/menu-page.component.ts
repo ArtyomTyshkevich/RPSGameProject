@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnDestroy } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth-service.service';
 import { Router } from '@angular/router';
@@ -10,14 +10,15 @@ import { CommonModule } from '@angular/common';
   selector: 'app-menu-page',
   imports: [RouterLink, CommonModule],
   templateUrl: './menu-page.component.html',
-  styleUrl: './menu-page.component.scss'
+  styleUrls: ['./menu-page.component.scss']
 })
-export class MenuPageComponent {
+export class MenuPageComponent implements OnDestroy {
   authService = inject(AuthService);
   searchService = inject(SearchService);
   router = inject(Router);
   pageState: MenuStates = MenuStates.MainMenu;
   menuStates = MenuStates;
+  roomId: string = '';
   isLoading: boolean = false;
   userId: string = this.authService.getUserIdFromToken();
 
@@ -27,16 +28,15 @@ export class MenuPageComponent {
   }
 
   startGameSearch(): void {
-
-
     this.isLoading = true;
     this.pageState = MenuStates.InSearch;
 
     this.searchService.Start(this.userId).subscribe({
-      next: (response: string) => {
-        console.log('Поиск начат:', response);
+      next: (roomId: string) => {
         this.isLoading = false;
-        this.router.navigate(['/game', response]);
+        this.roomId = roomId;
+        console.log('Рума найдена:', this.roomId);
+        this.router.navigate(["/game", this.roomId]);
       },
       error: (error: any) => {
         console.error('Ошибка при начале поиска:', error);
@@ -44,5 +44,28 @@ export class MenuPageComponent {
         this.isLoading = false;
       }
     });
+  }
+
+  stopGameSearch(): void {
+    this.isLoading = false;
+    this.pageState = MenuStates.MainMenu;
+
+    this.searchService.Stop(this.userId).subscribe({
+      next: (response: string) => {
+        console.log('Поиск прикращен:', response);
+        this.isLoading = false;
+      },
+      error: (error: any) => {
+        console.error('Ошибка при окончании поиска:', error);
+        this.pageState = MenuStates.MainMenu;
+        this.isLoading = false;
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.pageState === MenuStates.InSearch) {
+      this.stopGameSearch();
+    }
   }
 }

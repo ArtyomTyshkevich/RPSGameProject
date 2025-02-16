@@ -3,10 +3,11 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace Profile.DAL.Entities.Mongo
 {
+    [BsonIgnoreExtraElements]
     public class Game
     {
         [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
+        [BsonRepresentation(BsonType.String)] // Указываем, что идентификатор будет строкой
         public string Id { get; set; }
 
         [BsonElement("firstPlayer")]
@@ -21,10 +22,9 @@ namespace Profile.DAL.Entities.Mongo
         [BsonElement("gameResult")]
         public string GameResult { get; set; }
 
-        // Конструктор с инициализацией значений по умолчанию
         public Game()
         {
-            Id = ObjectId.GenerateNewId().ToString();  // Генерация ID по умолчанию
+            Id = Guid.NewGuid().ToString();
             FirstPlayerId = string.Empty;
             SecondPlayerId = string.Empty;
             Rounds = new List<Round>();
