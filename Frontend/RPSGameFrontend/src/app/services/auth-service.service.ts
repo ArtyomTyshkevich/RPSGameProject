@@ -77,7 +77,24 @@ export class AuthService {
         console.error('Token decoding error', error);
         return '';
     }
-}
+  }
+  getUserRoleFromToken(): string {
+    const token = this.token || this.cookieService.get('token');
+    if (!token) {
+        console.error("No token available");
+        return '';
+    }
+  
+    try {
+        const decodedToken: any = jwtDecode(token);
+        return decodedToken["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"] || '';
+    } catch (error) {
+        console.error('Token decoding error', error);
+        return '';
+    }
+  }
+  
+  
   logout(): void {
     this.token = null;
     this.refreshToken = null;

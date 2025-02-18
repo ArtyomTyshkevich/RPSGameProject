@@ -43,6 +43,25 @@ namespace Profile.BLL.Repositories
         {
             await _games.DeleteOneAsync(g => g.Id == id, cancellationToken);
         }
+        public async Task<IEnumerable<Game>> GetAllUserGamesAsync(string userId, CancellationToken cancellationToken = default)
+        {
+            var filter = Builders<Game>.Filter.Or(
+                Builders<Game>.Filter.Eq(g => g.FirstPlayerId, userId),
+                Builders<Game>.Filter.Eq(g => g.SecondPlayerId, userId)
+            );
+
+            return await _games.Find(filter).ToListAsync(cancellationToken);
+        }
+        public async Task<int> GetAllGamesCountAsync(string userId, CancellationToken cancellationToken = default)
+        {
+            var filter = Builders<Game>.Filter.Or(
+                Builders<Game>.Filter.Eq(g => g.FirstPlayerId, userId),
+                Builders<Game>.Filter.Eq(g => g.SecondPlayerId, userId)
+            );
+
+            var count = await _games.CountDocumentsAsync(filter, cancellationToken: cancellationToken);
+            return (int)count;
+        }
     }
 }
     

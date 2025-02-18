@@ -12,36 +12,44 @@ import { RegisterRequest } from '../../cores/models/auth/RegisterRequest';
   styleUrl: './register-page.component.scss'
 })
 export class RegisterPageComponent {
- authService = inject(AuthService);
- router = inject(Router);
- 
- form: FormGroup = new FormGroup({
-  nickname: new FormControl('', [Validators.required]),
-  email: new FormControl('', [Validators.required]),
-  password: new FormControl('', [Validators.required]),
-  passwordConfirm: new FormControl('', [Validators.required]),
-  birthDate: new FormControl('', [Validators.required]) 
-});
+  authService = inject(AuthService);
+  router = inject(Router);
+  isLoading = false;  // Добавляем флаг загрузки
 
-onSubmit() {
-  if (this.form.valid) {
-    const registerRequest: RegisterRequest = {
-      nickname: this.form.value.nickname,
-      email: this.form.value.email,
-      password: this.form.value.password,
-      passwordConfirm: this.form.value.passwordConfirm,
-      birthDate: this.form.value.birthDate 
-    };
+  form: FormGroup = new FormGroup({
+    nickname: new FormControl('', [Validators.required]),
+    email: new FormControl('', [Validators.required]),
+    password: new FormControl('', [Validators.required]),
+    passwordConfirm: new FormControl('', [Validators.required]),
+    birthDate: new FormControl('', [Validators.required]) 
+  });
 
-    this.authService.register(registerRequest).subscribe({
-      next: (response) => {
-        this.router.navigate(['']);
-        console.log('Register successful:', response);
-      },
-      error: (err) => {
-        console.error('Register failed:', err);
-      }
-    });
+  onSubmit() {
+    if (this.form.valid) {
+      // Устанавливаем флаг загрузки в true, чтобы заблокировать кнопку
+      this.isLoading = true;
+
+      const registerRequest: RegisterRequest = {
+        nickname: this.form.value.nickname,
+        email: this.form.value.email,
+        password: this.form.value.password,
+        passwordConfirm: this.form.value.passwordConfirm,
+        birthDate: this.form.value.birthDate 
+      };
+
+      this.authService.register(registerRequest).subscribe({
+        next: (response) => {
+          this.router.navigate(['']);
+          console.log('Register successful:', response);
+        },
+        error: (err) => {
+          console.error('Register failed:', err);
+        },
+        complete: () => {
+          // После завершения запроса сбрасываем флаг загрузки
+          this.isLoading = false;
+        }
+      });
+    }
   }
-}
 }

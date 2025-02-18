@@ -21,6 +21,7 @@ export class MenuPageComponent implements OnDestroy {
   roomId: string = '';
   isLoading: boolean = false;
   userId: string = this.authService.getUserIdFromToken();
+  userRole: string = this.authService.getUserRoleFromToken();
 
   logout(): void {
     this.authService.logout();
@@ -67,5 +68,9 @@ export class MenuPageComponent implements OnDestroy {
     if (this.pageState === MenuStates.InSearch) {
       this.stopGameSearch();
     }
+  }
+
+  isAdmin(): boolean {
+    return this.userRole === 'admin';
   }
 }

@@ -20,16 +20,21 @@
     color: #ffd600;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 0 20px rgba(255, 69, 16, 0.6); 
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 0 20px rgba(255, 69, 16, 0.6);
     z-index: 2;
     text-transform: uppercase;
     letter-spacing: 1px;
     overflow: hidden;
-    
+
+    i img {
+        width: 7vw;
+        height: auto;
+    }
+
     &:hover {
         background: linear-gradient(135deg, #0022ff, #b700ff);
         transform: translateY(-7px) scale(1.05);
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3), 0 0 30px rgba(255, 69, 16, 0.8); 
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3), 0 0 30px rgba(255, 69, 16, 0.8);
     }
 }
 
@@ -48,11 +53,11 @@
     border: none;
     border-radius: 2vw;
     font-weight: bold;
-    background: linear-gradient(135deg, #6a11cb, #2575fc); /* Градиент для фиолетовых кнопок */
-    color: #ffd600; /* Желтый текст */
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    color: #ffd600;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 0 20px rgba(106, 17, 203, 0.6); /* Мягкая тень */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 0 20px rgba(106, 17, 203, 0.6);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -61,22 +66,34 @@
     overflow: hidden;
 
     &:hover {
-        background: linear-gradient(135deg, #2575fc, #6a11cb); /* Ярче градиент */
+        background: linear-gradient(135deg, #2575fc, #6a11cb);
         transform: translateY(-7px) scale(1.05);
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3), 0 0 30px rgba(106, 17, 203, 0.8); /* Подсветка и тени */
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3), 0 0 30px rgba(106, 17, 203, 0.8);
     }
 }
 
 .play-btn {
-    background: linear-gradient(135deg, #6a11cb, #2575fc); /* Градиент */
-    color: #ffd600; /* Желтый текст */
-    box-shadow: 0 6px 12px rgba(106, 17, 203, 0.4), 0 0 20px rgba(255, 69, 16, 0.6); /* Тень и светлый контур */
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    color: #ffd600;
+    box-shadow: 0 6px 12px rgba(106, 17, 203, 0.4), 0 0 20px rgba(255, 69, 16, 0.6);
 
     &:hover {
-        background: linear-gradient(135deg, #2575fc, #6a11cb); /* Ярче фиолетовый */
+        background: linear-gradient(135deg, #2575fc, #6a11cb);
         transform: translateY(-7px) scale(1.05);
-        box-shadow: 0 8px 16px rgba(106, 17, 203, 0.5), 0 0 30px rgba(106, 17, 203, 0.8); /* Подсветка */
+        box-shadow: 0 8px 16px rgba(106, 17, 203, 0.5), 0 0 30px rgba(106, 17, 203, 0.8);
     }
+}
+
+.rooms-btn {
+    position: absolute;
+    right: 2vw; 
+    bottom: 2vh;
+}
+
+.logout-btn {
+    position: absolute;
+    left: 2vw; 
+    bottom: 2vh;
 }
 
 /* Анимации */

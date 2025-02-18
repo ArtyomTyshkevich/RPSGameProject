@@ -1,7 +1,7 @@
 <div class="box">
   <div class="profile-header">
     <div class="avatar">
-      <img src="assets/avatar-placeholder.png" alt="User Avatar" class="avatar-img" />
+      <img src="avatar.jpg" alt="User Avatar" class="avatar-img" />
     </div>
     <div class="user-info">
       <label>Name</label>
@@ -13,13 +13,6 @@
   </div>
 
   <div class="profile-body">
-    <div class="history-section">
-      <h3>History</h3>
-      <div class="history-box">
-        <p class="empty-history">No history available.</p>
-      </div>
-    </div>
-
     <div class="stats-section">
       <h3>Stats</h3>
       <div class="stats-grid">
@@ -46,6 +39,20 @@
         <div class="stat-item">
           <span>Scissors Usage</span>
           <div class="stat-box">{{user.scissorsUsage}}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="action-buttons">
+      <button *ngIf="isAdminOrCurrentUser" class="delete-btn" (click)="confirmDelete()">Delete Profile</button>
+    </div>
+
+    <div class="modal" *ngIf="showDeleteConfirmation">
+      <div class="modal-content">
+        <h3>Are you sure you want to delete your profile?</h3>
+        <div class="modal-actions">
+          <button (click)="deleteUser()">Yes</button>
+          <button (click)="cancelDelete()">No</button>
         </div>
       </div>
     </div>

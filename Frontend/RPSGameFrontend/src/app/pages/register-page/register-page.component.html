@@ -26,9 +26,10 @@
     <input formControlName="birthDate" class="game-input" type="date">
   </label>
 
-  <button class="btn" [disabled]="form.invalid">
+  <button class="btn" [disabled]="form.invalid || isLoading">
     Register
   </button>
+  
   <p class="register-link">
     Do you have an account?
     <a [routerLink]="['/login']" class="register-link-text">Login</a>

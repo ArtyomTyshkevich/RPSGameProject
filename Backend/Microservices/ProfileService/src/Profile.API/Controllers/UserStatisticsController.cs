@@ -21,7 +21,8 @@ namespace Profile.API.Controllers
         {
             _logger.LogInformation("Fetching move statistics for player {PlayerId}.", Id);
 
-            var result = await _userStatisticsService.GetMoveStatisticsAsync(Id, cancellationToken);
+            var games = await _userStatisticsService.GetAllUserGames(Id, cancellationToken);
+            var result = await _userStatisticsService.GetMoveStatisticsAsync(games, Id, cancellationToken);
 
             _logger.LogInformation("Successfully fetched move statistics for player {PlayerId}.", Id);
 
@@ -33,7 +34,8 @@ namespace Profile.API.Controllers
         {
             _logger.LogInformation("Fetching win count for player {PlayerId}.", Id);
 
-            var result = await _userStatisticsService.GetWinsCountAsync(Id, cancellationToken);
+            var games = await _userStatisticsService.GetAllUserGames(Id, cancellationToken);
+            var result = await _userStatisticsService.GetWinsCountAsync(games, Id, cancellationToken);
 
             _logger.LogInformation("Successfully fetched win count for player {PlayerId}.", Id);
 
@@ -44,8 +46,8 @@ namespace Profile.API.Controllers
         public async Task<ActionResult> GetLossesCountAsync(Guid Id, CancellationToken cancellationToken)
         {
             _logger.LogInformation("Fetching losses count for player {PlayerId}.", Id);
-
-            var result = await _userStatisticsService.GetLossesCountAsync(Id, cancellationToken);
+            var games = await _userStatisticsService.GetAllUserGames(Id, cancellationToken);
+            var result = await _userStatisticsService.GetLossesCountAsync(games, Id, cancellationToken);
 
             _logger.LogInformation("Successfully fetched losses count for player {PlayerId}.", Id);
 
@@ -56,8 +58,8 @@ namespace Profile.API.Controllers
         public async Task<ActionResult> GetUserStatisticsAsync(Guid Id, CancellationToken cancellationToken)
         {
             _logger.LogInformation("Fetching statistics for player {PlayerId}.", Id);
-
-            var result = await _userStatisticsService.CreateUserWithStatistics(Id, cancellationToken);
+            var games = await _userStatisticsService.GetAllUserGames(Id, cancellationToken);
+            var result = await _userStatisticsService.CreateUserWithStatistics(games, Id, cancellationToken);
 
             _logger.LogInformation("Successfully fetched statistics for player {PlayerId}.", Id);
 
@@ -68,8 +70,8 @@ namespace Profile.API.Controllers
         public async Task<ActionResult> GetWinRateAsync(Guid Id, CancellationToken cancellationToken)
         {
             _logger.LogInformation("Fetching win rate for player {PlayerId}.", Id);
-
-            var result = await _userStatisticsService.GetWinRateAsync(Id, cancellationToken);
+            var games = await _userStatisticsService.GetAllUserGames(Id, cancellationToken);
+            var result = await _userStatisticsService.GetWinRateAsync(games, Id, cancellationToken);
 
             _logger.LogInformation("Successfully fetched win rate for player {PlayerId}.", Id);
 
