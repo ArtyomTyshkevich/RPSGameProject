@@ -20,7 +20,9 @@ namespace Profile.API.Controllers
         public async Task<IActionResult> GetMostUsedMove(CancellationToken cancellationToken)
         {
             _logger.LogInformation("[GetMostUsedMove] Fetching the most used move statistics.");
+
             var result = await _globalStatisticsServices.GetMostUsedMoveAsync(cancellationToken);
+
             return Ok(result);
         }
 
@@ -28,7 +30,9 @@ namespace Profile.API.Controllers
         public async Task<IActionResult> GetMovesWinRatePlayers(CancellationToken cancellationToken)
         {
             _logger.LogInformation("[GetMovesWinRatePlayers] Fetching moves win rate statistics.");
+
             var result = await _globalStatisticsServices.GetMoveWinRateAsync(cancellationToken);
+
             return Ok(result);
         }
 
@@ -36,7 +40,9 @@ namespace Profile.API.Controllers
         public async Task<IActionResult> GetMovesUsageStatistics(CancellationToken cancellationToken)
         {
             _logger.LogInformation("[GetMovesUsageStatistics] Fetching moves usage statistics.");
+
             var result = await _globalStatisticsServices.GetMoveUsageStatisticsAsync(cancellationToken);
+
             return Ok(result);
         }
     }

@@ -1,0 +1,56 @@
+version: '3.9'
+networks:
+  backend:
+    driver: bridge
+services:
+  chatdb:
+    container_name: Chat-db
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=password@12345#
+    networks:
+      - backend
+    ports:
+      - "8001:1433"
+
+  chatmongodb:
+    container_name: Chat-mongodb
+    image: mongo:latest
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=example
+    ports:
+      - "27018:27017"
+    networks:
+      - backend
+    volumes:
+      - mongo_data_chat:/data/db
+
+  chatredis:
+    image: "redis:latest"
+    restart: always
+    ports:
+      - "6379:6379"
+    networks:
+      - backend
+
+  chat.webapi:
+    container_name: chat-api
+    build:
+      context: .
+      dockerfile: Chat.WebAPI/Dockerfile
+    networks:
+      - backend
+    environment:
+      - ConnectionStrings__DefaultConnection=Server=Chatdb;Database=LibraryDb;User Id=sa;Password=password@12345#;TrustServerCertificate=True;
+    depends_on:
+      - chatdb
+      - chatmongodb
+      - chatredis
+    ports:
+      - "8003:80"
+      - "8083:443"
+
+volumes:
+  mongo_data_chat:

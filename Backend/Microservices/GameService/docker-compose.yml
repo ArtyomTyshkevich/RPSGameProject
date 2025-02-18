@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  game.webapi:
+    image: ${DOCKER_REGISTRY-}gamewebapi
+    build:
+      context: .
+      dockerfile: src/Game.WebAPI/Dockerfile
