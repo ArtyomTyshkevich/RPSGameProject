@@ -17,7 +17,7 @@ export class ProfilePageComponent implements OnInit {
   userId: string = '';
   user: UserWithStatistics = {} as UserWithStatistics; 
   isAdminOrCurrentUser: boolean = false;
-  showDeleteConfirmation: boolean = false; // State for modal confirmation
+  showDeleteConfirmation: boolean = false; 
 
   constructor(
     private userPageService: UserPageService,

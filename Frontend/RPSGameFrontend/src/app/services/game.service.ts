@@ -3,6 +3,7 @@ import * as signalR from '@microsoft/signalr';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { PlayerMoves } from '../cores/enums/playerMoves';
 import { Message } from '../cores/enums/Message';
+import { environment } from '../enviroment/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -11,11 +12,12 @@ export class GameService {
   private hubConnection!: signalR.HubConnection;
   public message = new BehaviorSubject<Message[]>([]);
   public allPlayersInRoom = new Subject<void>();
+
   constructor() {}
 
   startConnection(userId: string, roomId: string) {
     this.hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl('https://localhost:8092/gameHub')
+      .withUrl(`${environment.gameServiceUrl}/gameHub`)
       .withAutomaticReconnect()
       .configureLogging(signalR.LogLevel.Information)
       .build();
@@ -30,13 +32,14 @@ export class GameService {
   }
 
   joinChat(userId: string, roomId: string) {
-  console.log(roomId)
+    console.log(roomId)
     if (this.hubConnection.state === signalR.HubConnectionState.Connected) {
       this.hubConnection.invoke('JoinChat', userId, roomId)
         .then(() => console.log(`User ${userId} joined the chat`))
         .catch(err => console.error('Error joining chat: ', err));
     }
   }
+
   SendMove(move: PlayerMoves) {
     if (this.hubConnection.state === signalR.HubConnectionState.Connected) {
       this.hubConnection.invoke('SendMove', move)
@@ -55,6 +58,7 @@ export class GameService {
       this.notifyAllPlayersInRoom();
     });
   }
+
   public notifyAllPlayersInRoom() {
     this.allPlayersInRoom.next();
   }
@@ -63,7 +67,6 @@ export class GameService {
     if (this.hubConnection) {
       this.hubConnection.stop()
         .then(() => {
-          // Очистка сообщений после отключения
           this.message.next([]);
   
           if (error) {

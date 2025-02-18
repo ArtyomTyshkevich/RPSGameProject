@@ -5,7 +5,7 @@ using Profile.BLL.Interfaces.Services;
 namespace Profile.API.Controllers
 {
     [ApiController]
-    [Route("global-statistics")]
+    [Route("users")]
     public class GlobalStatisticsController : ControllerBase
     {
         private readonly IGlobalStatisticsServices _globalStatisticsServices;

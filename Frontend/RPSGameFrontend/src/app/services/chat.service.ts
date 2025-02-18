@@ -1,22 +1,23 @@
 import { Injectable } from '@angular/core';
 import * as signalR from '@microsoft/signalr';
 import { BehaviorSubject } from 'rxjs';
+import { environment } from '../enviroment/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChatService {
   private hubConnection!: signalR.HubConnection;
-  private messagesSubject = new BehaviorSubject<any[]>(this.getStoredMessages()); // Загружаем сохраненные сообщения
+  private messagesSubject = new BehaviorSubject<any[]>(this.getStoredMessages());
   public messages$ = this.messagesSubject.asObservable();
 
   constructor() {
-    this.restoreConnection(); // Проверяем, нужно ли восстановить соединение
+    this.restoreConnection();
   }
 
   startConnection(userId: string) {
     this.hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl('https://localhost:8083/chatHub')
+      .withUrl(`${environment.chatServiceUrl}/chatHub`)
       .withAutomaticReconnect()
       .configureLogging(signalR.LogLevel.Information)
       .build();
@@ -25,7 +26,7 @@ export class ChatService {
       .start()
       .then(() => {
         console.log('Connected to ChatHub');
-        localStorage.setItem('userId', userId); // Сохраняем userId
+        localStorage.setItem('userId', userId);
         this.joinChat(userId);
         this.listenForMessages();
       })
@@ -58,7 +59,6 @@ export class ChatService {
     });
   }
   
-
   stopConnection() {
     if (this.hubConnection) {
       this.hubConnection.stop()
@@ -79,12 +79,10 @@ export class ChatService {
     }
   }
 
-  /** Сохраняем сообщения в localStorage */
   private storeMessages(messages: any[]) {
     localStorage.setItem('chatMessages', JSON.stringify(messages));
   }
 
-  /** Получаем сообщения из localStorage */
   private getStoredMessages(): any[] {
     const storedMessages = localStorage.getItem('chatMessages');
     return storedMessages ? JSON.parse(storedMessages) : [];

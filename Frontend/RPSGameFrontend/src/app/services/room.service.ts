@@ -3,13 +3,14 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Room } from '../cores/models/room';
 import { RoomStatuses } from '../cores/enums/roomStatuses';
+import { environment } from '../enviroment/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RoomService {
   private http = inject(HttpClient);
-  private baseUrl = 'https://localhost:8092/rooms';
+  private baseUrl = `${environment.roomServiceUrl}/rooms`;
 
   getRooms(): Observable<Room[]> {
     return this.http.get<Room[]>(this.baseUrl);

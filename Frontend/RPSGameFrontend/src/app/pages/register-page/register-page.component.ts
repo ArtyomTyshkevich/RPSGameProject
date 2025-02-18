@@ -26,7 +26,6 @@ export class RegisterPageComponent {
 
   onSubmit() {
     if (this.form.valid) {
-      // Устанавливаем флаг загрузки в true, чтобы заблокировать кнопку
       this.isLoading = true;
 
       const registerRequest: RegisterRequest = {
@@ -46,7 +45,6 @@ export class RegisterPageComponent {
           console.error('Register failed:', err);
         },
         complete: () => {
-          // После завершения запроса сбрасываем флаг загрузки
           this.isLoading = false;
         }
       });

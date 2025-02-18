@@ -7,6 +7,8 @@ import { Observable, tap } from 'rxjs';
 import { TokenModel } from '../cores/models/auth/TokenModel';
 import { RegisterRequest } from '../cores/models/auth/RegisterRequest';
 import { jwtDecode } from 'jwt-decode';
+import { environment } from '../enviroment/environment';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +16,7 @@ import { jwtDecode } from 'jwt-decode';
 export class AuthService {
   private http = inject(HttpClient);
   private cookieService = inject(CookieService);
+  router = inject(Router);
 
   token: string | null = null;
   refreshToken: string | null = null;
@@ -24,7 +27,7 @@ export class AuthService {
   }
 
   login(authRequest: AuthRequest): Observable<AuthResponse> {
-    const url = 'https://localhost:8082/auth/login';
+    const url = `${environment.authServiceUrl}/auth/login`;
     return this.http.post<AuthResponse>(url, authRequest).pipe(
       tap(val => {
         this.setTokens(val.token, val.refreshToken);
@@ -33,7 +36,7 @@ export class AuthService {
   }
 
   register(registerRequest: RegisterRequest): Observable<AuthResponse> {
-    const url = 'https://localhost:8082/auth/register';
+    const url = `${environment.authServiceUrl}/auth/register`;
     return this.http.post<AuthResponse>(url, registerRequest).pipe(
       tap(val => {
         this.setTokens(val.token, val.refreshToken);
@@ -42,7 +45,7 @@ export class AuthService {
   }
 
   refreshTokens(): Observable<TokenModel> {
-    const url = 'https://localhost:8082/auth/refresh-token';
+    const url = `${environment.authServiceUrl}/auth/refresh-token`;
 
     if (!this.refreshToken) {
       this.refreshToken = this.cookieService.get('refreshToken');
@@ -78,6 +81,7 @@ export class AuthService {
         return '';
     }
   }
+
   getUserRoleFromToken(): string {
     const token = this.token || this.cookieService.get('token');
     if (!token) {
@@ -94,12 +98,13 @@ export class AuthService {
     }
   }
   
-  
   logout(): void {
     this.token = null;
     this.refreshToken = null;
     this.cookieService.delete('token');
     this.cookieService.delete('refreshToken');
+    this.router.navigate(["/start"]);
+    
   }
   
   private setTokens(token: string, refreshToken: string) {
