@@ -1,0 +1,11 @@
+<div class="box">
+  <div class="user-cards">
+    <div *ngFor="let user of users; let index = index">
+      <app-user-card [user]="user" [index]="index + (currentPage - 1) * pageSize"></app-user-card>
+    </div>
+  </div>
+
+  <div class="pagination">
+    <button *ngFor="let page of pages" (click)="goToPage(page)" [class.active]="page === currentPage">{{page}}</button>
+  </div>
+</div>

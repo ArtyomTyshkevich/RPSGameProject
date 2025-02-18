@@ -42,7 +42,7 @@ namespace Auth.BLL.Handlers.CommandHandlers
         {
             var username = principal.Identity!.Name;
             var user = await _unitOfWork.UserManagers.FindByNameAsync(username!);
-            if (user == null || user.RefreshToken != refreshToken || user.RefreshTokenExpiryTime <= DateTime.UtcNow)
+            if (user == null || user.RefreshToken != refreshToken)
             {
                 throw new RefreshTokenInvalidException();
             }

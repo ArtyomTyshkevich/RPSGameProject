@@ -1,0 +1,10 @@
+<div class="box">
+  <button class="add-room-bottom" (click)="onCreateRoom()">Добавить комнату</button>
+  <button class="delete-room-bottom" (click)="onDeleteInactiveRoom()">Удалить неактивные комнаты</button>
+
+  <div class="list-container">
+    <div class="room" *ngFor="let room of rooms">
+      <app-room-card [room]="room"></app-room-card>
+    </div>
+  </div>
+</div>

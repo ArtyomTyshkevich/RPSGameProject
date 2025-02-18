@@ -21,13 +21,24 @@ namespace Game.Data.Services
             _bus = bus;
         }
 
-        public async Task StartSearchGame(Guid userID, CancellationToken cancellationToken)
+        public async Task<string?> StartSearchGame(Guid userID, CancellationToken cancellationToken)
         {
             var user = await _unitOfWork.Users.GetByIdAsync(userID);
             await _unitOfWork.Users.UpdateUserStatusAsync(userID, UserStatuses.InSearch);
             await _unitOfWork.SaveChangesAsync();
             var userDTO = _mapper.Map<UserDTO>(user);
-            await _bus.Publish(userDTO, cancellationToken);
+            try
+            {
+                var timeout = TimeSpan.FromSeconds(120);
+                var response = await _bus.Request<UserDTO, RoomResponse>(userDTO, cancellationToken, timeout);
+                return response.Message.RoomId?.ToString();
+            }
+            catch (Exception ex)
+            {
+               await StopSearchGame(userID, cancellationToken);
+                return null;
+            }
+
         }
 
         public async Task StopSearchGame(Guid userID, CancellationToken cancellationToken)

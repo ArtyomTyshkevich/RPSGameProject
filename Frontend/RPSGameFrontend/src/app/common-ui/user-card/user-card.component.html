@@ -1,0 +1,18 @@
+<div class="user-card" [ngClass]="{
+     'gold-card': index === 0,
+     'silver-card': index === 1,
+     'bronze-card': index === 2
+   }" [routerLink]="['/profile', user.id]">
+     <div class="user-card__place">
+       <strong>{{index + 1}}</strong>
+     </div>
+     <div class="user-card__name">
+       <strong>{{user.name}}</strong>
+     </div>
+     <div class="user-card__mail">
+       <strong>{{user.mail}}</strong>
+     </div>
+     <div class="user-card__rating">
+       <strong>{{user.rating}}</strong>
+     </div>
+   </div>

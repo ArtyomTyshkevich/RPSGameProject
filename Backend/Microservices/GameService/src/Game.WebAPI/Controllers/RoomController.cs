@@ -20,7 +20,6 @@ namespace Game.WebAPI.Controllers
         }
 
         [HttpGet]
-        [Authorize(Policy = "AdminOnly")]
         public async Task<ActionResult<List<RoomDTO>>> GetAll(CancellationToken cancellationToken)
         {
             _logger.LogInformation("Starting to fetch all rooms.");
@@ -78,11 +77,11 @@ namespace Game.WebAPI.Controllers
 
             return NoContent();
         }
-
+            
         [HttpPatch("{roomId:guid}/status")]
         public async Task<IActionResult> UpdateRoomStatus(Guid roomId, [FromQuery] RoomStatuses newStatus, CancellationToken cancellationToken)
         {
-            _logger.LogInformation("Starting to update status of room with ID: {RoomId} to {NewStatus}.", roomId, newStatus);
+                _logger.LogInformation("Starting to update status of room with ID: {RoomId} to {NewStatus}.", roomId, newStatus);
 
             await _roomService.UpdateRoomStatusAsync(roomId, newStatus, cancellationToken);
 

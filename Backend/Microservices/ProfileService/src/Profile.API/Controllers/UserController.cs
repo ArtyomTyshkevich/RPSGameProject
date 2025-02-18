@@ -1,13 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Profile.BLL.DTOs;
 using Profile.BLL.Interfaces.Services;
 
 namespace Profile.API.Controllers
 {
     [ApiController]
-    [Route("user")]
+    [Route("users")]
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
@@ -20,11 +19,25 @@ namespace Profile.API.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<List<UserDTO>>> GetAll(CancellationToken cancellationToken)
         {
             _logger.LogInformation("[GetAll] Fetching all users.");
 
             var usersDTO = await _userService.GetAllAsync(cancellationToken);
+
+            _logger.LogInformation("[GetAll] Successfully fetched {UserCount} users.", usersDTO.Count);
+
+            return Ok(usersDTO);
+        }
+
+        [HttpGet("sorted-by-rating")]
+        [Authorize]
+        public async Task<ActionResult<List<UserDTO>>> GetUsersSortedByRatingWithPagination(int page, int pageSize, CancellationToken cancellationToken)
+        {
+            _logger.LogInformation("[GetAll] Fetching all users.");
+
+            var usersDTO = await _userService.GetUsersSortedByRatingWithPagination(page, pageSize, cancellationToken);
 
             _logger.LogInformation("[GetAll] Successfully fetched {UserCount} users.", usersDTO.Count);
 
@@ -70,6 +83,19 @@ namespace Profile.API.Controllers
             _logger.LogInformation("[Delete] Successfully deleted user with ID: {UserId}.", id);
 
             return NoContent();
+        }
+
+        [HttpGet("total-count")]
+        [Authorize]
+        public async Task<ActionResult<int>> GetTotalUserCount(CancellationToken cancellationToken)
+        {
+            _logger.LogInformation("[GetTotalUserCount] Fetching total user count.");
+
+            var userCount = await _userService.GetTotalUserCountAsync(cancellationToken);
+
+            _logger.LogInformation("[GetTotalUserCount] Successfully fetched total user count: {UserCount}.", userCount);
+
+            return Ok(userCount);
         }
     }
 }

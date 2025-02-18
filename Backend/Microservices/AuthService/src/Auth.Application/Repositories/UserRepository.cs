@@ -40,10 +40,10 @@ namespace Library.Data.Repositories
             return roles;
         }
 
-        public async Task<User> GetByEmailAsync(string Email, CancellationToken cancellationToken)
+        public async Task<User> GetByEmailAsync(string email, CancellationToken cancellationToken)
         {
             return await _authDbContext.Users
-                .FirstAsync(user => user.Email == Email, cancellationToken);
+                .FirstAsync(user => user.Email == email, cancellationToken);
         }
         public async Task UpdateAsync(User user, CancellationToken cancellationToken = default)
         {
@@ -54,7 +54,7 @@ namespace Library.Data.Repositories
         public async Task DeleteAsync(Guid userId, CancellationToken cancellationToken = default)
         {
             var user = await _authDbContext.Users
-                .FindAsync(userId, cancellationToken);
+                .FindAsync(userId);
 
             if (user != null)
             {
