@@ -1,0 +1,89 @@
+.user-card {
+  display: flex;
+  align-items: center;
+  width: 60vw;
+  justify-content: space-between;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  padding: 16px;
+  margin: 10px 0;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  box-sizing: border-box;
+  min-height: 60px;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.1));
+  }
+
+  &__place,
+  &__name,
+  &__mail,
+  &__rating {
+    flex: 1;
+    text-align: center;
+    padding: 0 10px;
+    min-width: 100px;
+    flex-basis: 100px;
+  }
+
+  &__place {
+    font-size: 18px;
+    color: #ff6f61;
+    text-align: left;
+  }
+
+  &__name {
+    font-size: 18px;
+    color: #ffffff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__mail {
+    font-size: 16px;
+    color: #a0a0a0;
+  }
+
+  &__rating {
+    font-size: 18px;
+    color: #ffcc5c;
+    text-align: right;
+  }
+
+  // Стили для золота
+  &.gold-card {
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 215, 0, 0.1));
+    border-color: rgba(255, 215, 0, 0.3);
+
+    .user-card__place {
+      color: #ffd700; 
+    }
+  }
+
+  // Стили для серебра
+  &.silver-card {
+    background: linear-gradient(135deg, rgba(192, 192, 192, 0.2), rgba(192, 192, 192, 0.1));
+    border-color: rgba(192, 192, 192, 0.3);
+
+    .user-card__place {
+      color: #c0c0c0;
+    }
+  }
+
+  // Стили для бронзы
+  &.bronze-card {
+    background: linear-gradient(135deg, rgba(205, 127, 50, 0.2), rgba(205, 127, 50, 0.1));
+    border-color: rgba(205, 127, 50, 0.3);
+
+    .user-card__place {
+      color: #cd7f32;
+    }
+  }
+}

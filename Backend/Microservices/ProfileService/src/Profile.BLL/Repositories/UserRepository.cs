@@ -38,6 +38,7 @@ namespace Profile.BLL.Repositories
                                 .Update(user);
         }
 
+
         public async Task DeleteAsync(Guid userId, CancellationToken cancellationToken = default)
         {
             var user = await _gameDbContext.Users
@@ -46,6 +47,20 @@ namespace Profile.BLL.Repositories
             {
                 _gameDbContext.Users.Remove(user);
             }
+        }
+
+        public async Task<List<User>> GetUsersSortedByRatingWithPagination(int page, int pageSize, CancellationToken cancellationToken = default)
+        {
+            return await _gameDbContext.Users
+                .OrderByDescending(u => u.Rating)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync(cancellationToken);
+        }
+        public async Task<int> GetTotalUserCountAsync(CancellationToken cancellationToken = default)
+        {
+            return await _gameDbContext.Users
+                                       .CountAsync(cancellationToken);
         }
     }
 }

@@ -1,0 +1,18 @@
+:host {
+    display: grid;
+    grid-template-columns: 1fr; 
+    row-gap: 20px; 
+    align-items: center;
+    margin: 0 5%;
+}
+
+.login-form {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 20px;
+}
+
+.btn {
+    justify-self: end; 
+    grid-column: 1;
+}

@@ -1,18 +1,21 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Profile.BLL.DTOs;
 using Profile.BLL.Interfaces.Services;
 
 namespace Profile.API.Controllers
 {
     [ApiController]
-    [Route("global-statistics")]
+    [Route("users")]
     public class GlobalStatisticsController : ControllerBase
     {
         private readonly IGlobalStatisticsServices _globalStatisticsServices;
         private readonly ILogger<GlobalStatisticsController> _logger;
+        private readonly IGameService _gameService;
 
-        public GlobalStatisticsController(IGlobalStatisticsServices globalStatisticsServices, ILogger<GlobalStatisticsController> logger)
+        public GlobalStatisticsController(IGlobalStatisticsServices globalStatisticsServices, IGameService gameService, ILogger<GlobalStatisticsController> logger)
         {
             _globalStatisticsServices = globalStatisticsServices;
+            _gameService = gameService;
             _logger = logger;
         }
 
@@ -20,18 +23,19 @@ namespace Profile.API.Controllers
         public async Task<IActionResult> GetMostUsedMove(CancellationToken cancellationToken)
         {
             _logger.LogInformation("[GetMostUsedMove] Fetching the most used move statistics.");
-
-            var result = await _globalStatisticsServices.GetMostUsedMoveAsync(cancellationToken);
+            var games = await _gameService.GetAllGamesAsync(cancellationToken);
+            var result = await _globalStatisticsServices.GetMostUsedMoveAsync(games, cancellationToken);
 
             return Ok(result);
         }
 
         [HttpGet("moves/winrate")]
-        public async Task<IActionResult> GetMovesWinRatePlayers(CancellationToken cancellationToken)
+        public async Task<IActionResult> GetMovesWinRate(CancellationToken cancellationToken)
         {
-            _logger.LogInformation("[GetMovesWinRatePlayers] Fetching moves win rate statistics.");
+            _logger.LogInformation("[GetMovesWinRate] Fetching moves win rate statistics.");
 
-            var result = await _globalStatisticsServices.GetMoveWinRateAsync(cancellationToken);
+            var games = await _gameService.GetAllGamesAsync(cancellationToken);
+            var result = await _globalStatisticsServices.GetMoveWinRateAsync(games, cancellationToken);
 
             return Ok(result);
         }
@@ -41,7 +45,8 @@ namespace Profile.API.Controllers
         {
             _logger.LogInformation("[GetMovesUsageStatistics] Fetching moves usage statistics.");
 
-            var result = await _globalStatisticsServices.GetMoveUsageStatisticsAsync(cancellationToken);
+            var games = await _gameService.GetAllGamesAsync(cancellationToken);
+            var result = await _globalStatisticsServices.GetMoveUsageStatisticsAsync(games, cancellationToken);
 
             return Ok(result);
         }

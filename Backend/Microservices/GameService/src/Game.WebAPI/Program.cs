@@ -29,13 +29,13 @@ if (app.Environment.IsDevelopment())
 app.UseCustomExceptionHandler();
 app.UseHttpsRedirection();
 app.UseAuthorization();
-
+app.UseCors("_allowSignalRCors");
 app.UseHangfireDashboard("/hangfire-dashboard", new DashboardOptions()
 {
     IgnoreAntiforgeryToken = true
 });
 app.MapControllers();
 app.Services.SetupJobs();
-app.MapHub<GameHub>("/GameHub");
+app.MapHub<GameHub>("/GameHub").RequireCors("_allowSignalRCors");
 
 app.Run();

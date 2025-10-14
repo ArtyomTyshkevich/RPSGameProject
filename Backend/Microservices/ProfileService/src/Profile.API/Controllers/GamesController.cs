@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Profile.BLL.DTOs;
 using Profile.BLL.Interfaces.Services;
 using Profile.DAL.Entities.Mongo;
 

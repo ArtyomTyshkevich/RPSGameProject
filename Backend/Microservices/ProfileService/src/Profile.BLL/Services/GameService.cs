@@ -35,7 +35,9 @@ namespace Profile.BLL.Services
         }
         public async Task AddGameAsync(GameResultDto gameResultDto, CancellationToken cancellationToken)
         {
+            
             var game = _mapper.Map<Game>(gameResultDto);
+            game.Id = Guid.NewGuid().ToString();
             await _unitOfWork.Games.AddGameAsync(game, cancellationToken);
         }
     }

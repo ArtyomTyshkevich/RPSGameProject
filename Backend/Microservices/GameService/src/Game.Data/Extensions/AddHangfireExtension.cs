@@ -1,5 +1,6 @@
 ﻿using Game.Data.HangfireJobs;
 using Hangfire;
+using Hangfire.Redis.StackExchange;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Linq.Expressions;
@@ -10,21 +11,21 @@ namespace Chat.Data.Extensions
     {
         public static IServiceCollection AddHangfireConfig(this IServiceCollection @this, IConfiguration configuration)
         {
+            var redisConnectionString = configuration.GetConnectionString("gameredis");
+
             @this.AddHangfire(globalConfiguration =>
             {
                 globalConfiguration
                     .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
                     .UseSimpleAssemblyNameTypeSerializer()
                     .UseRecommendedSerializerSettings()
-                    .UseSqlServerStorage(configuration.GetConnectionString("DefaultConnection"), new Hangfire.SqlServer.SqlServerStorageOptions
-                    {
-                        PrepareSchemaIfNecessary = true
-                    });
+                    .UseRedisStorage(redisConnectionString);
             });
             @this.AddHangfireServer();
 
             return @this;
         }
+
         public static void SetupJobs(this IServiceProvider @this)
         {
             using var scope = @this.CreateScope();

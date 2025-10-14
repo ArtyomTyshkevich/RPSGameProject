@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Game.Application.Interfaces.Services;
-using MassTransit;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Game.WebAPI.Controllers
@@ -10,32 +9,30 @@ namespace Game.WebAPI.Controllers
     public class SearchController : ControllerBase
     {
         private readonly IMapper _mapper;
-        private readonly IPublishEndpoint _publishEndpoint;
         private readonly ISearchService _searchService;
         private readonly ILogger<SearchController> _logger;
 
-        public SearchController(IPublishEndpoint publishEndpoint, IMapper mapper, ISearchService searchService, ILogger<SearchController> logger)
+        public SearchController( IMapper mapper, ISearchService searchService, ILogger<SearchController> logger)
         {
             _searchService = searchService;
-            _publishEndpoint = publishEndpoint;
             _mapper = mapper;
             _logger = logger;
         }
 
-        [HttpPost("{id}/start")]
-        public async Task<IActionResult> StartSearchGame([FromBody] Guid id, CancellationToken cancellationToken)
+        [HttpPost("{id:guid}/start")]
+        public async Task<IActionResult> StartSearchGame(Guid id, CancellationToken cancellationToken)
         {
             _logger.LogInformation("StartSearchGame initiated. Game ID: {GameId}", id);
 
-            await _searchService.StartSearchGame(id, cancellationToken);
+            var roomId = await _searchService.StartSearchGame(id, cancellationToken);
 
             _logger.LogInformation("StartSearchGame succeeded. Game ID: {GameId}", id);
 
-            return Ok();
+            return Ok(new { roomId });
         }
 
-        [HttpPost("{id}/stop")]
-        public async Task<IActionResult> StopSearchGame([FromBody] Guid id, CancellationToken cancellationToken)
+        [HttpPost("{id:guid}/stop")]
+        public async Task<IActionResult> StopSearchGame( Guid id, CancellationToken cancellationToken)
         {
             _logger.LogInformation("StopSearchGame initiated. Game ID: {GameId}", id);
 

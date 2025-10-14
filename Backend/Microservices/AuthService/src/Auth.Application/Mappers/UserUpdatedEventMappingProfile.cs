@@ -12,13 +12,13 @@ namespace Auth.BLL.Mappers
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id.ToString()))
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Nickname))
                 .ForMember(dest => dest.Mail, opt => opt.MapFrom(src => src.Email))
-                .ForMember(dest => dest.Rating, opt => opt.MapFrom(src => src.Ratting));
+                .ForMember(dest => dest.Rating, opt => opt.MapFrom(src => src.Rating));
 
             CreateMap<UserUpdatedEvent, User>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dest => dest.Nickname, opt => opt.MapFrom(src => src.Name))
                 .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Mail))
-                .ForMember(dest => dest.Ratting, opt => opt.MapFrom(src => src.Rating));
+                .ForMember(dest => dest.Rating, opt => opt.MapFrom(src => src.Rating));
         }
     }
 }

@@ -1,8 +1,6 @@
-using Chat.Data.Configuration;
-using Chat.Data.Services;
 using Chat.WebAPI.DI;
 using Chat.WebAPI.Hubs;
-using Microsoft.AspNetCore.Server.Kestrel.Core;
+using Chat.WebAPI.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,13 +17,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCustomExceptionHandler();
 app.UseHttpsRedirection();
 app.MapGrpcService<UserGRPCService>();
-app.UseCors("AllowAll");
+app.UseCors("_allowSignalRCors");
 app.UseAuthorization();
-
 app.MapControllers();
 
-app.MapHub<ChatHub>("/ChatHub");
+app.MapHub<ChatHub>("/ChatHub").RequireCors("_allowSignalRCors");
 
 app.Run();

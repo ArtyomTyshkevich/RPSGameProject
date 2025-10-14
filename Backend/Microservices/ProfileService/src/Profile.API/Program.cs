@@ -22,6 +22,8 @@ if (app.Environment.IsDevelopment())
 app.UseCustomExceptionHandler();
 app.UseHttpsRedirection();
 
+app.UseCors("AllowAll");
+
 app.UseAuthentication();
 app.UseAuthorization();
 

@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Hangfire.Redis.StackExchange" Version="1.9.4" />
+    <PackageReference Include="MongoDB.Bson" Version="2.30.0" />
+  </ItemGroup>
+
 </Project>

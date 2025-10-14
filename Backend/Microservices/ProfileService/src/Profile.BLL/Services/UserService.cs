@@ -62,5 +62,15 @@ namespace Profile.BLL.Services
 
             await _unitOfWork.SaveChangesAsync(cancellationToken);
         }
+        public async Task<List<UserDTO>> GetUsersSortedByRatingWithPagination(int page, int pageSize, CancellationToken cancellationToken = default)
+        {
+           var users = await _unitOfWork.Users.GetUsersSortedByRatingWithPagination(page, pageSize, cancellationToken);
+           return _mapper.ProjectTo<UserDTO>(users.AsQueryable()).ToList();
+        }
+        public async Task<int> GetTotalUserCountAsync(CancellationToken cancellationToken = default)
+        {
+            return await _unitOfWork.Users.GetTotalUserCountAsync(cancellationToken);
+        }
+
     }
 }

@@ -1,0 +1,40 @@
+.box {
+  display: grid;
+  grid-template-rows: auto auto 1fr;
+  height: 70vh;
+  width: 70vw;
+  max-width: 60vw;
+  gap: 10px;
+}
+
+button {
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background-color: #6200ea;
+  color: white;
+}
+
+button:hover {
+  background-color: #3700b3;
+}
+
+.list-container {
+  overflow-y: auto;
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.room {
+  transition: all 0.3s ease;
+}
+
+.room:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}

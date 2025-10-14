@@ -1,10 +1,8 @@
 ﻿using AutoMapper;
 using Chat.Application.DTOs;
 using Chat.Application.Interfaces;
-using Chat.Domain.Entities;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Caching.Distributed;
-using Microsoft.Extensions.Logging;
 
 namespace Chat.WebAPI.Hubs
 {
@@ -60,11 +58,8 @@ namespace Chat.WebAPI.Hubs
                 .Group(connection.ChatRoom)
                 .ReceiveMessage(message);
 
-            await _unitOfWork.Messages.SaveMessageAsync(message);
-
             _logger.LogInformation("[SendMessageAsync] Message sent to chat room {ChatRoom} from user {UserId}.", connection.ChatRoom, connection.UserDTO.Id);
         }
-
         public override async Task OnDisconnectedAsync(Exception? exception)
         {
             _logger.LogInformation("[OnDisconnectedAsync] Connection {ConnectionId} disconnected.", Context.ConnectionId);

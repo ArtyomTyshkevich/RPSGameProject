@@ -8,5 +8,7 @@ namespace Game.Application.Interfaces.Repositories
         Task UpdateUserStatusAsync(Guid userId, UserStatuses newStatus, CancellationToken cancellationToken = default);
         Task ChangeRating(Guid userId, int points, CancellationToken cancellationToken);
         Task<User> GetByIdNoTrackingAsync(Guid userId, CancellationToken cancellationToken = default);
+        void Attach(User user);
+
     }
 }

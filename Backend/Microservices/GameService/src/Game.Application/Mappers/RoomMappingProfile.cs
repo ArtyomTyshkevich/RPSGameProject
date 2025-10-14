@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Game.Application.DTOs;
 using Game.Domain.Entities;
+using System;
 
 namespace Game.Application.Mappers
 {
@@ -8,12 +9,22 @@ namespace Game.Application.Mappers
     {
         public RoomMappingProfile()
         {
+            CreateMap<Room, RoomDTO>()
+                .ForMember(dest => dest.RoomType, opt => opt.MapFrom(src => src.Tipe))
+                .ForMember(dest => dest.RoomStatus, opt => opt.MapFrom(src => src.Status));
+
             CreateMap<RoomDTO, Room>()
-                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dest => dest.Tipe, opt => opt.MapFrom(src => src.RoomType))
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.RoomStatus))
-                .ForMember(dest => dest.RoundNum, opt => opt.MapFrom(src => src.RoomStatus))
-                .ReverseMap();
+                .ForMember(dest => dest.Rounds, opt => opt.Ignore())
+                .ForMember(dest => dest.GameResult, opt => opt.Ignore())
+                .BeforeMap((src, dest) =>
+                {
+                    if (src.Id == null)
+                    {
+                        dest.Id = Guid.NewGuid();
+                    }
+                });
         }
     }
 }

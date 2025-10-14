@@ -10,6 +10,7 @@ using Game.Data.HangfireJobs;
 using Game.Data.Repositories;
 using Game.Data.Services;
 using Game.WebAPI.Setups;
+using StackExchange.Redis;
 
 namespace Game.WebAPI.DI
 {
@@ -27,9 +28,12 @@ namespace Game.WebAPI.DI
             services.AddScoped<IRoundService, RoundService>();
             services.AddScoped<ISearchService, SearchService>();
             services.AddScoped<ICacheService, CacheService>();
+            services.AddSingleton<IConnectionMultiplexer>(sp =>
+                 ConnectionMultiplexer.Connect(configuration.GetConnectionString("gameredis") ?? "localhost:6379"));
             services.AddScoped<CleanRoomsJob>();
             services.ConfigureMassTransit(configuration);
             services.ConfigureBrokerMassTransit(configuration);
+            services.ConfigureCors(configuration);
             services.ConfigureDatabase(configuration);
             services.ConfigureCache(configuration);
             services.ConfigureAuthentication(configuration);

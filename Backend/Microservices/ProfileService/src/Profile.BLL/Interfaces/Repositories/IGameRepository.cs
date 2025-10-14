@@ -1,4 +1,5 @@
-﻿using Profile.DAL.Entities.Mongo;
+﻿using Profile.BLL.Enums;
+using Profile.DAL.Entities.Mongo;
 
 namespace Profile.BLL.Interfaces.Repositories
 {
@@ -9,5 +10,6 @@ namespace Profile.BLL.Interfaces.Repositories
         Task<IEnumerable<Game>> GetAllGamesAsync(CancellationToken cancellationToken = default);
         Task<Game> GetGameByIdAsync(string id, CancellationToken cancellationToken = default);
         Task UpdateGameAsync(Game game, CancellationToken cancellationToken = default);
+        Task<IEnumerable<Game>> GetAllUserGamesAsync(string userId, CancellationToken cancellationToken = default);
     }
 }

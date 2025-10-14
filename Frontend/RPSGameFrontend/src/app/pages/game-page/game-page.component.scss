@@ -1,0 +1,149 @@
+.box {
+    height: 70vh;
+    width: 70vw;
+    max-width: 60vw;
+    background: rgb(255, 250, 115);
+  }
+.game-container {
+    position: relative;
+    width: 65vw;
+    height: 80vh;
+    background: linear-gradient(135deg, var(--primary-bg), #2c3e50);
+    display: flex;
+    border: none;
+    border-radius: 1vw;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
+    overflow: hidden;
+}
+
+.game-header {
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 30px;
+    text-align: center;
+    color: #fff;
+    text-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    animation: fadeIn 1s ease-in-out;
+}
+
+.game-area {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    height: 300px;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.opponent-choices {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.opponent-card {
+    width: 100px;
+    height: 150px;
+    background-color: #5e5e5e;
+    border: 2px solid #000000;
+    border-radius: 8px;
+    margin: 0 10px;
+    transform-origin: center center;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1; 
+    position: absolute;
+}
+
+.opponent-choices .opponent-card:nth-child(1) {
+    left: 30%;
+    transform: rotate(-15deg);
+    animation-delay: 0s;
+}
+
+.opponent-choices .opponent-card:nth-child(2) {
+    left: 40%;
+    transform: rotate(-0deg);
+    animation-delay: 0.5s;
+}
+
+.opponent-choices .opponent-card:nth-child(3) {
+    left: 50%;
+    transform: rotate(15deg);
+    animation-delay: 1s;
+}
+
+.buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 150vh;
+    position: relative;
+}
+
+.buttons button {
+    width: 120px;
+    height: 180px;
+    background-color: #eee;
+    border: 2px solid #bbb;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1; 
+}
+
+.buttons .scissors {
+    left: 25%;
+    transform: rotate(-15deg);
+    animation-delay: 0s;
+}
+
+.buttons .rock {
+    left: 40%;
+    transform: rotate(0deg);
+    animation-delay: 0.5s;
+}
+
+.buttons .paper {
+    left: 60%;
+    transform: rotate(15deg);
+    animation-delay: 1s;
+}
+
+.buttons button.selected {
+    background-color: #4CAF50;
+    color: white;
+    box-shadow: 0 6px 12px rgba(0, 128, 0, 0.5);
+    border: 3px solid #333; 
+    z-index: 2; 
+    transform: translateY(-20px); 
+    animation: none;
+}
+
+.buttons button:hover {
+    transform: scale(1.05) translateY(-5px);
+    box-shadow: 0 20px 20px rgb(29, 199, 7);
+    animation: none;
+}

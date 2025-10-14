@@ -1,0 +1,24 @@
+<div class="box" *ngIf="pageState==menuStates.MainMenu">
+  <button [routerLink]="['/rating']" class="icon-btn rating-btn">
+    <i class="icon-star"><img src="rating.png" alt="Рейтинг"></i>
+  </button>
+  <button [routerLink]="['/profile', userId]" class="icon-btn profile-btn">
+    <i class="icon-user"><img src="profile.png" alt="Профиль"></i>
+  </button>
+  <div class="menu-container">
+    <button class="play-btn" (click)="startGameSearch()">
+      <span>Играть</span>
+    </button>
+    <button class="chat-btn" [routerLink]="['/chat']">
+      <span>Чат</span>
+    </button>
+    
+    <button *ngIf="isAdmin()" class="rooms-btn" [routerLink]="['/rooms']">
+      <span>Румы</span>
+    </button>
+    
+    <a class="logout-btn" (click)="logout()">
+      <span>Выйти</span>
+    </a>
+  </div>
+</div>

@@ -20,8 +20,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors("AllowAll");
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
 Seed.InitializeRoles(app.Services).Wait();
 app.MapControllers();

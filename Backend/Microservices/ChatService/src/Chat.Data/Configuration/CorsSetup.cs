@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.AspNetCore.Cors.Infrastructure;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.Data.Configuration
@@ -7,16 +8,19 @@ namespace Chat.Data.Configuration
     {
         public static void ConfigureCors(this IServiceCollection services, IConfiguration configuration)
         {
+            var corsPolicy = "_allowSignalRCors";
+
             services.AddCors(options =>
             {
-                options.AddPolicy("AllowAll", policy =>
+                options.AddPolicy(corsPolicy, policy =>
                 {
-                    policy.AllowAnyOrigin()
-                          .AllowAnyMethod()
+                    policy.WithOrigins("http://localhost:4200")
                           .AllowAnyHeader()
+                          .AllowAnyMethod()
                           .AllowCredentials();
                 });
             });
+
         }
     }
 }

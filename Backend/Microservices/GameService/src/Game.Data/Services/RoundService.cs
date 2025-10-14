@@ -1,10 +1,13 @@
 ﻿using AutoMapper;
 using Broker.Events;
+using Game.Application.DTOs;
 using Game.Application.Interfaces.Buses;
 using Game.Application.Interfaces.Repositories.UnitOfWork;
 using Game.Application.Interfaces.Services;
 using Game.Domain.Entities;
 using Game.Domain.Enums;
+using System.Collections.Concurrent;
+using System.Runtime.ExceptionServices;
 
 namespace Game.Data.Services
 {
@@ -13,6 +16,7 @@ namespace Game.Data.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IBrokerBus _bus;
         private readonly IMapper _mapper;
+        private static readonly ConcurrentDictionary<Guid, SemaphoreSlim> RoomLocks = new ConcurrentDictionary<Guid, SemaphoreSlim>();
 
         public RoundService(IUnitOfWork unitOfWork, IBrokerBus bus, IMapper mapper)
         {
@@ -21,18 +25,60 @@ namespace Game.Data.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task ProcessRound(Room room, Guid playerId, PlayerMoves move, CancellationToken cancellationToken = default)
+        public async Task<Message?> ProcessRound(Room room, Guid playerId, PlayerMoves move, CancellationToken cancellationToken = default)
         {
-            var currentRound = room.Rounds[room.RoundNum];
-
-            await SetPlayerMove(room, currentRound, playerId, move, cancellationToken);
-            var roomIsFull = currentRound.FirstPlayerMove.HasValue && currentRound.SecondPlayerMove.HasValue;
-            if (roomIsFull)
+            var roundNum = room.RoundNum;
+            var currentRound = room.Rounds[roundNum];
+            if (playerId == room.FirstPlayer!.Id)
             {
-                await ProcessRoundResult(room, currentRound, cancellationToken);
+                for (var i = 0; i < 5; i++)
+                {
+                    room = await _unitOfWork.Rooms.GetByIdAsNoTrakingAsync(room.Id);
+                    currentRound = room.Rounds[roundNum];
+                    if (currentRound.SecondPlayerMove != null)
+                    {
+                        break;
+                    }
+                    await Task.Delay(1000);
+                }
+            }
+            _unitOfWork.Rooms.Attach(room);
+            await SetPlayerMove(room, currentRound, playerId, move, cancellationToken);
+
+            if (playerId == room.FirstPlayer!.Id)
+            {
+                var MovesAreCame = currentRound.FirstPlayerMove!=null && currentRound.SecondPlayerMove!=null;
+                if (MovesAreCame)
+                {
+                    await ProcessRoundResult(room, currentRound, cancellationToken);
+                    return new Message
+                    {
+                        FirstPlayerMoves = currentRound.FirstPlayerMove,
+                        SecondPlayerMoves = currentRound.SecondPlayerMove,
+                        CurrentRaundNum = roundNum,
+                        CurrentRoundWinnerID = GetWinnerId(room.FirstPlayer!.Id, room.SecondPlayer!.Id, currentRound.RoundResult),
+                        GameWinnerId = GetWinnerId(room.FirstPlayer!.Id, room.SecondPlayer!.Id, room.GameResult)
+                    };
+                }
+                else return null;
+            }
+            else return null;
+
+        }
+        private Guid? GetWinnerId(Guid firstPlayerId, Guid secondPlayerId, GameResults? gameResults)
+        {
+            switch (gameResults)
+            {
+                case GameResults.FirstPlayerWon:
+                    return firstPlayerId;
+
+                case GameResults.SecondPlayerWon:
+                    return secondPlayerId;
+
+                default:
+                    return null;
             }
         }
-
         private async Task ProcessRoundResult(Room room, Round currentRound, CancellationToken cancellationToken)
         {
             currentRound.RoundResult = await _unitOfWork.Rools
@@ -41,7 +87,7 @@ namespace Game.Data.Services
                     currentRound.SecondPlayerMove.GetValueOrDefault(),
                     cancellationToken
                 );
-
+            
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             if (currentRound.RoundResult == GameResults.Draw)
@@ -148,6 +194,38 @@ namespace Game.Data.Services
             round.SecondPlayerMove = null;
             round.RoundResult = null;
             await _unitOfWork.SaveChangesAsync(cancellationToken);
+        }
+        public async Task<Message?> DisconetedAsync(Room room, Guid playerId, CancellationToken cancellationToken = default)
+        {
+            var roundNum = room.RoundNum;
+            var currentRound = room.Rounds[roundNum];
+            _unitOfWork.Rooms.Attach(room);
+            var IsLeave = room.GameResult == null && room.FirstPlayer != null && room.SecondPlayer != null;
+            if (IsLeave)
+            {
+                var result = GameResults.Draw;
+                if (playerId == room.FirstPlayer!.Id)
+                {
+                    result = GameResults.SecondPlayerWon;
+                }
+                else if (playerId == room.SecondPlayer!.Id)
+                {              
+                    result = GameResults.FirstPlayerWon;
+                }
+                await GameEndProcess(room, result,cancellationToken);
+
+                var gameWiinnerId = GetWinnerId(room.FirstPlayer.Id, room.SecondPlayer.Id, result);
+
+                return new Message
+                {
+                    FirstPlayerMoves = null,
+                    SecondPlayerMoves = null,
+                    CurrentRaundNum = roundNum,
+                    CurrentRoundWinnerID = gameWiinnerId,
+                    GameWinnerId = gameWiinnerId
+                };
+            }
+            else return null;
         }
     }
 }

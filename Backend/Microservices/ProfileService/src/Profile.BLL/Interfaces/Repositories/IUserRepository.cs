@@ -9,5 +9,7 @@ namespace Profile.BLL.Interfaces.Repositories
         Task<List<User>> GetAllAsync(CancellationToken cancellationToken = default);
         Task<User> GetByIdAsync(Guid userId, CancellationToken cancellationToken = default);
         Task UpdateAsync(User user, CancellationToken cancellationToken = default);
+        Task<List<User>> GetUsersSortedByRatingWithPagination(int page, int pageSize, CancellationToken cancellationToken = default);
+        Task<int> GetTotalUserCountAsync(CancellationToken cancellationToken = default);
     }
 }

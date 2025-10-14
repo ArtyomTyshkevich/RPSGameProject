@@ -40,7 +40,7 @@ namespace Auth.BLL.Handlers.QuerieHandlers
                 RefreshToken = user.RefreshToken!
             };
         }
-
+            
         private async Task<User> ValidateUserCredentials(AuthRequest request, CancellationToken cancellationToken)
         {
             var managedUser = await _unitOfWork.UserManagers.FindByEmailAsync(request.Email);

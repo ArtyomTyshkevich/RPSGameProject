@@ -34,6 +34,7 @@ namespace Profile.BLL.DI
                 );
             services.AddAutoMapper(typeof(UserMappingProfile));
             services.AddFluentValidationAutoValidation();
+            services.ConfigureCors(configuration);
         }
     }
 }

@@ -25,6 +25,7 @@ namespace Chat.WebAPI.DI
             services.AddScoped<ICacheService, CacheService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddAutoMapper(typeof(UserMappingProfile).Assembly);
+            services.ConfigureCors(configuration);
         }
     }
 }

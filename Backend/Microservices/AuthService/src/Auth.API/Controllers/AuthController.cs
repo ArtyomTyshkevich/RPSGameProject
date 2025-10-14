@@ -64,6 +64,7 @@ namespace Library.WebAPI.Controllers
 
        
         [HttpPost("revoke/{username}")]
+        [Authorize]
         public async Task<IActionResult> Revoke(string username, CancellationToken cancellationToken)
         {
             _logger.LogInformation("[Revoke] Revoke tokens attempt started for user: {Username}", username);
